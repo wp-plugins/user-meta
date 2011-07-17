@@ -3,7 +3,7 @@ Contributors: khaledsaikat
 Tags: user, usermeta, users, import, csv
 Requires at least: 3.0.0
 Tested up to: 3.2
-Stable tag: 1.0.1
+Stable tag: 1.0.0
 
 Allow you to import user data from CSV file, including custom usermeta fields and you can add extra field to user profile page
 
