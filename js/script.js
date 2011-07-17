@@ -6,6 +6,12 @@ jQuery(document).ready(function(){
         return false;
     });
     
+    jQuery("#add-meta-group").click(function(){
+        var meta_group = jQuery(".new-meta-group").html();
+        jQuery("#group-container").append(meta_group);
+        return false;
+    });    
+    
     jQuery(".remove-meta").click(function(){
         jQuery(this).parent().remove();
         return false;
