@@ -15,9 +15,9 @@ function user_meta_contactmethod($contactmethod){
         }
     }    
     
-	unset($contactmethod['aim']);
-	unset($contactmethod['yim']);
-	unset($contactmethod['jabber']);    
+	//unset($contactmethod['aim']);
+	//unset($contactmethod['yim']);
+	//unset($contactmethod['jabber']);    
     
     return $contactmethod;
 }
