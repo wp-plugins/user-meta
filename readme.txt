@@ -1,33 +1,46 @@
 === Plugin Name ===
 Contributors: khaledsaikat
-Tags: user, usermeta, users, import, csv
+Tags: user, usermeta, users, import, csv, profile, user profile
 Requires at least: 3.0.0
 Tested up to: 3.2
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 
-Allow you to import user data from CSV file, including custom usermeta fields and you can add extra field to user profile page
+Allow you to import user data from CSV file, including custom usermeta fields and you can add extra field to user profile page. This plugin provide shortcode for frontend profile management
 
 == Description ==
 
-This plugin allow two options:
+This plugin allow three options:
 1. Importing user from CSV file with castom meta data.
 2. Add extra field to user profile page.
+3. Provide [user-meta-profile] shortcode for frontend profile update
 
-User field like username, emial etc can be defined
+User field like username, email etc can be defined
 or any other custom field can also use, This plugin will check the user in wordpress system by username or email, if no match found then new user will be created.
 If username or password already exists, then you can skip that user or also can overwrite existing user data.
 
 This plugin, import all data to user and usermeta table, instead of creating custom database table, so you can retrieve all user data by calling wordpress default function.
+
+add extra field to backend and frontend profile
 
 
 == Installation ==
 
 1. Upload and extract `user-meta.zip` to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. You will see a new 'User Import' option under the existing 'Users' menu area.
+3. You will see two new item under Users menu: User Import, Meta Editor.
+4. Use User Import for importing new or existing users
+5. Use Meta Editor to add extra field in backend or frontend profile, optionally this plugin allow grouping.
+6. Use [user-meta-profile] shortcode in any page or post to show frontend profile.
 
 
 == Changelog ==
 
+= 1.0.2 =
+* Optimize code using php class.
+* add [user-meta-profile] shortcode support.
+
+= 1.0.1=
+* Some Bug Free.
+
 = 1.0 =
-* First version
+* First version.

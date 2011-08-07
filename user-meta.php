@@ -1,55 +1,74 @@
 <?php
 /*
-Plugin Name: User Meta
+Plugin Name: User Meta 1.0.2
 Plugin URI: http://wordpress.org/extend/plugins/user-meta
-Description: User and usermeta data can be imported by CSV file, new user may be created and existing user data can be overwrite. This plugin also give option to add extra field to user profile page.
+Description: User and usermeta data can be imported by CSV file. This plugin also give option to add extra field to user profile page. Provide shortcode for frontend user profile update.
 Author: Khaled Hossain Saikat
-Version: 1.0.1
+Version: 1.0.2
 Author URI: http://thekhaled.info
 */
 
 
-
 // always find line endings
 ini_set('auto_detect_line_endings', true);
-set_time_limit(3600);
+
 
 
 if (realpath(__FILE__) == realpath($_SERVER['SCRIPT_FILENAME'])) {
     exit('Please don\'t access this file directly.');
 }
 
-require_once( ABSPATH . WPINC . '/registration.php');
 
-require_once ('function.php');
-require_once ('importer.php');
-require_once ('meta_editor.php');
-require_once ('profile_load.php');
+include_once('class/function.php');
+if (!class_exists('userMeta')){
+    class userMeta extends userMetaFunction {
+                        
+        //Constructor
+        function __construct(){       
+            register_activation_hook(__FILE__, array(__CLASS__, 'pluginInstall'));  
+            add_action('admin_head', array(__CLASS__, 'addCss'));
+            add_action('wp_head', array(__CLASS__, 'addCss'));     
+            self::getGlobal();     
+        }        
+                        
+        //retrieve saved settings and assign them as global, so that dont need to call several times
+        function getGlobal(){
+            global $um_groups, $um_fields, $um_field_checked;
+            $um_groups = get_option('user_meta_group');
+            $um_fields = get_option('user_meta_field');
+            $um_field_checked = get_option('user_meta_field_checked');         
+        }
 
-// add admin menu
-add_action('admin_menu', 'user_meta_menu');
+        function addCss() {
+            $um_plugin_url = self::pluginUrl();
+            echo "<link href='{$um_plugin_url}/css/style.css' rel='stylesheet' type='text/css' media='screen' />";            
+        }
+        
+        function getDefaultUserFields(){
+            $defaultFields = array('user_login' => 'Username', 'user_email' => 'Email', 'user_pass' => 'Password', 'user_nicename' => 'Nicename', 'user_url' => 'Website', 'display_name' => 'Display Name', 'nickname' => 'Nickname', 'first_name' => 'First Nmae', 'last_name' => 'Last Name', 'description' => 'Description', 'user_registered' => 'Registration Date', 'role' => 'Role', 'jabber' => 'Jabber', 'aim' => 'Aim', 'yim' => 'Yim' ); 
+            return $defaultFields;
+        }
 
-//register_activation_hook(__FILE__, "user_meta_install");
-
-function user_meta_menu() {	
-	add_submenu_page( 'users.php', 'User Import', 'User Import', 'manage_options', 'user-meta-import', 'user_meta_import_export');
-    $page = add_submenu_page( 'users.php', 'Meta Editor', 'Meta Editor', 'manage_options', 'user-meta-editor', 'user_meta_editor');
-    add_action("admin_print_scripts-$page", 'user_meta_scripts');
+        function pluginUrl(){
+            return path_join(WP_PLUGIN_URL, basename( dirname( __FILE__ )));
+        }
+                
+        function pluginInstall(){
+            //add_option('user_meta_field', '', '', 'no');
+            //add_option('user_meta_group', '', '', 'no');
+            add_option('user_meta_field_checked', array('user_email' => 'on', 'display_name' => 'on'));
+        }        
+     
+            
+    }
 }
 
-// show import form
-function user_meta_import_export() {
-    
-    user_meta_importer();
-}
 
-function user_meta_install(){
-    add_option('user_meta_field', '', '', 'no');
-    add_option('user_meta_group', '', '', 'no');
-}
-    
-function user_meta_scripts(  ) {
-  wp_enqueue_script( "user-meta", path_join(WP_PLUGIN_URL, basename( dirname( __FILE__ ) )."/js/script.js"), array( 'jquery' ) );
-}
+$userMeta = new userMeta;
+include_once('class/importer.php');
+include_once('class/fieldEditor.php');
+include_once('class/profileFrontend.php');
+include_once('class/profileBackend.php');
+
 
 ?>
