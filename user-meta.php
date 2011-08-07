@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: User Meta 1.0.2
+Plugin Name: User Meta
 Plugin URI: http://wordpress.org/extend/plugins/user-meta
 Description: User and usermeta data can be imported by CSV file. This plugin also give option to add extra field to user profile page. Provide shortcode for frontend user profile update.
 Author: Khaled Hossain Saikat
