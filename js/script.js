@@ -17,5 +17,9 @@ jQuery(document).ready(function(){
         return false;
     });
     
+    
+    jQuery("#um-frontend-profile-form").validationEngine();  
+    
+
 });
     
