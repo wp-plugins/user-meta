@@ -3,7 +3,7 @@ Contributors: khaledsaikat
 Tags: user, usermeta, users, import, csv, profile, user profile
 Requires at least: 3.0.0
 Tested up to: 3.2.1
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 
 Allow import user data from CSV file, including custom usermeta fields. Add extra field to user profile page. Pprovide shortcode for frontend profile management
 
