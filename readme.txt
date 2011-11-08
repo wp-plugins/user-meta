@@ -1,11 +1,12 @@
 === Plugin Name ===
 Contributors: khaledsaikat
+Donate link: http://khaledsaikat.com/donate-now/
 Tags: user, usermeta, users, import, csv, profile, user profile
 Requires at least: 3.0.0
 Tested up to: 3.2.1
 Stable tag: 1.0.3
 
-Allow import user data from CSV file, including custom usermeta fields. Add extra field to user profile page. Pprovide shortcode for frontend profile management
+Import users from CSV file, including custom usermeta fields. Add extra field to user profile page. Provide shortcode for frontend profile management.
 
 == Description ==
 <p>
@@ -29,6 +30,7 @@ Use Meta Editor to add extra field in backend or frontend profile, optionally th
 Use [user-meta-profile] shortcode in any page or post to show frontend profile.
 </p>
 
+
 == Installation ==
 
 1. Upload and extract `user-meta.zip` to the `/wp-content/plugins/` directory
@@ -39,7 +41,19 @@ Use [user-meta-profile] shortcode in any page or post to show frontend profile.
 6. Use [user-meta-profile] shortcode in any page or post to show frontend profile.
 
 
+== Screenshots ==
+
+1. CSV file for import
+2. Merge field from CSV file to Wordpress Field, select User Role and Import
+3. Extra user field and group editor
+4. Frontend profile based on meta editor
+
 == Changelog ==
+
+= 1.0.3 =
+* Extend Import Functionality
+* Draggable Meta Field
+* Add Donation Button
 
 = 1.0.2 =
 * Optimize code using php class.
