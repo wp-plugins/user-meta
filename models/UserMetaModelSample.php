@@ -355,6 +355,33 @@ class UserMetaModelSample {
         $this->upgradeAvatarFrom_1_0_3();
     }
     
+    function isUpgradationNeeded(){
+        global $userMeta;
+        
+        // check upgrade flug
+        $cache = get_option( $userMeta->options['cache'] );
+        if( isset( $cache['upgrade']['1.0.3']['fields_upgraded'] ) )
+            return false;        
+           
+        // Check data exists in new version
+        $fields = get_option( $userMeta->options['fields'] );
+        $exists = false;
+        if( $fields ){
+            if( is_array($fields) ){
+                foreach( $fields as $value ){
+                    if( isset($value['field_type']) )
+                        $exists = true;
+                }
+            }
+        }
+        if($exists) return false;   
+        
+        $prevDefaultFields  = get_option( 'user_meta_field_checked' ); 
+        $prevFields         = get_option( 'user_meta_field' );
+        if( $prevDefaultFields or $prevFields )
+            return true;             
+    }
+    
     function onPluginActivation(){
         global $userMeta;
         
@@ -386,8 +413,19 @@ class UserMetaModelSample {
         return $html;
     }
     
-    function upgradeNotice(){
-        $html = "";
+    function showNotice(){
+        global $userMeta;
+
+        if( $this->isUpgradationNeeded() ){
+            echo $userMeta->showError( "We found that, you have previous data which you may need to import. <span class='button' onclick='umUpgradeFromPrevious(this)'>Click Here</span> to import"  );            
+        }
+    }
+    
+    function ajaxUmCommonRequest(){
+        global $userMeta;
+        $userMeta->verifyNonce();        
+        $this->runningUpgrade();
+        die();
     }
     
 

@@ -11,7 +11,8 @@ if(!class_exists('umPreloads')){
             add_filter( 'manage_users_custom_column', array( $this, 'profileLink' ), 10, 3 ); 
               
             add_filter( 'user_meta_running_upgrade', array( $userMeta, 'runningUpgrade' ) );
-                   
+             
+            add_action( 'wp_ajax_um_common_request',      array($userMeta, 'ajaxUmCommonRequest' ) );       
         }
         
         function getAvatar( $avatar = '', $id_or_email, $size = '96', $default = '', $alt = false ){

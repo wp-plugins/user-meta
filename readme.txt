@@ -10,17 +10,25 @@ Frontend user profile with extra fields.
 
 == Description ==
 
-Frontend user profile with extra fields. Show all WordPress user field in frontend. Beside defaults, various types of fields are available. Use single fields with several form.
-
 This plugin, import all data to user and usermeta table, instead of creating custom database table, so you can retrieve all user data by calling wordpress default function.
 
+<p>
+3 steps to getting started
 
-<div class="inside">
-            <h4>3 steps to getting started</h4><p><b>Step 1. </b>Create Field from User Meta >> Fields.</p><p><b>Step 2. </b>Go to User Meta >> Forms. Drag and drop fields from right to left and save the form.</p><p><b>Step 3. </b>write shortcode to your page or post. Shortcode: [user-meta type='profile' form='profile']</p><p></p><li>You may use type='none' for hide update button.</li><li>You may create more then one form. Use form name in shortcode. e.g. [user-meta type='profile' form='your_form_name']</li><li>Admin user can see all others frontend profile from User Administration screen. To enable this feature, go to User Meta >> User Meta, select profile page from Profile Page Selection and enable right sided checkbox.</li><li>In Case of extra field, you need to define unique meta_key. That meta_key will be use to save extra data in usermeta table. Without defining meta_key, extra data won't save.</li>
-            <p></p>
-        </div>
+Step 1. Create Field from User Meta >> Fields.
 
+Step 2. Go to User Meta >> Forms. Drag and drop fields from right to left and save the form.
 
+Step 3. write shortcode to your page or post. Shortcode: [user-meta type='profile' form='profile']
+
+You may use type='none' for hide update button.
+
+You may create more then one form. Use form name in shortcode. e.g. [user-meta type='profile' form='your_form_name']
+
+Admin user can see all others frontend profile from User Administration screen. To enable this feature, go to User Meta >> User Meta, select profile page from Profile Page Selection and enable right sided checkbox.
+
+In Case of extra field, you need to define unique meta_key. That meta_key will be use to save extra data in usermeta table. Without defining meta_key, extra data won't save.
+</p>
 
 
 == Installation ==
@@ -58,8 +66,3 @@ This plugin, import all data to user and usermeta table, instead of creating cus
 
 = 1.0 =
 * First version.
-
-== Upgrade Notice ==
-
-= 1.0.5 =
-* Added new fields with great look and feel and functionality.

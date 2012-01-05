@@ -180,3 +180,10 @@ function umRemoveFile( element ){
         jQuery(element).parents(".um_field_result").empty().append("<input type='hidden' name='"+fieldName+"' value='' />");         
     }   
 }    
+
+function umUpgradeFromPrevious(element){
+    arg = 'typess=xx';
+    pfAjaxCall( element, 'um_common_request', arg, function(data){
+        jQuery(element).parents(".error").remove();    
+    }); 
+}

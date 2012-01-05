@@ -23,8 +23,12 @@ global $userMeta;
 //$userMeta->dump(  get_option('test2') );
 //$userMeta->upgradeAvatarFrom_1_0_3()
 
+
 // Counting page
 $pageCount = 0;
+if( !$form['fields'] )
+    return $html = $userMeta->showMessage( 'Form not found.', 'error', false );
+
 foreach( $form['fields'] as $fieldID ){
     if( isset($fields[$fieldID]) ){
         if( $fields[$fieldID]['field_type'] == 'page_heading' )

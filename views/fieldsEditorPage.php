@@ -4,6 +4,7 @@
 <div class="wrap">
     <div id="icon-edit-pages" class="icon32 icon32-posts-page"><br /></div>  
     <h2>Fields Editor</h2>  
+    <?php $userMeta->showNotice(); ?>
     <p>Click field from right side panel for creating new field</p> 
     <div id="dashboard-widgets-wrap">
         <div class="metabox-holder">

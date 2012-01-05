@@ -325,8 +325,7 @@ if (!class_exists( 'PluginFrameworkWPSupport' )){
         }
         
         function showMessage($message, $type='success', $inAdmin=true ){
-            if( $type == 'success' )
-                $class = 'pf_success';
+            $class = 'pf_' . $type;
             return $inAdmin ? "<div class='updated'><p>$message</p></div>" : "<div class='$class'>$message</div>";
         }        
         

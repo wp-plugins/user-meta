@@ -4,6 +4,7 @@
 <div class="wrap">
     <div id="icon-edit-pages" class="icon32 icon32-posts-page"><br /></div>  
     <h2>User Meta Settings</h2>   
+    <?php $userMeta->showNotice(); ?>
     <div id="dashboard-widgets-wrap">
         <div class="metabox-holder">
             <div id="um_admin_content">

@@ -4,6 +4,7 @@
 <div class="wrap">
     <div id="icon-edit-pages" class="icon32 icon32-posts-page"><br /></div>  
     <h2>Forms <span class="add-new-h2 um_add_button" onclick="umNewForm(this);">Add New</span> </h2>   
+    <?php $userMeta->showNotice(); ?>
     <div id="dashboard-widgets-wrap">
         <div class="metabox-holder">
             <div id="um_admin_content">
