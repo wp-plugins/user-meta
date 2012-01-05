@@ -1,54 +1,48 @@
 === Plugin Name ===
 Contributors: khaledsaikat
 Donate link: http://khaledsaikat.com/donate-now/
-Tags: user, usermeta, users, import, csv, profile, user profile
+Tags: plugin, admin, ajax, user, usermeta, users, import, csv, profile, user profile, frontend
 Requires at least: 3.0.0
-Tested up to: 3.2.1
-Stable tag: 1.0.3
+Tested up to: 3.3
+Stable tag: 1.0.5
 
-Import users from CSV file, including custom usermeta fields. Add extra field to user profile page. Provide shortcode for frontend profile management.
+Frontend user profile with extra fields.
 
 == Description ==
-<p>
-This plugin allow three options:
-1. Importing user from CSV file with custom meta data.
-2. Add extra field to user profile page.
-3. Provide [user-meta-profile] shortcode for frontend profile update
-</p>
 
-User field like username, email etc can be defined
-or any other custom field can also use, This plugin will check the user in wordpress system by username or email, if no match found then new user will be created.
-If username or password already exists, then you can skip that user or also can overwrite existing user data.
+Frontend user profile with extra fields. Show all WordPress user field in frontend. Beside defaults, various types of fields are available. Use single fields with several form.
 
 This plugin, import all data to user and usermeta table, instead of creating custom database table, so you can retrieve all user data by calling wordpress default function.
 
-<p>
-add extra field to backend and frontend profile
-After activation you will see two new item under Users menu: User Import, Meta Editor.
-Use User Import for importing new or existing users
-Use Meta Editor to add extra field in backend or frontend profile, optionally this plugin allow grouping.
-Use [user-meta-profile] shortcode in any page or post to show frontend profile.
-</p>
+
+<div class="inside">
+            <h4>3 steps to getting started</h4><p><b>Step 1. </b>Create Field from User Meta >> Fields.</p><p><b>Step 2. </b>Go to User Meta >> Forms. Drag and drop fields from right to left and save the form.</p><p><b>Step 3. </b>write shortcode to your page or post. Shortcode: [user-meta type='profile' form='profile']</p><p></p><li>You may use type='none' for hide update button.</li><li>You may create more then one form. Use form name in shortcode. e.g. [user-meta type='profile' form='your_form_name']</li><li>Admin user can see all others frontend profile from User Administration screen. To enable this feature, go to User Meta >> User Meta, select profile page from Profile Page Selection and enable right sided checkbox.</li><li>In Case of extra field, you need to define unique meta_key. That meta_key will be use to save extra data in usermeta table. Without defining meta_key, extra data won't save.</li>
+            <p></p>
+        </div>
+
+
 
 
 == Installation ==
 
 1. Upload and extract `user-meta.zip` to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. You will see two new item under Users menu: User Import, Meta Editor.
-4. Use User Import for importing new or existing users
-5. Use Meta Editor to add extra field in backend or frontend profile, optionally this plugin allow grouping.
-6. Use [user-meta-profile] shortcode in any page or post to show frontend profile.
 
 
 == Screenshots ==
 
-1. CSV file for import
-2. Merge field from CSV file to Wordpress Field, select User Role and Import
-3. Extra user field and group editor
-4. Frontend profile based on meta editor
+1. Fields Editor
+2. Forms Field selector
+3. Frontend Profile
 
 == Changelog ==
+
+= 1.0.5 =
+* Changing complete structure
+* Make Seperation of fields and form, so one field can be use in many form
+* Add verious type of fields
+* Added dragable fields to form
+* Improve frontend profile
 
 = 1.0.3 =
 * Extend Import Functionality
@@ -64,3 +58,8 @@ Use [user-meta-profile] shortcode in any page or post to show frontend profile.
 
 = 1.0 =
 * First version.
+
+== Upgrade Notice ==
+
+= 1.0.5 =
+* Added new fields with great look and feel and functionality.
