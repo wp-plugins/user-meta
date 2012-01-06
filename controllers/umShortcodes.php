@@ -122,7 +122,7 @@ if (!class_exists('umShortcodes')) :
  
         function ajaxInsertUser(){
             global $userMeta, $user_ID;
-            $userMeta->verifyNonce();
+            $userMeta->verifyNonce( false );
             
             // Determine $userID
             $userID = $user_ID;
@@ -221,7 +221,7 @@ if (!class_exists('umShortcodes')) :
         
         function ajaxValidateUniqueField(){
             global $userMeta;
-            $userMeta->verifyNonce();
+            $userMeta->verifyNonce( false );
             
             $status = false;               
             if( !isset($_REQUEST['fieldId']) OR !$_REQUEST['fieldValue'] ) return;
@@ -254,7 +254,7 @@ if (!class_exists('umShortcodes')) :
         
         function ajaxShowUploadedFile(){
             global $userMeta;     
-            $userMeta->verifyNonce();     
+            $userMeta->verifyNonce( false );     
             
             if( isset($_REQUEST['showimage']) ){
                 if( isset($_REQUEST['imageurl']) )
@@ -288,7 +288,7 @@ if (!class_exists('umShortcodes')) :
         
         function isInvalidateCaptcha(){
              global $userMeta;
-             $userMeta->verifyNonce();
+             $userMeta->verifyNonce( false );
              
              // Checking existance of captcha field
              if( !isset($_POST["recaptcha_challenge_field"]) )
