@@ -73,7 +73,12 @@ $fieldAdminOnly = $userMeta->createInput( "fields[$id][admin_only]", "checkbox",
  
 $fieldReadOnly = $userMeta->createInput( "fields[$id][read_only]", "checkbox", array( 
     "value"     => isset($read_only) ? $read_only : null,
-    "after"     => " Read Only <br />",
+    "after"     => " Read Only for all user<br />",
+ ) ); 
+ 
+$fieldReadOnly .= $userMeta->createInput( "fields[$id][read_only_non_admin]", "checkbox", array( 
+    "value"     => isset($read_only_non_admin) ? $read_only_non_admin : null,
+    "after"     => " Read Only for non admin <br />",
  ) );   
  
 $fieldUnique = $userMeta->createInput( "fields[$id][unique]", "checkbox", array( 

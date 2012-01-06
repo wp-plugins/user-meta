@@ -24,6 +24,11 @@ if( isset( $field['admin_only'] ) ) :
         return;
 endif;
 
+if( isset( $field['read_only_non_admin'] ) ) :
+    if( !($userMeta->isAdmin()) )
+        $fieldReadOnly = 'disabled'; 
+endif;
+     
 if( isset( $field['read_only'] ) )
     $fieldReadOnly = 'disabled';   
     
