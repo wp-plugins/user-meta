@@ -1,26 +1,74 @@
 === Plugin Name ===
 Contributors: khaledsaikat
-Donate link: http://khaledsaikat.com/donate-now/
-Tags: user, profile, frontend, user-profile, users, usermeta, import, csv, ajax, admin, plugin
+Donate link: http://wordpress-extend.com
+Tags: user, profile, registration, login, frontend, users, usermeta, import, csv, upload, AJAX, admin, plugin, page, image, images, photo, picture, file, email, shortcode, captcha, avatar, redirect, register, password, custom
 Requires at least: 3.0.0
 Tested up to: 3.3.1
-Stable tag: 1.0.5
+Stable tag: 1.1.0
 
-Frontend user profile with extra fields.
+Frontend user profile, registration and login with extra fields.
 
 == Description ==
 
-<p>Frontend user profile with extra fields. Show all WordPress user fields in frontend. Beside default fields, various types of fields are available. </p>
+<p>Frontend user profile, registration and login with extra fields. Allow user to register and login by email.</p>
 
-<p>Supported default fields: Username, Email, Password, Website, Display Name, Nick Name, First Name, Last Name, Description, Registration Date, Role, Jabber, Aim, Yim, Avatar.</p>
+<p>List of supported fields :</p>
+<p><strong>Default WordPress Fields</strong></p>
+<ul>
+<li>Username</li>
+<li>Email</li>
+<li>Password</li>
+<li>Website</li>
+<li>Display Name</li>
+<li>Nickname</li>
+<li>First Name</li>
+<li>Last Name</li>
+<li>Biographical Info</li>
+<li>Registration Date</li>
+<li>Role</li>
+<li>Jabber</li>
+<li>Aim</li>
+<li>Yim</li>
+<li>Avatar</li>
+</ul>
+<p><strong>Extra Fields</strong></p>
+<ul>
+<li>TextBox</li>
+<li>Paragraph</li>
+<li>Rich Text</li>
+<li>Hidden Field</li>
+<li>DropDown</li>
+<li>CheckBox</li>
+<li>Select One (radio)</li>
+<li>Date /Time</li>
+<li>Password</li>
+<li>Email</li>
+<li>File Upload</li>
+<li>Image Url</li>
+<li>Phone Number</li>
+<li>Number</li>
+<li>Website</li>
+<li>Country</li>
+</ul>
+<p><strong>Formatting Fields</strong></p>
+<ul>
+<li>Page Heading</li>
+<li>Section Heading</li>
+<li>HTML</li>
+<li>Captcha</li>
+</ul>
 
-<p>Supported extra fields type: TextBox, Paragraph, Rich Text, Hidden Field, Checkbox, Dropdown, Radio. </p>
 
 <p>You can create unlimited number of fields. All newly created field's data will save to WordPress default usermeta table. so you can retrieve all user data by calling wordpress default functions(e.g. get_userdata(), get_user_meta() ). User Meta plugin separates fields and forms. So, a single field can be used among several forms. </p>
 
+
 <div class="inside">
-            <h4>3 steps to getting started</h4><p><b>Step 1. </b>Create Field from User Meta >> Fields.</p><p><b>Step 2. </b>Go to User Meta >> Forms. Drag and drop fields from right to left and save the form.</p><p><b>Step 3. </b>write shortcode to your page or post. Shortcode: [user-meta type='profile' form='profile']</p><p></p><li>You can use type='none' for hide update button.</li><li>You can create more than one form. Use form name in shortcode. e.g. [user-meta type='profile' form='your_form_name']</li><li>Admin user can see all others frontend profile from User Administration screen. To enable this feature, go to User Meta >> User Meta, select profile page from Profile Page Selection and enable right sided checkbox.</li><li>In Case of extra field, you need to define unique meta_key. That meta_key will be use to save extra data in usermeta table. Without defining meta_key, extra data won't save.</li>
+            <h4>3 steps to getting started</h4><p><b>Step 1. </b>Create Field from User Meta >> Fields Editor.</p><p><b>Step 2. </b>Go to User Meta >> Forms Editor, Give a name to your form. Drag and drop fields from right to left and save the form.</p><p><b>Step 3. </b>write shortcode to your page or post. e.g.: Shortcode: [user-meta type='profile' form='your_form_name']</p><p></p>
         </div>
+
+
+<p><strong>N.B.</strong> Registration, login and some extra fields are only supported in pro version. Get <a href='http://wordpress-extend.com'>User Meta Pro</a></p>
+
 
 == Installation ==
 
@@ -33,8 +81,15 @@ Frontend user profile with extra fields.
 1. Fields Editor
 2. Forms Field selector
 3. Frontend Profile
+4. Frontend Login
 
 == Changelog ==
+
+= 1.1.0 =
+* Include first version of User Meta Pro
+* Pro: added more fields type
+* Pro: Frontend Registration
+* Pro: Frontend Login
 
 = 1.0.5 =
 * Changing complete structure
@@ -59,6 +114,9 @@ Frontend user profile with extra fields.
 * First version.
 
 == Upgrade Notice ==
+
+= 1.1.0 =
+* Introduce with User Meta Pro.
 
 = 1.0.5 =
 * Added new fields with new look and feel also functionality.
