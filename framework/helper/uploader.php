@@ -1,7 +1,21 @@
 <?php
+$dirInfo = pathinfo( __FILE__ );
+$dirName = $dirInfo['dirname'];
 
-require_once ('../../../../../wp-blog-header.php');
+// Determine wp-load path and include
+$found = false;$i=0;
+while( !$found || $i<10 ){
+    $i++;
+    $dirName .= '/..';
+    if( file_exists( $dirName . '/wp-load.php' ) ){
+        $found = true;
+        define('WP_USE_THEMES', false);
+        require_once( $dirName . '/wp-load.php' );
+    }    
+}
+
 global $userMeta;
+
 
 /**
  * Handle file uploads via XMLHttpRequest
