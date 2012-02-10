@@ -1,10 +1,10 @@
 === Plugin Name ===
 Contributors: khaledsaikat
-Donate link: http://wordpress-extend.com
+Donate link: http://user-meta.com
 Tags: user, profile, registration, login, frontend, users, usermeta, import, csv, upload, AJAX, admin, plugin, page, image, images, photo, picture, file, email, shortcode, captcha, avatar, redirect, register, password, custom
 Requires at least: 3.0.0
 Tested up to: 3.3.1
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 
 Frontend user profile, registration and login with extra fields.
 
@@ -67,7 +67,7 @@ Frontend user profile, registration and login with extra fields.
         </div>
 
 
-<p><strong>N.B.</strong> Registration, login and some extra fields are only supported in pro version. Get <a href='http://wordpress-extend.com'>User Meta Pro</a></p>
+<p><strong>N.B.</strong> Registration, login and some extra fields are only supported in pro version. Get <a href='http://user-meta.com'>User Meta Pro</a></p>
 
 
 == Installation ==
@@ -84,6 +84,9 @@ Frontend user profile, registration and login with extra fields.
 4. Frontend Login
 
 == Changelog ==
+
+= 1.1.1 =
+* Added Support while fail AJAX call.
 
 = 1.1.0 =
 * Include first version of User Meta Pro
@@ -114,6 +117,9 @@ Frontend user profile, registration and login with extra fields.
 * First version.
 
 == Upgrade Notice ==
+
+= 1.1.1 =
+* Added Support while fail AJAX call.
 
 = 1.1.0 =
 * Introduce with User Meta Pro.
