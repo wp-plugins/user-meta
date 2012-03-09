@@ -63,7 +63,7 @@ You can create unlimited number of fields. All newly created field's data will s
 
 [View Documentation](http://user-meta.com/documentation/ "User Meta Pro Documentation")
 
-r**NB** User Registration, login and some extra fields are only supported in pro version.
+**NB:** User Registration, login and some extra fields are only supported in pro version.
 Get [User Meta Pro](http://user-meta.com/ "User Meta Pro").
 
 
