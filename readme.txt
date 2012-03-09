@@ -10,18 +10,26 @@ WordPress user management plugin. Custom user profile, custom registration with 
 
 == Description ==
 
-= User Meta, WordPress user management plugin =
+= WordPress user management plugin =
 
 Support custom user profile, custom registration with extra fields. User login by username or email. Import user from csv with meta data.
-
 Themes the WordPress profile, register and login pages according to your theme. Add extra fields(meta data) to user profile or registration page, User Meta plugin support variety of fields to create profile or registration form.
 
 = Custom user profile and registration page =
 
-User Meta Pro allow to fully customize user profile or registration page by providing form editor tools. any page or post can be use as profile/registration page by using shortcode. support ajax user avatar, ajax file upload, and ajax input validation. captcha for protacting againest spam and pagination for break long page to paginated page. Let user register without username but email.
+User Meta Pro allow to fully customize user profile or registration page by providing form editor tools. any page or post can be use as profile/registration page by using shortcode. support ajax user avatar, ajax file upload, and ajax input validation, captcha validation, pagination for break long page to paginated page. Let user login with or without username or email.
 
-** List of extra fields as form builder **
+= Login with username or email =
 
+Let user to login by email instead of username. Or both email or username. Redirected them to certan page after login.
+
+= Import user from csv =
+
+Import user from csv with extra meta data. Assign role to newly imported user. Update current user data by csv file.
+
+= Supported field for form builder =
+
+**Extra fields**
 * User Avatar
 * TextBox
 * Paragraph
@@ -40,31 +48,24 @@ User Meta Pro allow to fully customize user profile or registration page by prov
 * Website
 * Country
 
-** Formatting Fields **
-
+**Formatting Fields**
 * Page Heading
 * Section Heading
 * HTML
 * Captcha
 
-= Login with username or email =
-
-Let user to login by email instead of username. Or both email or username. Redirected them to certan page after login
-
-= Import user from csv =
-
-Import user from csv with extra meta data. Assigin role to newly imported user. Update current user data by csv file.
-
-
 <p>You can create unlimited number of fields. All newly created field's data will save to WordPress default usermeta table. so you can retrieve all user data by calling wordpress default functions(e.g. get_userdata(), get_user_meta() ). User Meta plugin separates fields and forms. So, a single field can be used among several forms. </p>
 
+= Documentation =
 
-<div class="inside">
-            <h4>3 steps to getting started</h4><p><b>Step 1. </b>Create Field from User Meta >> Fields Editor.</p><p><b>Step 2. </b>Go to User Meta >> Forms Editor, Give a name to your form. Drag and drop fields from right to left and save the form.</p><p><b>Step 3. </b>write shortcode to your page or post. e.g.: Shortcode: [user-meta type='profile' form='your_form_name']</p><p></p>
-        </div>
+**steps to getting started**
+1. *Step 1* Create Field from User Meta >> Fields Editor.
+1. *Step 2* Go to User Meta >> Forms Editor, Give a name to your form. Drag and drop fields from right to left and save the form.
+1. *Step 3* write shortcode to your page or post. e.g.: Shortcode: [user-meta type='profile' form='your_form_name']
 
+[View Documentation](http://user-meta.com/documentation/ "View Documentation")
 
-<p><strong>N.B.</strong> Registration, login and some extra fields are only supported in pro version. Get <a href='http://user-meta.com'>User Meta Pro</a></p>
+**NB** Registration, login and some extra fields are only supported in pro version. Get [User Meta Pro](http://user-meta.com/ "User Meta Pro").
 
 
 == Installation ==
@@ -74,7 +75,7 @@ Import user from csv with extra meta data. Assigin role to newly imported user. 
 
 == Frequently Asked Questions ==
 
-= Why error message, “User registration is currently not allowed.” is showing in registration page? =
+= Why error message, "User registration is currently not allowed." is showing in registration page? =
 
 WordPress doesn't allow to register new user by default settings. To allow user to register, go to Settings >> General page in admin section. Checked the checkbox which is saying "Anyone can register" and Save Changes.
 
