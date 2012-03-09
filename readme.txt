@@ -30,6 +30,7 @@ Import user from csv with extra meta data. Assign role to newly imported user. U
 = Supported field for form builder =
 
 **Extra fields**
+
 * User Avatar
 * TextBox
 * Paragraph
@@ -49,6 +50,7 @@ Import user from csv with extra meta data. Assign role to newly imported user. U
 * Country
 
 **Formatting Fields**
+
 * Page Heading
 * Section Heading
 * HTML
@@ -59,13 +61,15 @@ Import user from csv with extra meta data. Assign role to newly imported user. U
 = Documentation =
 
 **steps to getting started**
-1. *Step 1* Create Field from User Meta >> Fields Editor.
-1. *Step 2* Go to User Meta >> Forms Editor, Give a name to your form. Drag and drop fields from right to left and save the form.
-1. *Step 3* write shortcode to your page or post. e.g.: Shortcode: [user-meta type='profile' form='your_form_name']
+
+1. **Step 1** Create Field from User Meta >> Fields Editor.
+1. **Step 2** Go to User Meta >> Forms Editor, Give a name to your form. Drag and drop fields from right to left and save the form.
+1. **Step 3** write shortcode to your page or post. e.g.: Shortcode: [user-meta type='profile' form='your_form_name']
 
 [View Documentation](http://user-meta.com/documentation/ "View Documentation")
 
-**NB** Registration, login and some extra fields are only supported in pro version. Get [User Meta Pro](http://user-meta.com/ "User Meta Pro").
+**NB** Registration, login and some extra fields are only supported in pro version.
+Get [User Meta Pro](http://user-meta.com/ "User Meta Pro").
 
 
 == Installation ==
