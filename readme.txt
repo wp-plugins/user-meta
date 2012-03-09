@@ -10,40 +10,50 @@ WordPress user management plugin. Custom user profile, custom registration with 
 
 == Description ==
 
-<h3>WordPress user management plugin. Support custom user profile, custom registration with extra fields. User login by username or email. Import user from csv with meta data.</h3>
-<p>Themes the WordPress profile, register and login pages according to your theme. Add extra fields(meta data) to user profile or registration page, User Meta plugin support variety of fields to create profile or registration form</p>
+= User Meta, WordPress user management plugin =
 
-<h3>Custom user profile and registration page</h3>
-<p>User Meta Pro allow to fully customize user profile or registration page by providing form editor tools. any page or post can be use as profile/registration page by using shortcode. support ajax user avatar, ajax file upload, and ajax input validation. captcha for protacting againest spam and pagination for break long page to paginated page. Let user register without username but email.</p>
-**List of extra fields as form builder**
-<li>User Avatar</li>
-<li>TextBox</li>
-<li>Paragraph</li>
-<li>Rich Text</li>
-<li>Hidden Field</li>
-<li>DropDown</li>
-<li>CheckBox</li>
-<li>Select One (radio)</li>
-<li>Date /Time</li>
-<li>Password</li>
-<li>Email</li>
-<li>File Upload</li>
-<li>Image Url</li>
-<li>Phone Number</li>
-<li>Number</li>
-<li>Website</li>
-<li>Country</li>
-= Formatting Fields =
+Support custom user profile, custom registration with extra fields. User login by username or email. Import user from csv with meta data.
+
+Themes the WordPress profile, register and login pages according to your theme. Add extra fields(meta data) to user profile or registration page, User Meta plugin support variety of fields to create profile or registration form.
+
+= Custom user profile and registration page =
+
+User Meta Pro allow to fully customize user profile or registration page by providing form editor tools. any page or post can be use as profile/registration page by using shortcode. support ajax user avatar, ajax file upload, and ajax input validation. captcha for protacting againest spam and pagination for break long page to paginated page. Let user register without username but email.
+
+** List of extra fields as form builder **
+
+* User Avatar
+* TextBox
+* Paragraph
+* Rich Text
+* Hidden Field
+* DropDown
+* CheckBox
+* Select One (radio)
+* Date /Time
+* Password
+* Email
+* File Upload
+* Image Url
+* Phone Number
+* Number
+* Website
+* Country
+
+** Formatting Fields **
+
 * Page Heading
 * Section Heading
 * HTML
 * Captcha
 
-<h3>Login with username or email</h3>
-<p>Let user to login by email instead of username. Or both email or username. Redirected them to certan page after login</p>
+= Login with username or email =
 
-<h3>Import user from csv</h3>
-<p>Import user from csv with extra meta data. Assigin role to newly imported user. Update current user data by csv file. </p>
+Let user to login by email instead of username. Or both email or username. Redirected them to certan page after login
+
+= Import user from csv =
+
+Import user from csv with extra meta data. Assigin role to newly imported user. Update current user data by csv file.
 
 
 <p>You can create unlimited number of fields. All newly created field's data will save to WordPress default usermeta table. so you can retrieve all user data by calling wordpress default functions(e.g. get_userdata(), get_user_meta() ). User Meta plugin separates fields and forms. So, a single field can be used among several forms. </p>
