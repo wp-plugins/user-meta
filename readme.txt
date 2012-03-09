@@ -1,38 +1,22 @@
 === Plugin Name ===
 Contributors: khaledsaikat
-Donate link: http://user-meta.com
-Tags: user, profile, registration, login, frontend, users, usermeta, import, csv, upload, AJAX, admin, plugin, page, image, images, photo, picture, file, email, shortcode, captcha, avatar, redirect, register, password, custom
+Donate link: http://user-meta.com/donation
+Tags: user, profile, registration, login, frontend, users, usermeta, import, csv, upload, AJAX, admin, plugin, page, image, images, photo, picture, file, email, shortcode, captcha, avatar, redirect, register, password, custom, csv, import, user import
 Requires at least: 3.0.0
 Tested up to: 3.3.1
 Stable tag: 1.1.1
 
-Frontend user profile, registration and login with extra fields.
+WordPress user management plugin. Custom user profile, custom registration with extra fields. User login by username or email. Import user from csv.
 
 == Description ==
 
-<p>Frontend user profile, registration and login with extra fields. Allow user to register and login by email.</p>
+<h3>WordPress user management plugin. Support custom user profile, custom registration with extra fields. User login by username or email. Import user from csv with meta data.</h3>
+<p>Themes the WordPress profile, register and login pages according to your theme. Add extra fields(meta data) to user profile or registration page, User Meta plugin support variety of fields to create profile or registration form</p>
 
-<p>List of supported fields :</p>
-<p><strong>Default WordPress Fields</strong></p>
-<ul>
-<li>Username</li>
-<li>Email</li>
-<li>Password</li>
-<li>Website</li>
-<li>Display Name</li>
-<li>Nickname</li>
-<li>First Name</li>
-<li>Last Name</li>
-<li>Biographical Info</li>
-<li>Registration Date</li>
-<li>Role</li>
-<li>Jabber</li>
-<li>Aim</li>
-<li>Yim</li>
-<li>Avatar</li>
-</ul>
-<p><strong>Extra Fields</strong></p>
-<ul>
+<h3>Custom user profile and registration page</h3>
+<p>User Meta Pro allow to fully customize user profile or registration page by providing form editor tools. any page or post can be use as profile/registration page by using shortcode. support ajax user avatar, ajax file upload, and ajax input validation. captcha for protacting againest spam and pagination for break long page to paginated page. Let user register without username but email.</p>
+**List of extra fields as form builder**
+<li>User Avatar</li>
 <li>TextBox</li>
 <li>Paragraph</li>
 <li>Rich Text</li>
@@ -49,14 +33,17 @@ Frontend user profile, registration and login with extra fields.
 <li>Number</li>
 <li>Website</li>
 <li>Country</li>
-</ul>
-<p><strong>Formatting Fields</strong></p>
-<ul>
-<li>Page Heading</li>
-<li>Section Heading</li>
-<li>HTML</li>
-<li>Captcha</li>
-</ul>
+= Formatting Fields =
+* Page Heading
+* Section Heading
+* HTML
+* Captcha
+
+<h3>Login with username or email</h3>
+<p>Let user to login by email instead of username. Or both email or username. Redirected them to certan page after login</p>
+
+<h3>Import user from csv</h3>
+<p>Import user from csv with extra meta data. Assigin role to newly imported user. Update current user data by csv file. </p>
 
 
 <p>You can create unlimited number of fields. All newly created field's data will save to WordPress default usermeta table. so you can retrieve all user data by calling wordpress default functions(e.g. get_userdata(), get_user_meta() ). User Meta plugin separates fields and forms. So, a single field can be used among several forms. </p>
@@ -74,6 +61,12 @@ Frontend user profile, registration and login with extra fields.
 
 1. Upload and extract `user-meta.zip` to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
+
+== Frequently Asked Questions ==
+
+= Why error message, “User registration is currently not allowed.” is showing in registration page? =
+
+WordPress doesn't allow to register new user by default settings. To allow user to register, go to Settings >> General page in admin section. Checked the checkbox which is saying "Anyone can register" and Save Changes.
 
 
 == Screenshots ==
