@@ -1,31 +1,57 @@
-=== Plugin Name ===
+=== User Meta ===
 Contributors: khaledsaikat
 Donate link: http://user-meta.com/donation
-Tags: user, profile, registration, login, frontend, users, usermeta, import, csv, upload, AJAX, admin, plugin, page, image, images, photo, picture, file, email, shortcode, captcha, avatar, redirect, register, password, custom, csv, import, user import
+Tags: user, profile, registration, login, frontend, users, usermeta, import, csv, upload, AJAX, admin, plugin, page, image, images, photo, picture, file, email, shortcode, captcha, avatar, redirect, register, password, custom, csv, import, user import, widget
 Requires at least: 3.0.0
-Tested up to: 3.3.1
+Tested up to: 3.3.2
 Stable tag: 1.1.1
+Copyright: Khaled Saikat, user-meta.com.
+License: GNU General Public License
 
-WordPress user management plugin. Custom user profile, custom registration with extra fields. User login by username or email. Import user from csv.
+WordPress user management plugin. Custom user profile,registration with extra fields. Custom Login, Import users from csv and many more.
 
 == Description ==
 
 = WordPress user management plugin =
 
-Support custom user profile, custom registration with extra fields. User login by username or email. Import user from csv with meta data.
-Themes the WordPress profile, register and login pages according to your theme. Add extra fields(meta data) to user profile or registration page, User Meta plugin support variety of fields to create profile or registration form.
+Support custom user profile, both back-end and front-end. Custom registration with extra fields. Login widget/shortcode, user login by username or email. Import user from csv with meta data.
+Themes the WordPress profile, register and login pages according to your theme. Add extra fields(meta data) to user profile or registration page, User Meta plugin support variety of fields to create profile or registration form. More features: admin approval, user activation/deactivation, email verification, role based redirection, modify default email sender, custom email template etc.
 
 = Custom user profile and registration page =
 
 User Meta Pro allow to fully customize user profile or registration page by providing form editor tools. any page or post can be use as profile/registration page by using shortcode. support ajax user avatar, ajax file upload, and ajax input validation, captcha validation, pagination for break long page to paginated page. Let user login with or without username or email.
 
-= Login with username or email =
+= Login widget/shortcode, login with username or email =
 
-Let user to login by email instead of username. Or both email or username. Redirected them to certan page after login.
+Let user to login by email instead of username. Or both email or username. Customize login form by adding own html. Customize logged in user profile.
+
+= Front-end lost password and reset password tools =
+
+wp-login.php is no longer needed for lost password and reset password. Also restrict access to wp-login.php and redirect them to front-end login page.
 
 = Import user from csv =
 
 Import user from csv with extra meta data. Assign role to newly imported user. Update current user data by csv file.
+
+= Redirection =
+
+Role based redirection after user login, logout and registration.
+
+= Admin approval, user activation or deactivation =
+
+Allow admin to approve user upon registration and activate or deactivate any user, any time.
+
+= E-mail verification =
+
+Verify user email in order to activate a new user.
+
+= Customize Email Template =
+
+Customize user registration, activation, deactivation, lostpassword etc emails with including extra fields data.
+
+= Modify default email sender information =
+
+Let your user get email from your prefered name and email instead of wordpress@userdomain.com
 
 = Supported field for form builder =
 
