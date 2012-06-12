@@ -4,7 +4,7 @@ Donate link: http://user-meta.com/donation
 Tags: user, profile, registration, login, frontend, users, usermeta, import, csv, upload, AJAX, admin, plugin, page, image, images, photo, picture, file, email, shortcode, captcha, avatar, redirect, register, password, custom, csv, import, user import, widget
 Requires at least: 3.0.0
 Tested up to: 3.3.2
-Stable tag: 1.1.1
+Stable tag: 1.1.1.1
 Copyright: Khaled Saikat, user-meta.com.
 License: GNU General Public License
 
@@ -113,6 +113,9 @@ WordPress doesn't allow to register new user by default settings. To allow user 
 4. Frontend Login
 
 == Changelog ==
+
+= 1.1.1.1 =
+* Security update.
 
 = 1.1.1 =
 * Added Support while fail AJAX call.

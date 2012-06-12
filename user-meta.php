@@ -4,7 +4,7 @@ Plugin Name: User Meta
 Plugin URI: http://user-meta.com
 Description: Frontend user profile, registration and login with extra fields. .
 Author: Khaled Hossain Saikat
-Version: 1.1.1
+Version: 1.1.1.1
 Author URI: http://khaledsaikat.com
 */
 
@@ -17,7 +17,7 @@ require_once ( 'framework/init.php' );
 if (!class_exists( 'userMeta' )){
     class userMeta extends pluginFramework {
         public $name    = 'User Meta';
-        public $version = '1.1.1';
+        public $version = '1.1.1.1';
         public $prefix  = 'um_';       
         
         public $pluginSlug;
