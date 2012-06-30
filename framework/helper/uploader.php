@@ -15,7 +15,7 @@ while( !$found || $i<10 ){
 }
 
 global $userMeta;
-
+$userMeta->verifyNonce( false );
 
 /**
  * Handle file uploads via XMLHttpRequest
