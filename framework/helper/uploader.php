@@ -1,7 +1,9 @@
 <?php
 
 require_once ('../../../../../wp-blog-header.php');
+
 global $userMeta;
+$userMeta->verifyNonce( false );
 
 /**
  * Handle file uploads via XMLHttpRequest
