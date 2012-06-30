@@ -3,8 +3,8 @@ Contributors: khaledsaikat
 Donate link: http://user-meta.com
 Tags: user, profile, registration, login, frontend, users, usermeta, import, csv, upload, AJAX, admin, plugin, page, image, images, photo, picture, file, email, shortcode, captcha, avatar, redirect, register, password, custom
 Requires at least: 3.0.0
-Tested up to: 3.3.2
-Stable tag: 1.1.1.1
+Tested up to: 3.4.1
+Stable tag: 1.1.2
 
 Frontend user profile, registration and login with extra fields.
 
