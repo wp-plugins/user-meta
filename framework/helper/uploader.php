@@ -30,7 +30,7 @@ while( ( !$found ) && ( $i < 10 ) ){
 global $pluginFramework;
 if( !($pluginFramework instanceof pluginFramework ) )
     die( 'Plugin is not activated' );
-$pluginFramework->verifyNonce();
+$pluginFramework->verifyNonce(false);
 
 
 do_action( 'pf_file_upload_init' );
