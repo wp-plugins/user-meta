@@ -3,7 +3,7 @@ Contributors: khaledsaikat
 Donate link: http://user-meta.com/donation
 Tags: user, profile, registration, login, frontend, users, usermeta, import, csv, upload, AJAX, admin, plugin, page, image, images, photo, picture, file, email, shortcode, captcha, avatar, redirect, register, password, custom, csv, import, user import, widget
 Requires at least: 3.0.0
-Tested up to: 3.4.1
+Tested up to: 3.4.2
 Stable tag: 1.1.2
 Copyright: Khaled Saikat, user-meta.com.
 License: GNU General Public License
@@ -17,11 +17,11 @@ WordPress user management plugin. Custom user profile,registration with extra fi
 Support custom user profile, both back-end and front-end. Custom registration with extra fields. Login widget/shortcode, user login by username or email. Import user from csv with meta data.
 Themes the WordPress profile, register and login pages according to your theme. Add extra fields(meta data) to user profile or registration page, User Meta plugin support variety of fields to create profile or registration form. More features: admin approval, user activation/deactivation, email verification, role based redirection, modify default email sender, custom email template etc.
 
-= Custom user profile and registration page =
+= Custom user profile and registration (shortcode/widget/template tag) =
 
 User Meta Pro allow to fully customize user profile or registration page by providing form editor tools. any page or post can be use as profile/registration page by using shortcode. support ajax user avatar, ajax file upload, and ajax input validation, captcha validation, pagination for break long page to paginated page. Let user login with or without username or email.
 
-= Login widget/shortcode, login with username or email =
+= Login widget/shortcode/template teg, login with username or email =
 
 Let user to login by email instead of username. Or both email or username. Customize login form by adding own html. Customize logged in user profile.
 
@@ -32,6 +32,10 @@ wp-login.php is no longer needed for lost password and reset password. Also rest
 = Import user from csv =
 
 Import user from csv with extra meta data. Assign role to newly imported user. Update current user data by csv file.
+
+= Export users to csv =
+
+Export users with extra data to csv file. Filter data by role and date, oder by various roles.
 
 = Redirection =
 
