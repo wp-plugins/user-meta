@@ -314,7 +314,7 @@ elseif( $field['field_type'] == 'file' OR $field['field_type'] == 'user_avatar' 
         $html .= "$fieldTitle";
         if( ! $fieldReadOnly ):
             $uploadButtonLeftClass = @$field['title_position'] == 'left' ? 'um_left_margin' : '';
-            $html .= "<div id=\"$inputID\" um_field_id=\"{$field['field_id']}\" name=\"{$field['field_name']}\" class=\"um_file_uploader_field $uploadButtonLeftClass\" extension=\"$extension\" maxsize=\"$maxsize\"></div>"; 
+            $html .= "<div id=\"$inputID\" um_field_id=\"um_field_{$field['field_id']}\" name=\"{$field['field_name']}\" class=\"um_file_uploader_field $uploadButtonLeftClass\" extension=\"$extension\" maxsize=\"$maxsize\"></div>"; 
         endif;
     }
     
