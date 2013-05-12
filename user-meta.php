@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: User Meta Pro
+Plugin Name: User Meta
 Plugin URI: http://user-meta.com
 Description: User management plugin. Frontend user profile, user egistration with extra fields. Login widget, user import, user redirection, email verification, admin approval, frontend lost-reset passwod and many more.
 Author: Khaled Hossain Saikat
