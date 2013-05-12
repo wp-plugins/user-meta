@@ -85,7 +85,7 @@ class umVersionUpdateController {
          * Running Force Upgrade (free to pro)
          */
         if( isset( $data->checked[ $userMeta->pluginSlug ] ) ){
-            if( !$userMeta->isPro && $userMeta->isPro() ){
+            if( !$userMeta->isPro && $userMeta->isLicenceValidated() ){
                 $upgrade = new stdClass;
                 $upgrade->id            = '0';
                 $upgrade->slug          = $userMeta->pluginSlug;
