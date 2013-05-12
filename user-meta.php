@@ -16,7 +16,7 @@ require_once ( 'framework/init.php' );
 
 if (!class_exists( 'userMeta' )) :
 class userMeta extends pluginFramework {
-    public $title       = 'User Meta Pro';
+    public $title       = 'User Meta';
     public $name        = 'user-meta';
     public $version     = '1.1.3';
     public $prefix      = 'um_';  
