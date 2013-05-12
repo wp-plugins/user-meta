@@ -15,7 +15,7 @@ class umVersionUpdateController {
          * Set on plugin activation
          */
         //register_activation_hook( $userMeta->file,  array( $this, 'runEvent' ) );
-        //add_action( 'um_plugin_activation_event',   array( $this, 'init' ) );      
+        //add_action( 'um_plugin_activation_event',   array( $this, 'init' ) );  
     }    
             
     /**
@@ -85,7 +85,7 @@ class umVersionUpdateController {
          * Running Force Upgrade (free to pro)
          */
         if( isset( $data->checked[ $userMeta->pluginSlug ] ) ){
-            if( !$userMeta->isPro && $userMeta->isLicenceValidated() ){
+            if( !$userMeta->isPro && $userMeta->isPro() ){
                 $upgrade = new stdClass;
                 $upgrade->id            = '0';
                 $upgrade->slug          = $userMeta->pluginSlug;
