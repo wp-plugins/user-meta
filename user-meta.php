@@ -1,74 +1,54 @@
 <?php
 /*
-Plugin Name: User Meta 1.0.2
-Plugin URI: http://wordpress.org/extend/plugins/user-meta
-Description: User and usermeta data can be imported by CSV file. This plugin also give option to add extra field to user profile page. Provide shortcode for frontend user profile update.
+Plugin Name: User Meta
+Plugin URI: http://user-meta.com
+Description: User management plugin. Frontend user profile, user egistration with extra fields. Login widget, user import, user redirection, email verification, admin approval, frontend lost-reset passwod and many more.
 Author: Khaled Hossain Saikat
-Version: 1.0.2
-Author URI: http://thekhaled.info
+Version: 1.1.3.1
+Author URI: http://khaledsaikat.com
 */
-
-
-// always find line endings
-ini_set('auto_detect_line_endings', true);
-
-
 
 if (realpath(__FILE__) == realpath($_SERVER['SCRIPT_FILENAME'])) {
     exit('Please don\'t access this file directly.');
 }
+require_once ( 'framework/init.php' );
 
 
-include_once('class/function.php');
-if (!class_exists('userMeta')){
-    class userMeta extends userMetaFunction {
-                        
-        //Constructor
-        function __construct(){       
-            register_activation_hook(__FILE__, array(__CLASS__, 'pluginInstall'));  
-            add_action('admin_head', array(__CLASS__, 'addCss'));
-            add_action('wp_head', array(__CLASS__, 'addCss'));     
-            self::getGlobal();     
-        }        
-                        
-        //retrieve saved settings and assign them as global, so that dont need to call several times
-        function getGlobal(){
-            global $um_groups, $um_fields, $um_field_checked;
-            $um_groups = get_option('user_meta_group');
-            $um_fields = get_option('user_meta_field');
-            $um_field_checked = get_option('user_meta_field_checked');         
-        }
-
-        function addCss() {
-            $um_plugin_url = self::pluginUrl();
-            echo "<link href='{$um_plugin_url}/css/style.css' rel='stylesheet' type='text/css' media='screen' />";            
-        }
+if (!class_exists( 'userMeta' )) :
+class userMeta extends pluginFramework {
+    public $title       = 'User Meta';
+    public $name        = 'user-meta';
+    public $version     = '1.1.3.1';
+    public $prefix      = 'um_';  
+    public $prefixLong  = 'user_meta_';
+    public $website     = 'http://user-meta.com';
+  
+    function __construct(){     
+        $this->pluginSlug       = plugin_basename(__FILE__);
+        $this->pluginPath       = dirname( __FILE__ );
+        $this->file             = __FILE__;
+        $this->modelsPath       = $this->pluginPath . '/models/';
+        $this->controllersPath  = $this->pluginPath . '/controllers/';
+        $this->viewsPath        = $this->pluginPath . '/views/';
         
-        function getDefaultUserFields(){
-            $defaultFields = array('user_login' => 'Username', 'user_email' => 'Email', 'user_pass' => 'Password', 'user_nicename' => 'Nicename', 'user_url' => 'Website', 'display_name' => 'Display Name', 'nickname' => 'Nickname', 'first_name' => 'First Nmae', 'last_name' => 'Last Name', 'description' => 'Description', 'user_registered' => 'Registration Date', 'role' => 'Role', 'jabber' => 'Jabber', 'aim' => 'Aim', 'yim' => 'Yim' ); 
-            return $defaultFields;
-        }
-
-        function pluginUrl(){
-            return path_join(WP_PLUGIN_URL, basename( dirname( __FILE__ )));
-        }
-                
-        function pluginInstall(){
-            //add_option('user_meta_field', '', '', 'no');
-            //add_option('user_meta_group', '', '', 'no');
-            add_option('user_meta_field_checked', array('user_email' => 'on', 'display_name' => 'on'));
-        }        
-     
-            
+        $this->pluginUrl        = plugins_url( '' , __FILE__ ); 
+        $this->assetsUrl        = $this->pluginUrl  . '/assets/';            
+                  
+        //Load Plugins & Framework modal classes
+        global $pluginFramework, $userMetaCache;
+        $this->cacheName        = 'userMetaCache';
+        $userMetaCache          = new stdClass;
+        
+        $this->loadModels( $this->modelsPath . 'pro/' );
+        //$this->loadModels( $this->modelsPath . 'enc/', true );
+        $this->loadModels( $this->modelsPath );
+        $this->loadModels( $pluginFramework->modelsPath );                                     
     }
+                
 }
+endif;
 
-
+global $userMeta;
 $userMeta = new userMeta;
-include_once('class/importer.php');
-include_once('class/fieldEditor.php');
-include_once('class/profileFrontend.php');
-include_once('class/profileBackend.php');
-
-
+$userMeta->init();
 ?>
