@@ -17,6 +17,7 @@ class umMethods {
             'timepicker',
             'validationEngine',
             'password_strength',
+            'placeholder'
         ) );                      
         $userMeta->runLocalization();    
         
@@ -69,7 +70,7 @@ class umMethods {
         
         }elseif( $actionType == 'registration' ) {
             if( $isLoggedIn AND !$user->has_cap( 'add_users' ) )
-                return $userMeta->showMessage( sprintf( __( 'You are already registered. See your <a href="%s">profile</a>', $userMeta->name ), $userMeta->getProfileLink() ) , 'info' );
+                return $userMeta->showMessage( sprintf( __( 'You have already registered. See your <a href="%s">profile</a>', $userMeta->name ), $userMeta->getProfileLink() ) , 'info' );
             elseif( !get_option( 'users_can_register' ) )
                 return $userMeta->showError( __( 'User registration is currently not allowed.', $userMeta->name ) );            
         
@@ -139,9 +140,13 @@ class umMethods {
                 'timepicker',
                 'validationEngine',
                 'password_strength',
+                'placeholder'
             ) );           
         }else{
-            $userMeta->enqueueScripts( array( 'plugin-framework', 'user-meta' ) );
+            $userMeta->enqueueScripts( array( 
+                'plugin-framework',
+                'user-meta',
+                'placeholder' ) );
         }                     
         $userMeta->runLocalization();         
 

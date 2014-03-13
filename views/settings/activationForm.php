@@ -13,7 +13,7 @@ if( $isPro ){
     $html .= $userMeta->createInput( "", "button", array(
         "value" => __( 'Update Credentials', $userMeta->name ),
         "id"    => "um_activation_link",
-        "class" => "button-secondary",
+        "class" => "button",
     ) );    
     $html .="</p>";
        
@@ -82,11 +82,15 @@ $html .= $userMeta->createInput( "save_field", "submit", array(
 
 
 if( !$userMeta->isPro && $userMeta->isLicenceValidated() )
-    $html .= " <strong><a href='" . $userMeta->pluginUpdateUrl() . "'>". __( 'Click for upgrade to Pro', $userMeta->name ) ."</a></strong> ";
+    $html .= " <strong><a href='" . $userMeta->pluginUpdateUrl() . "'>". __( 'Click to upgrade to Pro!', $userMeta->name ) ."</a></strong> ";
 
 $html .= "</form>";
 
-$confirmMsg = __( 'Are you sure you want to withdraw pro license from this site?', $userMeta->name );
+if( is_multisite() ){
+	if( is_super_admin() )
+		$confirmMsg = __( 'This will withdraw license from all sites under the network. Are you sure you want to withdraw pro license from all sites?', $userMeta->name );
+}else
+	$confirmMsg = __( 'Are you sure you want to withdraw pro license from this site?', $userMeta->name );
 
 $html .= "\n\r" . '<script type="text/javascript">';
 $html .= 'jQuery(document).ready(function(){';

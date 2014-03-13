@@ -3,27 +3,29 @@
 Plugin Name: User Meta
 Plugin URI: http://user-meta.com
 Description: User management plugin. Frontend user profile, user egistration with extra fields. Login widget, user import, user redirection, email verification, admin approval, frontend lost-reset passwod and many more.
-Author: Khaled Hossain Saikat
-Version: 1.1.4
+Author: Khaled Hossain
+Version: 1.1.5
 Author URI: http://khaledsaikat.com
 */
 
-if (realpath(__FILE__) == realpath($_SERVER['SCRIPT_FILENAME'])) {
-    exit('Please don\'t access this file directly.');
+if ( realpath( __FILE__ ) == realpath( $_SERVER['SCRIPT_FILENAME'] ) ) {
+    exit( 'Please don\'t access this file directly.' );
 }
 require_once ( 'framework/init.php' );
 
 
-if (!class_exists( 'userMeta' )) :
+if ( ! class_exists( 'userMeta' ) ) :
 class userMeta extends pluginFramework {
-    public $title       = 'User Meta';
+    
+    public $title;
+    public $version;
+    
     public $name        = 'user-meta';
-    public $version     = '1.1.4';
     public $prefix      = 'um_';  
     public $prefixLong  = 'user_meta_';
     public $website     = 'http://user-meta.com';
   
-    function __construct(){     
+    function __construct() {
         $this->pluginSlug       = plugin_basename(__FILE__);
         $this->pluginPath       = dirname( __FILE__ );
         $this->file             = __FILE__;
@@ -32,7 +34,17 @@ class userMeta extends pluginFramework {
         $this->viewsPath        = $this->pluginPath . '/views/';
         
         $this->pluginUrl        = plugins_url( '' , __FILE__ ); 
-        $this->assetsUrl        = $this->pluginUrl  . '/assets/';            
+        $this->assetsUrl        = $this->pluginUrl  . '/assets/';  
+        
+        $pluginHeaders = array(
+            'Name' => 'Plugin Name',
+            'Version' => 'Version',
+        );
+        
+        $pluginData = get_file_data( $this->file, $pluginHeaders );
+        
+        $this->title = $pluginData['Name'];
+        $this->version = $pluginData['Version'];
                   
         //Load Plugins & Framework modal classes
         global $pluginFramework, $userMetaCache;
@@ -42,11 +54,10 @@ class userMeta extends pluginFramework {
         $this->loadModels( $this->modelsPath );
         $this->loadModels( $pluginFramework->modelsPath );                                     
     }
-                
+
 }
 endif;
 
 global $userMeta;
 $userMeta = new userMeta;
 $userMeta->init();
-?>

@@ -4,11 +4,12 @@ Donate link: http://user-meta.com/donation
 Tags: user, profile, registration, login, frontend, users, usermeta, import, csv, upload, AJAX, admin, plugin, page, image, images, photo, picture, file, email, shortcode, captcha, avatar, redirect, register, password, custom, csv, import, user import, widget
 Requires at least: 3.3.0
 Tested up to: 3.8.1
-Stable tag: 1.1.4
-Copyright: Khaled Saikat, user-meta.com.
-License: GNU General Public License
+Stable tag: 1.1.5
+Copyright: Khaled Hossain, user-meta.com
+License: GPLv2
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-WordPress user management plugin. Custom user profile,registration with extra fields. Custom Login, Import users from csv and many more.
+WordPress user management plugin. Custom user profile,registration with extra fields. Custom Login, Import/export users from/to csv and many more.
 
 == Description ==
 
@@ -82,7 +83,7 @@ You can create unlimited number of fields. All newly created field's data will s
 
 = Documentation =
 
-**3 steps to getting started**
+**3 steps to get started**
 
 1. Create Field from User Meta >> Fields Editor.
 1. Go to User Meta >> Forms Editor, Give a name to your form. Drag and drop fields from right to left and save the form.
@@ -115,8 +116,28 @@ WordPress doesn't allow to register new user by default settings. To allow user 
 
 == Changelog ==
 
+= 1.1.5 =
+* Add user_id parameter to user_meta_pre_user_update filter hook.
+* Remove not used uploaded files via schedule events.
+* Add Russian translation. (Thanks to Vitaliy Cherednichenko for his translation)
+* Add placeholder support to Fields Editor.
+* Change file upload directory to /uploads/files/
+* Change logout url. Logout url is not using resetpass anymore.
+* Add html5 placeholder to field by user-meta hook.
+* Bug fix: Required validation for country field.
+* Add settings for customize UMP generated text for front-end.
+* Pro: Allow to send email notification for all users who have administrative role.
+* Pro: User password will not force to include in registration email notification.
+* Pro: Add option for use default lostpassword url.
+* Pro: Remember last user import settings.
+* Pro: Use separate page for reset password and email verification.
+* Pro: Login redirect will not show any message while redirecting.
+
+= 1.1.4.1 =
+* Add Captcha for login form.
+* Fix import UMP and pagination bugs.
+
 = 1.1.4 =
-* Introduce new field type "Custom Field" to add custom regex and error message.
 * Use TinyMCE as rich text editor.
 * meta_key auto generate from field title.
 * Enable translation for dynamic text.
@@ -124,11 +145,11 @@ WordPress doesn't allow to register new user by default settings. To allow user 
 * add allow_custom in datetime field to allow more customization by js.
 * Added alternate method when allow_url_fopen=0 for showing uploaded image.
 * Field validation in both server and client side.
+* Pro: Introduce new field type "Custom Field" to add custom regex and error message.
 
 = 1.1.3 =
 * Assign form to login widget.
 * Allow role based profile as widget.
-* Add all other feature of RC version.
 * Replace type=both into type=profile-registration
 * Replace type=none into type=public
 * type=public allow user_id as $_GET for showing public user profile.
@@ -143,7 +164,7 @@ WordPress doesn't allow to register new user by default settings. To allow user 
 * Filter: user_meta_default_login_form
 * Aded filter support to lost password form and deafult login form.
 * Theme for reCaptcha.
-* Check user access by “add_users” capability.
+* Check user access by â€œadd_usersâ€ capability.
 * Clickable users listing for Active | Inactive | Pending | Pending Approval
 * Change email verification and reset password process.
 * WordPress-3.5 compatibility.
@@ -151,7 +172,7 @@ WordPress doesn't allow to register new user by default settings. To allow user 
 * Role based profile showing.
 * Allow role selection on registration/profile (admin can choose which roles user can select).
 * Field title position: Top, Left, Right, Inline, Hidden.
-* Added “Auto login after user registration” feature.
+* Added â€œAuto login after user registrationâ€ feature.
 * Fixes: Password changing from frontend.
 * Image crop for avatar or file upload.
 * Single pot file.
@@ -166,7 +187,7 @@ WordPress doesn't allow to register new user by default settings. To allow user 
 * Registration/Profile widget.
 * Registration/Profile Template Tag.
 * Extended users export.
-* Allow to change button’s text and css class of form.
+* Allow to change buttonâ€™s text and css class of form.
 * Custom email notification for profile update(both user and admin).
 
 = 1.1.2 =
@@ -223,3 +244,6 @@ WordPress doesn't allow to register new user by default settings. To allow user 
 
 = 1.0.5 =
 * Added new fields with new look and feel also functionality.
+
+= 1.0 =
+* First version.

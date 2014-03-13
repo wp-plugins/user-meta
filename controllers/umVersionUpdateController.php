@@ -7,7 +7,10 @@ class umVersionUpdateController {
         //global $userMeta;
         
         //add_action( 'user_meta_admin_notices',      array( $this, 'init' ) );
-        add_action( 'admin_menu',      array( $this, 'init' ), 15 );
+        add_action( 'admin_menu',      		array( $this, 'init' ), 15 );
+		add_action( 'network_admin_menu',	array( $this, 'init' ), 15 );
+        
+        add_action( 'admin_notices', array( $this, 'showAdminNotices' ) );
         
         //add_filter( 'site_transient_update_plugins',array( $this, 'pluginUpdateNotification' ) ); 
         
@@ -24,13 +27,19 @@ class umVersionUpdateController {
     function init(){
         global $userMeta;
 
-        $history = $userMeta->getData( 'history' );   
+		$history = $userMeta->getData( 'history', true );
+		
+		if( empty( $history ) ){
+			if( is_multisite() )
+				$history = get_option( 'user_meta_history' );
+		}	 
         
         $lastVersion = null;
         if( !empty( $history ) ){       
             if( isset( $history[ 'version' ][ 'last_version' ] ) )
                 $lastVersion = $history[ 'version' ][ 'last_version' ];
-        }
+        }else
+			$history = array();
 
         if( version_compare( $userMeta->version, $lastVersion, '<=' ) )
             return;
@@ -51,9 +60,9 @@ class umVersionUpdateController {
             'timestamp' => time(),
         );
         
-        $userMeta->updateData( 'history', $history );
+        $userMeta->updateData( 'history', $history, true );
         
-        nocache_headers();
+        //nocache_headers();
     }
     
     /**
@@ -113,9 +122,55 @@ class umVersionUpdateController {
             self::upgradeFrom_1_1_0_To_1_1_2();
                     
         if( in_array( $versionFrom, array( '1.1.2rc3', '1.1.2rc4', '1.1.2', '1.1.3rc1', '1.1.3rc2' ) ) )
-            $userMeta->changeAuthProStructure();   
+            $userMeta->upgrade_to_1_1_3();   
+
+		if( version_compare( $versionFrom, '1.1.5rc3', '<' ) ){
+			$userMeta->upgrade_to_1_1_5();
+            self::upgrade_to_1_1_5( $versionFrom );
+        }
         
         $userMeta->notifyVersionUpdate();
+    }
+        
+    function upgrade_to_1_1_5( $versionFrom ) {
+        global $userMeta;
+        
+        $pageName = apply_filters( 'user_meta_front_execution_page', 'resetpass' );
+        $pageID = $userMeta->postIDbyPostName( $pageName );
+        if ( ! empty( $pageID ) ) {
+            
+            // Set resetpass page to ['login']['resetpass_page'] and ['registration']['email_verification_page']
+            $settings = $userMeta->getData( 'settings' );
+            if ( empty( $settings['login']['resetpass_page'] ) )
+                $settings['login']['resetpass_page'] = $pageID;
+            if ( empty( $settings['registration']['email_verification_page'] ) )
+                $settings['registration']['email_verification_page'] = $pageID;
+            $userMeta->updateData( 'settings', $settings );
+            
+            // set resetpass page content to null
+            if ( $versionFrom <> '1.1.5rc2' ) {
+                $resetpassPage = array(
+                    'ID'           => $pageID,
+                    'post_content' => ''
+                );
+                wp_update_post( $resetpassPage );
+            }
+        }
+        
+        // Check default language is other than english or wpml is active
+        if ( get_bloginfo('language') != 'en-US' || function_exists( 'icl_object_id' ) )
+            update_option( 'user_meta_show_translation_update_notice', 1 );
+        
+        // Reset cache
+        $userMeta->updateData( 'cache', null );
+        
+        // Create index.html file
+        $uploads = $userMeta->uploadDir();
+        if ( file_exists( $uploads['path'] ) && is_dir( $uploads['path'] ) && ! file_exists( $uploads['path'] . 'index.html' ) )
+            touch( $uploads['path'] . 'index.html' );
+        
+        if ( ! wp_next_scheduled( 'user_meta_schedule_event' ) )
+            wp_schedule_event( current_time( 'timestamp' ), 'daily', 'user_meta_schedule_event');
     }
     
     /**
@@ -277,10 +332,16 @@ class umVersionUpdateController {
     
         return true;        
     }
-
- 
+    
+    function showAdminNotices(){
+        global $userMeta;
+        
+        if( get_option( 'user_meta_show_translation_update_notice' ) ){
+            $url = $userMeta->adminPageUrl('settings', false);
+            $url = add_query_arg( array( 'action_type' => 'notice', 'action_name' => 'dismiss_translation_notice' ), $url );
+            echo '<div class="updated fade"><p>' . __( 'Some texts of UserMetaPro have been updated. If you are using your site in any other languages than english, please update your translation.' );
+            echo ' <a href="'.$url.'" class="button">' . __( 'Dismiss', $userMeta->name ) . '</a></p></div>';
+        }
+    }
 }
-
 endif;
-
-?>

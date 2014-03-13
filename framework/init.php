@@ -70,13 +70,17 @@ class pluginFramework {
      * get data from option table with or without cache
      * @param $key      : field key without prefix.
      */
-    function getData( $key ){
+    function getData( $key, $networkwide=false ){
         $cacheName = $this->cacheName;
         global $$cacheName;
         
-        if( ! isset( $$cacheName->$key ) )
-            $$cacheName->$key = get_option( $this->prefixLong . $key );
-        
+        if( ! isset( $$cacheName->$key ) ){
+			if( $networkwide && is_multisite() )
+				$$cacheName->$key = get_site_option( $this->prefixLong . $key );
+			else
+				$$cacheName->$key = get_option( $this->prefixLong . $key );
+		}
+              
         return $$cacheName->$key;
     }
     
@@ -85,12 +89,16 @@ class pluginFramework {
      * @param $key      : field key without prefix.
      * @param $data     : Data to be set
      */
-    function updateData( $key, $data ){
+    function updateData( $key, $data, $networkwide=false ){
         $cacheName = $this->cacheName;
         global $$cacheName;        
         
         $$cacheName->$key   = $data;
-        return update_option( $this->prefixLong . $key, $data );
+
+		if( $networkwide && is_multisite() )
+			return update_site_option( $this->prefixLong . $key, $data );
+		else
+        	return update_option( $this->prefixLong . $key, $data );
     }      
 
     /**

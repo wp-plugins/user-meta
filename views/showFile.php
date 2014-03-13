@@ -5,19 +5,19 @@ global $userMeta;
 $html = null;
 
 // If avatar
-if( @$avatar ) :
+if( !empty( $avatar ) ) :
     $html .= $avatar;
 
 // Showing Uploaded file
-elseif( @$filepath ) :
-    $uploads    = wp_upload_dir();
-    $path       = $uploads['basedir'] . $filepath;
-    $url        = $uploads['baseurl'] . $filepath;
+elseif( !empty( $filepath ) ) :
+    $uploads    = $userMeta->determinFileDir( $filepath );
+    if( empty( $uploads ) ) return;
+
+    $path       = $uploads['path'];
+    $url        = $uploads['url'];
     
     $fileData   = pathinfo( $path );
-    $fileName   = $fileData['basename'];
-
-    if( !file_exists( $path ) ) return;               
+    $fileName   = $fileData['basename'];      
 
     // In case of image
     if( $userMeta->isImage( $url ) ){
@@ -38,17 +38,9 @@ elseif( @$filepath ) :
                     $path = $resizedImage;               
             }     
             
-            $url    = str_replace( $uploads['basedir'], $uploads['baseurl'], $path );
-            $filepath   = str_replace( $uploads['basedir'], '', $path );            
+            //$url    = str_replace( $uploads['basedir'], $uploads['baseurl'], $path );
+            //$filepath   = str_replace( $uploads['basedir'], '', $path );            
             
-            
-            /*$resizedImage = image_resize( $path, $width, $height, $crop );
-            if( ! is_wp_error($resizedImage) ){
-                $url    = str_replace( $uploads['basedir'], $uploads['baseurl'], $resizedImage );
-                $filepath   = str_replace( $uploads['basedir'], '', $resizedImage );
-            }else{
-                //$html .= $userMeta->showError( $resizedImage->get_error_message() );
-            }*/
         }        
         $html.= "<img src='$url' alt='$fileName' title='$fileName' />";  
     }else
@@ -56,11 +48,10 @@ elseif( @$filepath ) :
 endif;
 
 // Remove Link
-if( (@$avatar OR @$filepath) AND !@$readonly )
+if( ( !empty( $avatar ) || !empty( $filepath ) ) && empty( $readonly ) )
     $html .= "<p><a href='#' onclick='umRemoveFile(this)' name='$field_name'>". __('Remove', $userMeta->name) ."</a><p>";
 
 // Hidden field
-if( @$field_name AND !@$readonly )
+if( !empty( $field_name ) AND empty( $readonly ) )
     $html.= "<input type='hidden' name='$field_name' value='$filepath' />";
             
-?>

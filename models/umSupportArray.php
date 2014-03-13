@@ -130,6 +130,9 @@ class umSupportArray {
             'password_strength' => array(
                 'jquery.password_strength.js'   => 'jquery/',
             ),
+            'placeholder' => array(
+                'jquery.placeholder.js'   => 'jquery/',
+            ),
         );
     
         foreach( $scripts as $script ){
@@ -562,65 +565,138 @@ class umSupportArray {
     
     
     function getMsg( $key, $arg1=null, $arg2=null ){
-        global $userMeta, $userMetaCache;
+        global $userMeta;
         
-        if( empty( $userMetaCache->msgs ) ){
-            $tmp1   = '[arg1]';
-            $tmp2   = '[arg2]';
-            $msgs = array(
-                'account_inactive'          => __( '<strong>ERROR:</strong> your account is inactive', $userMeta->name ),
-                'account_pending'           => __( '<strong>ERROR:</strong> your account is not yet activated.', $userMeta->name ),
-                'check_email_for_link'      => __( 'Check your e-mail for the confirmation link.', $userMeta->name ),
-                'email_not_found'           => __( 'Email not found', $userMeta->name ),
-                'email_verified'            => sprintf(  __( 'Your email is successfully verified and the account has been activated. <a href="%s">Login now</a>', $userMeta->name ), $tmp1 ),
-                'email_verified_pending_admin' => __( 'Your email is successfully verified. Please wait for admin approval.', $userMeta->name ),
-                'incorrect_captcha'         => __( 'Incorrect Captcha Code', $userMeta->name ),
-                'invalid_key'               => __( 'Invalid Key', $userMeta->name ),
-                'invalid_parameter'         => __( 'Invalid Parameter', $userMeta->name ),
-                'invalid_login'             => sprintf( __( '<strong>ERROR</strong>: Invalid %s.', $userMeta->name ), $tmp1 ),
-                'login_email_required'      => __( 'Both username and email is required', $userMeta->name ),
-                'login_success'             => __( 'Login Successful', $userMeta->name ),
-                'not_member_of_blog'        => __( 'User is not member of this site.', $userMeta->name ),
-                'password_reseted'          => __( 'Your password has been reset.', $userMeta->name ),
-                'password_reset_mismatch'   => __('The passwords do not match.', $userMeta->name),
-                'profile_required_loggedin' => __( 'Please login to access your profile.', $userMeta->name ),
-                'profile_updated'           => __( 'Profile successfully updated.', $userMeta->name ),
-                'public_non_lggedin_msg'    => __( 'Please login to access your profile.', $userMeta->name ),
-                'registration_completed'    => __( 'Registration successfully completed.', $userMeta->name ),
-                'sent_link_wait_for_admin'  => __( 'We have sent you a verification link to your email. Please verify your email by clicking the link and wait for admin approval.', $userMeta->name ),
-                'sent_verification_link'    => __( 'We have sent you a verification link to your email. Please complete your registration by clicking the link.', $userMeta->name ),
-                'user_already_activated'    => __( 'User already activated', $userMeta->name ),
-                'wait_for_admin_approval'   => __( 'Please wait until an admin approve your account.', $userMeta->name ),                          
-            );      
+        $msgs = self::msgs();
+             
+        if( isset( $msgs[ $key ] ) ){
+            $msg = __( $msgs[ $key ] , $userMeta->name );
             
-            $userMetaCache->msgs = apply_filters( 'user_meta_messages', $msgs );
-        }
-        
-        if( isset( $userMetaCache->msgs[ $key ] ) ){
-            $msg    = str_replace( array( '[arg1]', '[arg2]' ), array( $arg1, $arg2 ), $userMetaCache->msgs[ $key ] );
+            if( ! (strpos($msg, '%s') === false ) )
+                    $msg = sprintf( $msg, $arg1 );
+            //elseif( ! (strpos($msg, '%2$s') === false ) )
+                    //$msg = sprintf( $msg, $arg1, $arg2 );
+            
             return apply_filters( 'user_meta_msg', $msg, $key, $arg1, $arg2 );
         }
-        
+            
         return false;
     }
     
-    function getExecutionPageConfig( $key ){
+    
+    function msgs(){
+        global $userMeta;
+
+        $msgs = array(
+            
+            'group_1'                   => __( 'Login', $userMeta->name ),
+            'login_pass_label'          => __( 'Password', $userMeta->name ),
+            'login_remember_label'      => __( 'Remember me', $userMeta->name ),
+            'login_button'              => __( 'Login', $userMeta->name ),
+            'login_email_required'      => __( 'Both username and email are required', $userMeta->name ),
+            'invalid_login'             => __( '<strong>ERROR</strong>: Invalid %s.', $userMeta->name ),
+            'login_success'             => __( 'Login successfuly', $userMeta->name ),
+            
+            'group_2'                   => __( 'Lost Password', $userMeta->name ),
+            'lostpassword_link'         => __( 'Lost your password?', $userMeta->name ),
+            'lostpassword_intro'        => __( 'Please enter your username or email address. You will receive a link to reset your password via email.', $userMeta->name ),
+            'lostpassword_label'        => __( 'Username or E-mail', $userMeta->name ),
+            'lostpassword_button'       => __( 'Get New Password', $userMeta->name ),
+            
+            'group_3'                   => __( 'Reset Password', $userMeta->name ),
+            'resetpassword_heading'     => __( 'Reset Password', $userMeta->name ),
+            'resetpassword_intro'       => __( 'Enter your new password below.', $userMeta->name ),
+            'resetpassword_pass1_label' => __( 'New password', $userMeta->name ),
+            'resetpassword_pass2_label' => __( 'Confirm new password', $userMeta->name ),
+            'resetpassword_button'      => __( 'Reset Password', $userMeta->name ),
+            'password_reset_mismatch'   => __( 'The passwords do not match.', $userMeta->name),
+            'password_reseted'          => __( 'Your password has been reset.', $userMeta->name ),
+            
+            'group_4'                   => __( 'Profile', $userMeta->name ),
+            'profile_required_loggedin' => __( 'Please login to access your profile.', $userMeta->name ),
+            'public_non_lggedin_msg'    => __( 'Please login to access your profile.', $userMeta->name ),
+            'profile_updated'           => __( 'Profile successfully updated.', $userMeta->name ),
+            
+            'group_5'                   => __( 'Registration', $userMeta->name ),
+            'sent_verification_link'    => __( 'We have sent you a verification link to your email. Please complete your registration by clicking the link.', $userMeta->name ),
+            'sent_link_wait_for_admin'  => __( 'We have sent you a verification link to your email. Please verify your email by clicking the link and wait for admin approval.', $userMeta->name ),
+            'email_verified_pending_admin' => __( 'Your email is successfully verified. Please wait for admin approval.', $userMeta->name ),
+            'wait_for_admin_approval'   => __( 'Please wait until an admin approves your account.', $userMeta->name ),
+            'email_verified'            => __( 'Your email is successfully verified and the account has been activated. <a href="%s">Login now</a>', $userMeta->name ),
+            'registration_completed'    => __( 'Registration successfully completed.', $userMeta->name ),
+
+            'group_6'                   => __( 'Validation', $userMeta->name ),
+            'validate_default'          => __( 'Invalid %s', $userMeta->name ),
+            'validate_required'         => __( '%s is required', $userMeta->name ),
+            'validate_email'            => __( 'Invalid email address', $userMeta->name ),
+            'validate_equals'           => __( '%s does not match', $userMeta->name ),
+            'validate_current_password' => __( 'Please provide valid current password', $userMeta->name ),
+            'validate_current_required' => __( 'Current %s is required', $userMeta->name ),
+            //'validate_unique'           => __( '%1$s: "%2$s" already takenM', $userMeta->name ),
+            
+            'group_7'                   => __( 'Misc', $userMeta->name ),
+            'not_member_of_blog'        => __( 'User is not member of this site.', $userMeta->name ),
+            'user_already_activated'    => __( 'User already activated', $userMeta->name ),
+            'account_inactive'          => __( '<strong>ERROR:</strong> your account is inactive', $userMeta->name ),
+            'account_pending'           => __( '<strong>ERROR:</strong> your account is not yet activated.', $userMeta->name ),
+            'check_email_for_link'      => __( 'Check your e-mail for the confirmation link.', $userMeta->name ),
+            'email_not_found'           => __( 'Email not found', $userMeta->name ),
+            'incorrect_captcha'         => __( 'Incorrect captcha code', $userMeta->name ),
+            'invalid_key'               => __( 'Invalid key', $userMeta->name ),
+            'invalid_parameter'         => __( 'Invalid parameter', $userMeta->name ),                          
+        );
+        
+        $text = $userMeta->getSettings( 'text' );
+        if( is_array( $text ) ) {
+            foreach( $msgs as $key => $msg ) {
+                if( ! empty( $text[$key] ) )
+                    $msgs[$key] = $text[$key];
+            }
+        }
+        
+        return apply_filters( 'user_meta_messages', $msgs );
+    }
+    
+
+    function getExecutionPageConfig( $key ) {
         global $userMeta;
         
-        $config = array(
+        $settings = $userMeta->getData( 'settings' );
+        
+        $lostPassTitle = 'Lost password';
+        if( !empty( $settings['login']['resetpass_page'] ) )
+            $lostPassTitle = get_the_title( (int) $settings['login']['resetpass_page'] );
+          
+        $emailVerifyTitle = 'Email verification';
+        if( !empty( $settings['registration']['email_verification_page'] ) ){
+            $emailVerifyTitle = get_the_title( (int) $settings['registration']['email_verification_page'] );
+            if( $emailVerifyTitle == 'Lost password' )
+                $emailVerifyTitle = 'Email verification';
+        }
+            
+        $configs = array(
             'lostpassword' => array(
-                'title' => __( 'Lost Password', $userMeta->name ),
+                'title' => __( $lostPassTitle, $userMeta->name ),
             ),
             'resetpass' => array(
-                'title' => __( 'Reset Password', $userMeta->name ),
+                'title' => __( 'Reset password', $userMeta->name ),
             ),
             'email_verification' => array(
-                'title' => __( 'Email Verification', $userMeta->name ),
+                'title' => __( $emailVerifyTitle, $userMeta->name ),
             ), 
         );
         
-        if( !empty( $config[$key] ) )
-            return apply_filters( 'user_meta_execution_page_config', $config[$key], $key );
+        if ( ! empty( $configs[ $key ] ) )
+            $config = apply_filters( 'user_meta_execution_page_config', $configs[ $key ], $key );
+        
+        switch ( $key ) {
+            case 'lostpassword':
+                return apply_filters( 'user_meta_lostpassword_form', $config );
+            case 'resetpass':
+                return apply_filters( 'user_meta_resetpass_form', $config );
+            case 'email_verification':
+                return apply_filters( 'user_meta_email_verification_form', $config );
+        }
         
         return false;
     }

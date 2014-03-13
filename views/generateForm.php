@@ -14,17 +14,17 @@ global $userMeta;
 //get veriable by render: $actionType, $fields, $form, $fieldValues
 
 if( empty($form) )
-    return $html = $userMeta->ShowError( __( 'Form not found.', $userMeta->name ) );
+    return $html = $userMeta->ShowError( __( 'Form is not found.', $userMeta->name ) );
 
 if( empty( $form['fields'] ) )
-    return $html = $userMeta->ShowError( __( 'Fields not found.', $userMeta->name ) );
+    return $html = $userMeta->ShowError( __( 'Fields are not found.', $userMeta->name ) );
 
 if( !is_array( $form['fields'] ) )
     return $html = $userMeta->ShowError( __( 'Fields were saved incorrectly.', $userMeta->name ) );
 
 $fields = $form['fields'];
 if( empty( $userID ) )
-    $userID = null;
+    $userID = 0;
 
 
 $pageCount = 0;
@@ -70,7 +70,7 @@ foreach( $fields as $id => $field ){
  * Applying filter hook. Accept two arg: $form, $formName
  * return $form 
  */
-$form = apply_filters( 'user_meta_form_config', $form, $form['form_key'] );
+$form = apply_filters( 'user_meta_form_config', $form, $form['form_key'], $userID );
 
 $uniqueID   = sanitize_key( $form['form_key'] );
 
@@ -111,7 +111,7 @@ $html .= "<form method=\"post\" $formAction id=\"$formID\" class=\"$formClass\" 
              * Accpt 3 arg: $field, $fieldID, $formName.
              * return: $field
              */
-            $field = apply_filters( 'user_meta_field_config', $field, $fieldID, $form['form_key'] );
+            $field = apply_filters( 'user_meta_field_config', $field, $fieldID, $form['form_key'], $userID );
 
             $fieldDisplay = $userMeta->renderPro( 'generateField', array( 
                 'field'         => $field,
@@ -126,7 +126,7 @@ $html .= "<form method=\"post\" $formAction id=\"$formID\" class=\"$formClass\" 
                 'uniqueID'      => $uniqueID,
             ) );
             
-            $html .= apply_filters( 'user_meta_field_display', $fieldDisplay, $fieldID, $form['form_key'], $field );
+            $html .= apply_filters( 'user_meta_field_display', $fieldDisplay, $fieldID, $form['form_key'], $field, $userID );
 
             if( $field['field_type'] == 'page_heading' ){
                 $inPage    = true;
@@ -205,7 +205,7 @@ $html .= "<form method=\"post\" $formAction id=\"$formID\" class=\"$formClass\" 
     
 $html .= "</form>";    
 
-do_action( 'user_meta_after_form', $form['form_key'] );
+do_action( 'user_meta_after_form', $form['form_key'], $userID );
 
 
 $uploaderPath = $userMeta->pluginUrl . '/framework/helper/uploader.php';
@@ -219,12 +219,13 @@ $html .= "\n\r<script type=\"text/javascript\">";
         //$html .= "jQuery(\".um_datetime\").datetimepicker({ dateFormat: \"yy-mm-dd\", timeFormat: \"hh:mm:ss\", changeYear: true });";
         //$html .= "jQuery(\".um_date\").datepicker({ dateFormat: \"yy-mm-dd\", changeYear: true });";
         //$html .= "jQuery(\".um_time\").timepicker({timeFormat: \"hh:mm:ss\"});";
-        //jQuery('.pass_strength').password_strength();    
+        //jQuery('.pass_strength').password_strength();
+        $html .= "jQuery(\"input, textarea\").placeholder();";
         $html .= "umFileUploader( \"$uploaderPath\" );";  
     $html .= "});";
 $html .= "</script>\n\r";
 
 
-$html = apply_filters( 'user_meta_form_display', $html, $form['form_key'], $form );
+$html = apply_filters( 'user_meta_form_display', $html, $form['form_key'], $form, $userID );
     
 ?>

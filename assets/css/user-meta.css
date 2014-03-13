@@ -78,7 +78,7 @@ input[type='checkbox'].um_input,input[type='radio'].um_input {
 
 .um_field_selecor {
     display: inline-block;
-    width: 45%;
+    width: 48%;
     margin: 1% !important;
     /*padding: 2% !important;*/
     text-align: center;
@@ -173,4 +173,8 @@ input[type='checkbox'].um_input,input[type='radio'].um_input {
     padding-left: 40px;   
     background: url(../images/um_line.png) repeat-y left;
     min-height: 170px;
+}
+
+.placeholder {
+    color: #aaa;
 }

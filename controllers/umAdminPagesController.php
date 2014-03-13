@@ -149,6 +149,8 @@ class umAdminPagesController {
     function settings_init(){
         global $userMeta;
         
+        self::moreExecution();
+        
         $userMeta->enqueueScripts( array(
             'jquery-ui-core',
             'jquery-ui-widget',
@@ -176,10 +178,19 @@ class umAdminPagesController {
             'forms'     => $forms,
             'fields'    => $fields,
             'default'   => $default,
-        ));         
+        ));    
+        
+        
+    }
+    
+    function moreExecution(){
+        $actionType = !empty( $_GET['action_type'] ) ? $_REQUEST['action_type'] : false;
+        if( $actionType == 'notice' ){
+            if( !empty($_GET['action_name'] ) )
+                $_GET['action_name'] == 'dismiss_translation_notice' ? delete_option( 'user_meta_show_translation_update_notice' ) : false;
+        }
     }
     
 
 }
 endif;      
-?>

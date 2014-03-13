@@ -63,7 +63,7 @@ class PluginFrameworkWPSupport {
         global $wp_roles, $pfInstance;
         $roles = $wp_roles->role_names;
         if( $includeNoRole ) 
-            $roles['none'] = __( "No role for this site", $pfInstance->name );
+            $roles['none'] = __( "No role defined", $pfInstance->name );
         return $roles;
     }
     
@@ -253,9 +253,13 @@ class PluginFrameworkWPSupport {
     function fileUpload( $fieldName, $extensions=array('jpg','png','gif'), $maxSize=1048576, $replaceOldFile=false ){    
         global $pfInstance;
                
-        $uploads        = wp_upload_dir();
-        $uploadPath     = $uploads['path'] . '/';
-        $uploadUrl      = $uploads['url']  . '/';       
+        $uploads        = $pfInstance->uploadDir();
+        $uploadPath     = $uploads['path'];
+        $uploadUrl      = $uploads['url'];
+        
+        //$uploads        = wp_upload_dir();
+        //$uploadPath     = $uploads['path'] . '/';
+        //$uploadUrl      = $uploads['url']  . '/';       
         
         if( !isset( $_FILES[ $fieldName ][ 'name' ] ) )
             return new WP_Error( 'no_field', __( 'No file upload field found!', $pfInstance->name ) );
@@ -300,11 +304,12 @@ class PluginFrameworkWPSupport {
         $fileName = $fileName . '.' . $ext;
          
         if( !move_uploaded_file( $file[ 'tmp_name' ], $uploadPath . $fileName ) ){
-            return new WP_Error( 'error', __( 'Could not save uploaded file.', $pfInstance->name ) .
-                __( 'The upload was cancelled, or server error encountered', $pfInstance->name ) );
+            return new WP_Error( 'error', __( 'Uploaded file could not be saved.', $pfInstance->name ) .
+                __( 'The upload was cancelled due to server error', $pfInstance->name ) );
         }
         
-        $filepath = $uploads['subdir'] . "/" . $fileName;
+        //$filepath = $uploads['subdir'] . "/" . $fileName;
+        $filepath = $uploads['subdir'] . $fileName;
         
         return $filepath;             
     }        

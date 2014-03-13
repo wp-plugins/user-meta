@@ -4,8 +4,9 @@ if( !class_exists( 'umLocalizeScript' ) ) :
 class umLocalizeScript {    
     
     function __construct(){
-        add_action( 'wp_enqueue_scripts',           array( $this, 'runLocalization' ) );
-        add_action( 'admin_enqueue_scripts',        array( $this, 'runLocalization' ) );         
+        // Commented since 1.1.5rc2
+        //add_action( 'wp_enqueue_scripts',           array( $this, 'runLocalization' ) );
+        //add_action( 'admin_enqueue_scripts',        array( $this, 'runLocalization' ) );         
     }
         
     function runLocalization(){

@@ -16,6 +16,7 @@ class umSupportModel {
         return $html;
     }
     
+    
     /**
      * get name of forms
      */
@@ -30,6 +31,7 @@ class umSupportModel {
         }  
         return $formsList;
     }
+    
     
     /**
      * Get Form Data with fields data within $form['fields']
@@ -66,7 +68,8 @@ class umSupportModel {
         
         return $form;
     }
-                       
+            
+    
     /**
      * Get um fields by 
      * @param $by: key, field_group
@@ -102,7 +105,7 @@ class umSupportModel {
         
         return isset( $result ) ? $result : false;
     }    
-    
+     
     
     /**
      * Extract fielddata from fieldID
@@ -149,7 +152,7 @@ class umSupportModel {
         
         return $returnData;
     }
-    
+     
     
     /**
      * Get Custom Fields from 'Fields Editor'.
@@ -199,6 +202,7 @@ class umSupportModel {
         } 
         return $userMeta->updateData( 'fields', $fields );                      
     }
+    
 
     /**
      * Validate input field from a form
@@ -231,6 +235,42 @@ class umSupportModel {
         return isset($validField) ? $validField : null;
     }
     
+    
+    function removeFromFileCache( $filePath ) {
+        global $userMeta;
+        
+        if ( empty( $filePath ) ) return;
+        
+        $cache  = $userMeta->getData( 'cache' );
+        $fileCache = isset( $cache['file_cache'] ) ? $cache['file_cache'] : array();
+        
+        $key = array_search( $filePath, $fileCache );
+        if ( $key ) {
+            unset( $cache['file_cache'][ $key ] );
+            $userMeta->updateData( 'cache', $cache );
+        }
+    }
+    
+    
+    function cleanupFileCache() {
+        global $userMeta;
+        $cache  = $userMeta->getData( 'cache' );
+        
+        $fileCache = isset( $cache['file_cache'] ) ? $cache['file_cache'] : array();
+        if( empty( $fileCache ) || ! is_array( $fileCache ) ) return;
+        
+        $time = time() - ( 60 * 60 * 10 ); //10h
+        foreach ( $fileCache as $key => $filePath ) {
+            if ( $key < $time ) {
+                unset( $cache['file_cache'][ $key ] );
+                if ( file_exists( WP_CONTENT_DIR . $filePath ) )
+                    unlink( WP_CONTENT_DIR . $filePath );
+            }
+        }
+        $userMeta->updateData( 'cache', $cache ); 
+    }
+    
+    // Not in use since 1.1.5rc3
     function removeCache( $cacheType, $cacheValue, $byKey=true ){
         global $userMeta;
         
@@ -249,6 +289,7 @@ class umSupportModel {
         }           
     }
     
+    // Not in use since 1.1.5rc3
     function clearCache(){
         global $userMeta;
         $cache  = $userMeta->getData( 'cache' );
@@ -270,6 +311,7 @@ class umSupportModel {
         
         $userMeta->updateData( 'cache', $cache );
     }
+    
     
     // Sleep
     function isUpgradationNeeded(){
@@ -298,12 +340,14 @@ class umSupportModel {
         if( $prevDefaultFields or $prevFields )
             return true;             
     }
+    
         
     function ajaxUmCommonRequest(){
         global $userMeta;
         $userMeta->verifyNonce();        
         die();
     }    
+    
     
     function getProfileLink( $pre=null ){
         global $userMeta;
@@ -316,13 +360,15 @@ class umSupportModel {
         
         return $link;
     }
-                  
+            
+    
     function pluginUpdateUrl(){
         global $userMeta;
         $plugin = $userMeta->pluginSlug;
         $url = wp_nonce_url( "update.php?action=upgrade-plugin&plugin=$plugin", "upgrade-plugin_$plugin" );                
         return $url = admin_url( htmlspecialchars_decode( $url ) );                                        
     }
+    
     
     function getSettings( $key ){
         global $userMeta;
@@ -335,6 +381,7 @@ class umSupportModel {
         
         return $data;
     }
+    
     
     /**
      * Get Email Template. if database is empty then use default data.
@@ -372,6 +419,19 @@ class umSupportModel {
         return $emails;     
     }
     
+    
+    function getAllAdminEmail() {
+        $emails = array( get_bloginfo( 'admin_email' ) );
+        
+        $users = get_users( array( 'role' => 'administrator' ) );
+        foreach( $users as $user ) {
+            $emails[] = $user->user_email;
+        }
+        
+        return array_unique( $emails );
+    }
+    
+    
     /**
      * Filter role based on given role. In givn role, role key should be use as array value.
      * 
@@ -391,6 +451,7 @@ class umSupportModel {
         
         return $roles;
     }
+    
     
     function adminPageUrl( $page, $html_link=true ){
         global $userMeta;
@@ -464,6 +525,7 @@ class umSupportModel {
         return $data;     
     }
     
+    
     function loadAllScripts(){
         global $userMeta;
 
@@ -478,9 +540,11 @@ class umSupportModel {
             'timepicker',
             'validationEngine',
             'password_strength',
+            'placeholder'
         ) );                      
         $userMeta->runLocalization();
     }
+    
     
     function getCustomFieldRegex(){
         global $userMeta;
@@ -500,6 +564,85 @@ class umSupportModel {
         }
         
         return json_encode( $rules );
+    }
+    
+    
+    function checkPro(){
+        global $userMeta;
+        $isPro = file_exists( $userMeta->modelsPath . 'enc/umProSupportModelEncrypted.php' ) ? true : false;
+        $userMeta->isPro = $isPro;
+    }
+    
+    
+    function uploadDir() {
+        $dir = apply_filters( 'user_meta_upload_dir', '/uploads/files/' );
+        if( empty( $dir ) )
+            $dir = '/uploads/files/';
+        
+        $dir = '/' . trim( $dir, '/' ) . '/';
+        
+        $path   = WP_CONTENT_DIR . $dir;
+        $url    = WP_CONTENT_URL . $dir;
+        
+        if ( ! file_exists( $path ) && ! is_dir( $path ) ) {
+            mkdir( $path, 0777, true );   
+            touch( $path . 'index.html' );
+        }
+        
+        return array(
+            'path'  => $path,
+            'url'   => $url,
+            'subdir'=> $dir  
+        );   
+    }
+    
+    
+    function determinFileDir( $fileSubPath, $checkOnlyOneDir=false ) {
+        $file = array();
+        
+        if ( empty( $fileSubPath ) ) return $file;
+        
+        // Check file in WP_CONTENT_DIR
+        if ( file_exists( WP_CONTENT_DIR . $fileSubPath ) ) {
+            $file['path']   = WP_CONTENT_DIR . $fileSubPath;
+            $file['url']    = WP_CONTENT_URL . $fileSubPath;
+            return $file;
+        }
+        
+        if ( $checkOnlyOneDir )
+            return $file;
+        
+        // UMP backword compatibility
+        $uploads    = wp_upload_dir();
+        if ( file_exists( $uploads['basedir'] . $fileSubPath ) ) {
+            $file['path']   = $uploads['basedir'] . $fileSubPath;
+            $file['url']    = $uploads['baseurl'] . $fileSubPath;
+            return $file;
+        }
+        
+        // backword compatibility for multisite
+        if ( is_multisite() ) {
+            $siteurl = get_option( 'siteurl' );
+            
+            // check main site first
+            if ( file_exists( WP_CONTENT_DIR . '/uploads' . $fileSubPath ) ) {
+                $file['path']   = WP_CONTENT_DIR . '/uploads' . $fileSubPath;
+                $file['url']    = trailingslashit( $siteurl ) . 'wp-content/uploads' . $fileSubPath;
+                return $file;
+            }
+            
+            // now check whole network
+            foreach ( wp_get_sites() as $site ) {
+                if ( file_exists( WP_CONTENT_DIR . "/blogs.dir/{$site['blog_id']}/files" . $fileSubPath ) ) {
+                    $file['path']   = WP_CONTENT_DIR . "/blogs.dir/{$site['blog_id']}/files" . $fileSubPath;
+                    $file['url']    = trailingslashit( $siteurl ) . "wp-content/blogs.dir/{$site['blog_id']}/files" . $fileSubPath;
+                    return $file;
+                }         
+            }
+            
+        }
+        
+        return $file;
     }
         
 }

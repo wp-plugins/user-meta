@@ -4,7 +4,7 @@
     <div id="icon-edit-pages" class="icon32 icon32-posts-page"><br /></div>  
     <h2><?php _e('Fields Editor', $userMeta->name );?></h2>  
     <?php do_action( 'um_admin_notice' ); ?>
-    <p> <?php _e('Click field from right side panel for creating new field', $userMeta->name );?></p> 
+    <p> <?php _e('Click field from right side panel for creating a new field', $userMeta->name );?></p> 
     <div id="dashboard-widgets-wrap">
         <div class="metabox-holder">
             <div id="um_admin_content">
@@ -55,8 +55,9 @@
                 echo $userMeta->metaBox( __( 'Formatting Fields', $userMeta->name ),          $fieldSelection['formatting'] );
                 if( !@$userMeta->isPro )
                     echo $userMeta->metaBox( __('User Meta Pro', $userMeta->name ),   $userMeta->boxGetPro());
-                echo $userMeta->metaBox( __( '3 steps to getting started', $userMeta->name ),  $userMeta->boxHowToUse());
+                echo $userMeta->metaBox( __( '3 steps to get started', $userMeta->name ),  $userMeta->boxHowToUse(), false, false);
                 echo $userMeta->metaBox( __( 'Shortcode', $userMeta->name ),   $userMeta->boxShortcodesDocs(), false, false);
+                echo $userMeta->metaBox( __( 'Tips', $userMeta->name ),   $userMeta->boxTips(), false, false);
                 ?>
             </div>
         </div>

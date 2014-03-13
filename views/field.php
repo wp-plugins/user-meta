@@ -108,6 +108,7 @@ $fieldTitlePosition = $userMeta->createInput( "fields[$id][title_position]", "se
      'left'     => __( 'Left', $userMeta->name ),
      'right'    => __( 'Right', $userMeta->name ),
      'inline'   => __( 'Inline', $userMeta->name ),
+     'placeholder'  => __( 'Placeholder', $userMeta->name ),
      'hidden'   => __( 'Hidden', $userMeta->name ),
  ) );
 
@@ -321,7 +322,12 @@ $fieldPasswordStrength = $userMeta->createInput( "fields[$id][password_strength]
     "value"     => isset($password_strength) ? $password_strength : null,
     "label"     => __( 'Show password strength meter', $userMeta->name ) . "<br />",
     "id"        => "um_fields_{$id}_password_strength",
- ) );   
+ ) );  
+$fieldRequiredCurrentPassword = $userMeta->createInput( "fields[$id][required_current_password]", "checkbox", array( 
+    "value"     => isset($required_current_password) ? $required_current_password : null,
+    "label"     => __( 'Current password is required', $userMeta->name ) . "<br />",
+    "id"        => "um_fields_{$id}_current_password",
+ ) );
  
 $fieldShowDivider = $userMeta->createInput( "fields[$id][show_divider]", "checkbox", array( 
     "value"     => isset($show_divider) ? $show_divider : null,
@@ -441,7 +447,7 @@ $fieldRegex = $userMeta->createInput( "fields[$id][regex]", "text", array(
     "label"         => __( 'Regex', $userMeta->name ),
     "class"         => "um_input",
     "label_class"   => "pf_label",
-    "after"         => "<div>" . __( 'e.g.: ^[A-za-z]$', $userMeta->name ) . "</div>",
+    "after"         => "<div>" . sprintf( __( 'e.g.: %s', $userMeta->name ), '^[A-za-z]$') . "</div>",
     "enclose"       => "div class='um_segment'",
  ) );
 
@@ -497,19 +503,19 @@ if( $field_type == 'user_login' ):
     $html .= "$fieldDescription $fieldMaxChar";
     $html .= "<div class='um_segment'>$fieldAdminOnly</div>";
     $html .= "$fieldDivider $fieldSize $fieldCssClass $fieldCssStyle";  
-    $html .= "<div class='um_segment'><p>" .  __( 'By default, <strong>Required</strong> and <strong>Unique</strong> validation will be set with this field. <strong>Read Only</strong> will be set conditionally.', $userMeta->name ) . "</p></div>";   
+    $html .= "<div class='um_segment'><p>" .  __( 'By default, <strong>Required</strong> and <strong>Unique</strong> validation will be will be applied on this field. <strong>Read Only</strong> will be applied conditionally.', $userMeta->name ) . "</p></div>";   
 
 elseif( $field_type == 'user_email' ):
     $html .= "$fieldDescription $fieldMaxChar";
     $html .= "<div class='um_segment'>$fieldRetypeEmail $fieldAdminOnly $fieldReadOnly</div>";
     $html .= "$fieldDivider $fieldSize $fieldCssClass $fieldCssStyle"; 
-    $html .= "<div class='um_segment'><p>" .  __( 'By default, <strong>Required</strong> and <strong>Unique</strong> validation will be set with this field.', $userMeta->name ) . "</p></div>"; 
+    $html .= "<div class='um_segment'><p>" .  __( 'By default, <strong>Required</strong> and <strong>Unique</strong> validation will be applied on this field.', $userMeta->name ) . "</p></div>"; 
 
 elseif( $field_type == 'user_pass' ):
     $html .= "$fieldDescription $fieldMaxChar";
-    $html .= "<div class='um_segment'>$fieldRetypePassword $fieldPasswordStrength $fieldAdminOnly $fieldReadOnly</div>";
+    $html .= "<div class='um_segment'>$fieldRequiredCurrentPassword $fieldRetypePassword $fieldPasswordStrength $fieldAdminOnly $fieldReadOnly</div>";
     $html .= "$fieldDivider $fieldSize $fieldCssClass $fieldCssStyle"; 
-    $html .= "<div class='um_segment'><p>" .  __( '<strong>Required</strong> validation will be set automatically when password field is being used by registration.', $userMeta->name ) . "</p></div>";  
+    $html .= "<div class='um_segment'><p>" .  __( '<strong>Required</strong> validation will be applied automatically when password field is being used for registration.', $userMeta->name ) . "</p></div>";  
 
 
 //elseif( $field_type == 'user_nicename' ):    
@@ -615,5 +621,3 @@ if( isset($n) )
     if( !($n == 1) ) $metaBoxOpen = false;
 
 echo $userMeta->metaBox( $metaBoxTitle, $html, true, $metaBoxOpen );
-
-?>

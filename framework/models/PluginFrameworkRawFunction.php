@@ -349,6 +349,36 @@ if (!class_exists( 'PluginFrameworkRawFunction' )):
                 return 0;
             return $a['position'] > $b['position'] ? 1 : -1;
         }
+        
+        function prepareUrl( $url ){
+            $url = str_replace( array( 'http://', 'https://' ), array( '', ''), trim($url) );
+            $url = trim( trim( $url ), '/' );
+            return $url;
+        }
+        
+        /**
+         * 
+         * @param type $diff in second
+         * @return type
+         */
+        function generateTimeNonce( $diff=172800, $time=0 ){
+            $time = !empty( $time ) ? $time : time();
+            return md5(floor($time/$diff)*$diff);
+        }
+        
+        /*
+         * $nonce: encripted input timestamp nonce to check
+         * $diff=3600*48(s): time difference
+         * $time: Middle point: default is current timestamp
+         */
+        function verifyTimeNonce( $nonce, $diff=172800, $time=0 ){
+            $points = array();
+            $time = !empty( $time ) ? $time : time();
+            $points[] = md5(floor(($time-($diff/2))/$diff)*$diff);
+            $points[] = md5(floor(($time+($diff/2))/$diff)*$diff);
+            return in_array($nonce,$points) ? true : false;
+        }
+
            
         function dump( $data, $dump=false ){
             echo "<pre>";

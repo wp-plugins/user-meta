@@ -1,9 +1,9 @@
 <?php
 
-if( !class_exists( 'umPreloadsController' ) ) :
+if ( ! class_exists( 'umPreloadsController' ) ) :
 class umPreloadsController {
     
-    function __construct(){   
+    function __construct() {   
         global $userMeta;
         
         add_action( 'plugins_loaded', array( $this, 'loadTextDomain' ) ); 
@@ -27,19 +27,27 @@ class umPreloadsController {
         add_filter( 'pf_file_upload_size_limit',    array( $this, 'fileUploadMaxSize' ) );
         add_filter( 'pf_file_upload_is_overwrite',  array( $this, 'fileUploadOverwrite' ) );
         
+        add_action( 'pf_file_upload_after_uploaded',array( $this, 'updateFileCache' ), 10, 2 );
+        
         register_activation_hook( $userMeta->file,  array( $this, 'userMetaActivation' ) );
-        add_action( 'user_meta_schedule_event',     array( $userMeta, 'clearCache' ) );
+        register_deactivation_hook( $userMeta->file,  array( $this, 'userMetaDeactivation' ) );
+        
+        add_action( 'user_meta_schedule_event',     array( $userMeta, 'cleanupFileCache' ) );
         
         add_filter( 'xmlrpc_methods', array( $this, 'newXmlRpcMethods' ) );
         
         add_action( 'init', array( $this, 'processPostRequest' ) );
+        
+        if ( $userMeta->isPro )
+            add_action( 'wp', array( $userMeta, 'validateUMPKey' ) );
     }
+    
   
-    function loadTextDomain(){
+    function loadTextDomain() {
         global $userMeta;
         load_plugin_textdomain( $userMeta->name, false, basename( $userMeta->pluginPath ) . '/helper/languages' );
     }
-    
+      
     /**
      * Filter for get_avatar. Allow to change degault avatar to custom one.
      * 
@@ -50,118 +58,111 @@ class umPreloadsController {
      * @param type $alt
      * @return html img tag
      */
-    function getAvatar( $avatar = '', $id_or_email, $size = '96', $default = '', $alt = false ){
+    function getAvatar( $avatar = '', $id_or_email, $size = '96', $default = '', $alt = false ) {
+        global $userMeta;
+        
         $safe_alt = ( false === $alt) ? '' : esc_attr( $alt );
         
         if ( is_numeric( $id_or_email ) )
 	       $user_id = (int) $id_or_email;
-        elseif( is_string( $id_or_email ) )
+        elseif ( is_string( $id_or_email ) )
             $user_id = email_exists( $id_or_email );
-        elseif( is_object( $id_or_email ) ){
-    		if ( !empty( $id_or_email->user_id ) )
+        elseif ( is_object( $id_or_email ) ){
+    		if ( ! empty( $id_or_email->user_id ) )
     			$user_id = (int) $id_or_email->user_id;
-    		elseif ( !empty($id_or_email->comment_author_email) ) 
+    		elseif ( ! empty( $id_or_email->comment_author_email ) ) 
     			$user_id = email_exists( $id_or_email->comment_author_email );         
         }
             
-        if( !isset($user_id) ) return $avatar;
+        if ( ! isset( $user_id ) ) return $avatar;
             
-        $uploads    = wp_upload_dir();
-        $umAvatar   = get_user_meta( $user_id, 'user_avatar', true );
-        if($umAvatar){
-            $path = $uploads['basedir'] . $umAvatar;
-            
-            /**
-             * image_resize is depreated from version 3.5 
-             */
-            /*if( version_compare( get_bloginfo('version'), '3.5', '>=' ) ){
-                $image = wp_get_image_editor( $path );
-                if ( ! is_wp_error( $image ) ) {
-                    $image->resize( $size, $size, false );
-                    $image->save( $path );
-                }                
-            }else{
-                $resizedImage = image_resize( $path, $size, $size );
-                if( !is_wp_error($resizedImage) )
-                    $path = $resizedImage;               
-            }*/
-                                              
-            $avatarUrl = str_replace( $uploads['basedir'], $uploads['baseurl'], $path );
-            $avatar = "<img alt='{$safe_alt}' src='{$avatarUrl}' class='avatar avatar-{$size} photo' height='{$size}' width='{$size}' />";
+        //$uploads    = wp_upload_dir();
+        $umAvatar   = get_user_meta( $user_id, 'user_avatar', true );   
+        
+        $file    = $userMeta->determinFileDir( $umAvatar );
+        if ( ! empty( $file ) ) {
+            //$path = $uploads['basedir'] . $umAvatar;                                         
+            //$avatarUrl = str_replace( $uploads['basedir'], $uploads['baseurl'], $path );    
+            $avatar = "<img alt='{$safe_alt}' src='{$file['url']}' class='avatar avatar-{$size} photo' height='{$size}' width='{$size}' />";
         }
                         
         return $avatar;            
     }
     
-    function userProfileLink( $actions, $user_object ){
+    
+    function userProfileLink( $actions, $user_object ) {
         global $userMeta;
         $general  = $userMeta->getSettings( 'general' );
         
-        if( isset( $general[ 'profile_in_admin' ] ) && !empty( $general[ 'profile_page' ] ) ){
+        if ( isset( $general[ 'profile_in_admin' ] ) && ! empty( $general[ 'profile_page' ] ) ) {
             $url = add_query_arg( 'user_id', $user_object->ID, get_permalink( $general['profile_page'] ) );
-            $actions[ 'front_profile' ] = "<a href=\"$url\" target=\"_blank\">" . __( 'Profile', $userMeta->name ) . "</a>";
+            $actions['front_profile'] = "<a href=\"$url\" target=\"_blank\">" . __( 'Profile', $userMeta->name ) . "</a>";
         }
         
         return $actions;
     }   
     
-    function mailFromEmail( $data ){
+    
+    function mailFromEmail( $data ) {
         global $userMeta;
         $general  = $userMeta->getSettings( 'general' );
         
-        if( !empty( $general[ 'mail_from_email' ] ) ){
-            if( is_email( $general[ 'mail_from_email' ] ) )
-                return $general[ 'mail_from_email' ];
+        if ( ! empty( $general['mail_from_email'] ) ){
+            if ( is_email( $general['mail_from_email'] ) )
+                return $general['mail_from_email'];
         }
                     
         return $data;
     }
     
-    function mailFromName( $data ){
+    
+    function mailFromName( $data ) {
         global $userMeta;
         $general  = $userMeta->getSettings( 'general' );
         
-        if( !empty( $general[ 'mail_from_name' ] ) )
-            return $general[ 'mail_from_name' ];
+        if ( ! empty( $general['mail_from_name'] ) )
+            return $general['mail_from_name'];
                     
         return $data;
     }
     
-    function mailContentType( $data ){
+    
+    function mailContentType( $data ) {
         global $userMeta;
         $general  = $userMeta->getSettings( 'general' );
         
-        if( !empty( $general[ 'mail_content_type' ] ) )
-            return $general[ 'mail_content_type' ];            
+        if ( ! empty( $general['mail_content_type'] ) )
+            return $general['mail_content_type'];            
                     
         return $data;
-    }                    
+    }
     
     /**
      * Showing new version availablity notic at user meta admin pages
      */
-    function adminNotices(){
+    function adminNotices() {
         global $userMeta;
 
         $currentPlugin = get_site_transient( 'update_plugins' );
-        if( isset( $currentPlugin->response[ $userMeta->pluginSlug ] ) ){
+        if ( isset( $currentPlugin->response[ $userMeta->pluginSlug ] ) ) {
             $plugin = $currentPlugin->response[ $userMeta->pluginSlug ];
-            echo $userMeta->showMessage( sprintf( __( 'There is a new version of %1$s available. <a href="%2$s">update automatically</a>.', $userMeta->name ), "$userMeta->title $plugin->new_version", $userMeta->pluginUpdateUrl() ) );
+            echo '<div class="error"><p>' . sprintf( __( 'There is a new version of %1$s available. <a href="%2$s">update automatically</a>.', $userMeta->name ), "$userMeta->title $plugin->new_version", $userMeta->pluginUpdateUrl() ) .'</p></div>';
         }        
     }
-                
-    function fileUploadExtensions( $allowedExtensions ){
+    
+    
+    function fileUploadExtensions( $allowedExtensions ) {
         global $userMeta;
         
-        if( isset( $_REQUEST['field_id'] ) ){
-            if( $_REQUEST['field_id'] == 'csv_upload_user_import' ){
+        if ( isset( $_REQUEST['field_id'] ) ) {
+            if ( $_REQUEST['field_id'] == 'csv_upload_user_import' ) {
                 $allowedExtensions = array("csv");
-            }elseif( $_REQUEST['field_id'] == 'txt_upload_ump_import' ){
+            } elseif ( $_REQUEST['field_id'] == 'txt_upload_ump_import' ) {
                 $allowedExtensions = array("txt");
-            }elseif( strpos( $_REQUEST['field_id'], 'um_field_' ) !== false ){
+            } elseif ( strpos( $_REQUEST['field_id'], 'um_field_' ) !== false ) {
                $fieldID = str_replace( "um_field_", "", $_REQUEST['field_id'] );
                $fields = $userMeta->getData( 'fields' );
-               if( isset( $fields[$fieldID]['allowed_extension'] ) ){
+               if ( isset( $fields[$fieldID]['allowed_extension'] ) ) {
                    $allowedExtensions = str_replace( ' ', '', $fields[$fieldID]['allowed_extension'] );
                    $allowedExtensions = explode( ",", $allowedExtensions );      
                }
@@ -171,35 +172,62 @@ class umPreloadsController {
         return $allowedExtensions;   
     }
     
-    function fileUploadMaxSize( $sizeLimit ){
+    
+    function fileUploadMaxSize( $sizeLimit ) {
         global $userMeta;
         
-        if( isset( $_REQUEST['field_id'] ) ){
-            if( $_REQUEST['field_id'] == 'csv_upload_user_import' ){
+        if ( isset( $_REQUEST['field_id'] ) ) {
+            if ( $_REQUEST['field_id'] == 'csv_upload_user_import' ) {
                 $sizeLimit = 10 * 1024 * 1024;
-            }elseif( strpos( $_REQUEST['field_id'], 'um_field_' ) !== false ){
+            } elseif ( strpos( $_REQUEST['field_id'], 'um_field_' ) !== false ) {
                $fieldID = str_replace( "um_field_", "", $_REQUEST['field_id'] );
                $fields = $userMeta->getData( 'fields' );
-               if( isset( $fields[$fieldID]['max_file_size'] ) )
+               if ( isset( $fields[$fieldID]['max_file_size'] ) )
                     $sizeLimit = $fields[$fieldID]['max_file_size'] * 1024;       
             }
         } 
         return $sizeLimit;       
     }
     
-    function fileUploadOverwrite( $replaceOldFile ){
-        if( isset( $_REQUEST['field_id'] ) ){
-            if( $_REQUEST['field_id'] == 'csv_upload_user_import' )
+    
+    function fileUploadOverwrite( $replaceOldFile ) {
+        if ( isset( $_REQUEST['field_id'] ) ) {
+            if ( $_REQUEST['field_id'] == 'csv_upload_user_import' )
                 $replaceOldFile = true;           
         }  
         return $replaceOldFile;      
     }
     
-    function userMetaActivation(){
-        wp_schedule_event( current_time( 'timestamp' ), 'daily', 'user_meta_schedule_event');
+    
+    function updateFileCache( $fieldName, $filePath ) {
+        global $userMeta;
+        $cache  = $userMeta->getData( 'cache' );
+        
+        $fileCache = isset( $cache['file_cache'] ) ? $cache['file_cache'] : array();
+        if ( ! in_array( $filePath, $fileCache ) ) {
+            $fileCache[ time() ] = $filePath;
+            $cache['file_cache'] = $fileCache;
+            $userMeta->updateData( 'cache', $cache );
+        }
     }
     
-    function newXmlRpcMethods( $methods ){
+
+    function userMetaActivation() {
+        if ( ! wp_next_scheduled( 'user_meta_schedule_event' ) )
+            wp_schedule_event( current_time( 'timestamp' ), 'daily', 'user_meta_schedule_event');
+        
+        //wp_schedule_event( current_time( 'timestamp' ), 'daily', 'user_meta_schedule_event');
+    }
+    
+    /**
+     * Since 1.1.5rc3
+     */
+    function userMetaDeactivation() {
+        wp_clear_scheduled_hook( 'user_meta_schedule_event' );
+    }
+    
+    
+    function newXmlRpcMethods( $methods ) {
         global $userMeta;
         $methods['ump.validate'] = array( $userMeta, 'remoteValidationPro' );
         
@@ -209,23 +237,31 @@ class umPreloadsController {
     /**
      * Process UM post request which need to execute before header sent to browser.
      */
-    function processPostRequest(){
+    function processPostRequest() {
         global $userMeta; 
         
         // Check if it is a valid request.
-        if( empty( $_POST['um_post_method_nonce'] ) || empty( $_POST['method_name'] ) )
+        if ( empty( $_POST['um_post_method_nonce'] ) || empty( $_POST['method_name'] ) )
             return;
         
         // Verify the request with nonce validation. method_name is used for nonce generation
-        if( !wp_verify_nonce( $_POST['um_post_method_nonce'], $_POST['method_name'] ) )
+        if ( ! wp_verify_nonce( $_POST['um_post_method_nonce'], $_POST['method_name'] ) )
             return $userMeta->process_status = __( 'Security check', $userMeta->name );
           
         // Call method when need to trigger. Store process status to $userMeta->process_status for further showing message.
         $methodName = $_POST['method_name'];
         $postMethodName = 'post' . ucwords( $methodName );
-        $userMeta->um_post_method_status->$methodName = $userMeta->$postMethodName();     
+        //$userMeta->um_post_method_status->$methodName = $userMeta->$postMethodName();  
+        
+        $response = $userMeta->$postMethodName();
+        
+        if ( ! isset( $userMeta->um_post_method_status ) ) {
+            $um_post_method_status = new stdClass();
+            $um_post_method_status->$methodName = $response;
+            $userMeta->um_post_method_status = $um_post_method_status;
+        } else
+            $userMeta->um_post_method_status->$methodName = $response;
     }
            
 }
 endif;      
-?>

@@ -1,7 +1,7 @@
 <?php
 global $pfInstance;
 
-$deleteLink = $deleteIcon ? "<div class='pf_trash' title='" . __( 'Click to Remove' , $pfInstance->name ) . "' onclick='pfRemoveMetaBox(this);'></div>" : null;
+$deleteLink = $deleteIcon ? "<div class='pf_trash' title='" . __( 'Click to remove' , $pfInstance->name ) . "' onclick='pfRemoveMetaBox(this);'></div>" : null;
 $display    = !$isOpen ? "style='display:none'" : "";
 
 

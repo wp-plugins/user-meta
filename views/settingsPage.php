@@ -30,6 +30,7 @@ global $userMeta;
                         <li><a href="#um_settings_registration"><?php echo $title['registration']; ?></a></li>
                         <li><a href="#um_settings_redirection"><?php echo $title['redirection']; ?></a></li>
                         <li><a href="#um_settings_backend_profile"><?php echo $title['profile']; ?></a></li>
+                        <li><a href="#um_settings_text"><?php _e( 'Text', $userMeta->name ); ?></a></li>
                         <!--<li><a href="#um_settings_misc"><?php //_e( 'Misc', $userMeta->name ); ?></a></li>-->
                 	</ul>  
                                                                
@@ -79,13 +80,21 @@ global $userMeta;
                         ?>
                     </div> 
                     
-                    <!--<div id="um_settings_misc">
+                    <div id="um_settings_text">
                         <?php
-                        /*echo $userMeta->renderPro( "miscSettings", array(
-                            'misc'   => isset( $settings[ 'misc' ] ) ? $settings[ 'misc' ] : $default[ 'misc' ],
-                        ), "settings" ); */                        
+                        echo $userMeta->renderPro( "textSettings", array(
+                            'text' => isset( $settings[ 'text' ] ) ? $settings[ 'text' ] : array(),
+                        ), "settings" );                               
                         ?>
-                    </div>-->                    
+                    </div> 
+                    
+                    <!--<div id="um_settings_misc">
+                        <?php/*
+                        echo $userMeta->renderPro( "miscSettings", array(
+                            'misc'   => isset( $settings[ 'misc' ] ) ? $settings[ 'misc' ] : $default[ 'misc' ],
+                        ), "settings" );    */                
+                        ?>
+                    </div>-->                 
                                                                                                           
                 </div>
                 
@@ -106,10 +115,11 @@ global $userMeta;
             
             <div id="um_admin_sidebar">                            
                 <?php
-                echo $userMeta->metaBox( __( '3 steps to getting started', $userMeta->name ),  $userMeta->boxHowToUse());               
+                echo $userMeta->metaBox( __( '3 steps to get started', $userMeta->name ),  $userMeta->boxHowToUse());               
                 if( !@$userMeta->isPro )
                     echo $userMeta->metaBox( __( 'User Meta Pro', $userMeta->name ),   $userMeta->boxGetPro());
                 echo $userMeta->metaBox( __( 'Shortcode', $userMeta->name ),   $userMeta->boxShortcodesDocs());
+                echo $userMeta->metaBox( __( 'Tips', $userMeta->name ),   $userMeta->boxTips(), false, false);
                 ?>
             </div>
         </div>
@@ -126,8 +136,26 @@ jQuery(function() {
         accept: '.button',
         activeClass: 'um_highlight'
     });   
-    //jQuery( "#accordion" ).accordion();  
+
     jQuery( "#um_settings_tab" ).tabs();
     
+    umAdminRegistratioUserActivationChange(); 
+    umAdminToggleCreatePage();
+    
+    umAdminRegistratioUserActivationError();
+    jQuery('#registration_email_verification_page').change(function(){
+        umAdminRegistratioUserActivationError();
+        umAdminToggleCreatePage();
+    });
+    
+    umAdminLoginResetpassError();
+    jQuery('#um_login_resetpass_page').change(function(){
+        umAdminLoginResetpassError();
+        umAdminToggleCreatePage();
+    });
 });
+
+
+
+
 </script>

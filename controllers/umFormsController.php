@@ -4,41 +4,8 @@ if( !class_exists( 'umFormsController' ) ) :
 class umFormsController {
     
     function __construct(){      
-        //add_action( 'admin_menu',               array( $this, 'menuItem' ) );    
-        
         add_action( 'wp_ajax_um_add_form',      array( $this, 'ajaxAddForm' ) ); 
         add_action( 'wp_ajax_um_update_forms',  array( $this, 'ajaxUpdateForms' ) );                
-    }
-    
-    
-    function menuItem(){
-        global $userMeta;
-
-        $page = add_submenu_page( 'usermeta', __( 'User Meta Forms Editor', $userMeta->name ), __( 'Forms Editor', $userMeta->name ), 'manage_options', 'user-meta-form-editor', array( $this, 'init' ));            
-        $userMeta->addScript( 'jquery-ui-core',     'admin', $page );
-        $userMeta->addScript( 'jquery-ui-widget',   'admin', $page );
-        $userMeta->addScript( 'jquery-ui-mouse',    'admin', $page );
-        $userMeta->addScript( 'jquery-ui-sortable', 'admin', $page );
-        $userMeta->addScript( 'jquery-ui-draggable', 'admin', $page );
-        $userMeta->addScript( 'jquery-ui-droppable', 'admin', $page );
-        
-        $userMeta->addScript( 'plugin-framework.js',  'admin', $page );
-        $userMeta->addScript( 'plugin-framework.css', 'admin', $page );
-        $userMeta->addScript( 'user-meta.js',         'admin', $page ); 
-        $userMeta->addScript( 'user-meta.css',        'admin', $page );      
-        
-        $userMeta->addScript( 'validationEngine-en.js', 'admin', $page, 'jquery' ); 
-        $userMeta->addScript( 'validationEngine.js',    'admin', $page, 'jquery' );    
-        $userMeta->addScript( 'validationEngine.css',   'admin', $page, 'jquery' );             
-    }
-              
-                          
-    function init(){   
-        global $userMeta;     
-        
-        $forms  = $userMeta->getData( 'forms' );           
-        $fields = $userMeta->getData( 'fields' );   
-        $userMeta->render( 'formsEditorPage', array( 'forms'=>$forms, 'fields'=>$fields ) );
     }
     
     
@@ -99,4 +66,3 @@ class umFormsController {
             
 }
 endif;      
-?>

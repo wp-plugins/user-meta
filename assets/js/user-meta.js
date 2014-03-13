@@ -143,7 +143,7 @@ function umLogin( element ){
     bindElement.children(".pf_ajax_result").remove();
     pfAjaxCall( bindElement, 'pf_ajax_request', arg, function(data){
         if( jQuery(data).attr('status') == 'success' ){
-            jQuery(element).replaceWith(data);
+            //jQuery(element).replaceWith(data); //Commented from 1.1.5rc2, not showing anything while redirecting
             redirection = jQuery(data).attr('redirect_to');
             if( redirection )
                 window.location.href = redirection;
@@ -176,8 +176,8 @@ function umPageNavi( pageID, isNext, element ){
         checkingPage = parseInt(pageID) - 1;
         
         jQuery( formID + " #um_page_segment_" + checkingPage + " .um_input" ).each(function(){
-            fieldID = jQuery(this).attr("id");
-            error = jQuery(formID).validationEngine( "validateField", "#" + fieldID );           
+            fieldID = jQuery(this).attr("id");  
+            error = jQuery("#" + fieldID).validationEngine( "validate" );      
             if( error )
                 haveError = true;           
         });
@@ -408,6 +408,65 @@ function umRemoveFieldToExport( element, formID ){
         });  
         jQuery( element ).parents(".meta-box-sortables").hide('slow').empty();
     }
+}
+
+function umConditionalRequired(field, rules, i, options){
+    var baseField = field.attr('id').split('_');
+    baseField.pop();
+    baseField = baseField.join('_');
+ 
+    if (jQuery('#' + baseField).val().length > 0 && field.val().length == 0)
+        rules.push('required'); 
+}
+
+function umAdminRegistratioUserActivationChange(){
+    var userActivationType = jQuery('.um_registration_user_activation:checked').val();
+    if( userActivationType == 'auto_active' ){
+        jQuery('#um_settings_registration_block_2').hide();
+        jQuery('#um_settings_registration_block_1').fadeIn();
+    }else if( userActivationType == 'email_verification' ){
+        jQuery('#um_settings_registration_block_1').hide();
+        jQuery('#um_settings_registration_block_2').fadeIn();
+    }else if( userActivationType == 'admin_approval' ){
+        jQuery('#um_settings_registration_block_1').hide();
+        jQuery('#um_settings_registration_block_2').hide();
+    }else if( userActivationType == 'both_email_admin' ){
+        jQuery('#um_settings_registration_block_1').hide();
+        jQuery('#um_settings_registration_block_2').fadeIn();
+    }
+ 
+}
+
+function umAdminRegistratioUserActivationError(){
+    if( jQuery('#registration_email_verification_page').val() )
+        jQuery('.required_email_verification_page').fadeOut();
+    else
+       jQuery('.required_email_verification_page').fadeIn(); 
+}
+
+function umAdminLoginResetpassError(){
+    showError = false;
+    if( jQuery('#um_login_disable_wp_login_php:checked').val() ){
+        if( ! jQuery('#um_login_resetpass_page').val() )
+            showError = true;
+    }
+    
+    if( showError )
+        jQuery('.required_resetpass_page_page').fadeIn();
+    else
+        jQuery('.required_resetpass_page_page').fadeOut();
+}
+
+function umAdminToggleCreatePage(){
+    if( jQuery('#registration_email_verification_page').val() )
+        jQuery('#registration_email_verification_page_create').fadeOut();
+    else
+        jQuery('#registration_email_verification_page_create').fadeIn();
+    
+    if( jQuery('#um_login_resetpass_page').val() )
+        jQuery('#um_login_resetpass_page_create').fadeOut();
+    else
+        jQuery('#um_login_resetpass_page_create').fadeIn();
 }
 
 function umTest(){

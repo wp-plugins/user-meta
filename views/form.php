@@ -71,7 +71,7 @@ $html .= "</div>";
 
 $html .= "<div class='clear'></div>";
 
-$html .= "<div class=\"um_block_title\">" . __( 'Drag fields from right block to left block for make them available to your form.', $userMeta->name ) . "</div>";
+$html .= "<div class=\"um_block_title\">" . __( 'Drag fields from right block to left block to add them to your form.', $userMeta->name ) . "</div>";
 
 
 $html .= "<input type='hidden' name='forms[$id][field_count]' id='field_count_$id' value='' />";

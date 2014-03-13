@@ -70,10 +70,10 @@ class PluginFrameworkBuiltinFunction {
         if( did_action( 'pf_lostpassword_email' ) )
             return true;
         
-    	$message = __( 'Someone requested that the password be reset for the following account:', $pfInstance->name ) . "\r\n\r\n";
+    	$message = __( 'Someone requested to reset the password for the following account:', $pfInstance->name ) . "\r\n\r\n";
     	$message .= network_site_url() . "\r\n\r\n";
     	$message .= sprintf( __('Username: %s', $pfInstance->name ), $user_login) . "\r\n\r\n";
-    	$message .= __( 'If this was a mistake, just ignore this email and nothing will happen.', $pfInstance->name ) . "\r\n\r\n";
+    	$message .= __( 'If you did not authorize this then please ignore this email and nothing will happen.', $pfInstance->name ) . "\r\n\r\n";
     	$message .= __( 'To reset your password, visit the following address:', $pfInstance->name ) . "\r\n\r\n";
     	$message .= '<' . $resetLink . ">\r\n";
     	//$message .= '<' . network_site_url("wp-login.php?action=rp&key=$key&login=" . rawurlencode($user_login), 'login') . ">\r\n";

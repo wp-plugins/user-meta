@@ -19,9 +19,9 @@ class umAjaxModel {
         /// $_REQUEST Validation
         $actionType = @$_REQUEST['action_type'];
         if( empty( $actionType ) )
-            $errors->add( 'empty_action_type', __( 'Action type not set', $userMeta->name ) );
+            $errors->add( 'empty_action_type', __( 'Action type is empty', $userMeta->name ) );
         if( !isset( $_REQUEST['form_key'] ) )
-            $errors->add( 'empty_form_name', __( 'Form name not set', $userMeta->name ) );
+            $errors->add( 'empty_form_name', __( 'Form name is empty', $userMeta->name ) );
 
         /// Determine $actionType  
         $actionType = strtolower( $actionType );
@@ -35,7 +35,7 @@ class umAjaxModel {
         /// filter valid key for update
         $validFields = $userMeta->formValidInputField( @$_REQUEST['form_key'] );
         if( !$validFields )
-            $errors->add( 'empty_field', __( 'No field to Update', $userMeta->name ) );
+            $errors->add( 'empty_field', __( 'No field to update', $userMeta->name ) );
 
         /// Showing error
         if( $errors->get_error_code() )
@@ -79,6 +79,8 @@ class umAjaxModel {
                             $userData[ $fieldName ] = $file;
                     }                       
                 }
+                
+                $userMeta->removeFromFileCache( $userData[ $fieldName ] );
             }
             
             // For removing value for cache
@@ -115,6 +117,12 @@ class umAjaxModel {
             
             if( $fieldName == 'user_pass' && $actionType == 'registration' )
                 $field->addRule('required');
+            
+            if( $fieldName == 'user_pass' && $actionType == 'profile'  ){
+                if( !empty($fieldData['required_current_password']) )
+                    $field->addRule('current_password');
+            }
+
             
             if ( isset( $_REQUEST[ $fieldName . "_retype" ] ) )
                 $field->addRule('equals');
@@ -187,7 +195,7 @@ class umAjaxModel {
             if( !$user_ID )
                 return $userMeta->showError( __( 'User must be logged in to update profile', $userMeta->name ) );           
 
-            $userData = apply_filters( 'user_meta_pre_user_update', $userData );
+            $userData = apply_filters( 'user_meta_pre_user_update', $userData, $userID );
             if( is_wp_error( $userData ) )
                 return $userMeta->showError( $userData );            
             
@@ -198,9 +206,9 @@ class umAjaxModel {
             /// Allow to populate form data based on DB instead of $_REQUEST
             $userMeta->showDataFromDB = true;            
                 
-            // Removing Cache
-            if( isset( $imageCache ) )
-                $userMeta->removeCache( 'image_cache', $imageCache, false );  
+            // Commented since 1.1.5rc3
+            //if( isset( $imageCache ) )
+                //$userMeta->removeCache( 'image_cache', $imageCache, false );  
                               
             do_action( 'user_meta_after_user_update', (object) $response );
               
@@ -253,8 +261,8 @@ class umAjaxModel {
             die();
         }
         
-        // Update Cache
-        if( isset( $_REQUEST['filepath'] ) ){
+        // Update Cache: Commented since 1.1.5rc3
+        /*if( isset( $_REQUEST['filepath'] ) ){
             if( $_REQUEST['filepath'] ){
                 $cache   = $userMeta->getData( 'cache' );
                 if( isset( $cache['image_cache'] ) ){
@@ -264,7 +272,7 @@ class umAjaxModel {
                     $cache['image_cache'][] = $_REQUEST['filepath'];
                 $userMeta->updateData( 'cache', $cache );
             }
-        }
+        }*/
         
         // Showing Image
         $fieldID    = trim( str_replace( 'um_field_', '', @$_REQUEST['field_id'] ) );

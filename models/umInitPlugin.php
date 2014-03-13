@@ -6,8 +6,7 @@ class umInitPlugin {
     function pluginInit(){
         global $userMeta;
         
-        $userMeta->isPro = false;
-        
+        $userMeta->checkPro();       
         $userMeta->loadDirectory( $userMeta->modelsPath . 'classes/' );
         
         if( $userMeta->isPro ){
@@ -47,16 +46,10 @@ class umInitPlugin {
                 $classes[ str_replace( ".php", "", $file ) ] = $controllersPath . $file;            
         }          
         
-        if( $userMeta->isPro() ){
-            $proDir = $controllersPath . 'pro/';
-            if( file_exists( $proDir ) ){
-                foreach( scandir( $proDir ) as $file ) {
-                    if( preg_match( "/.php$/i" , $file ) )
-                        $classes[ str_replace( ".php", "", $file ) ] = $proDir . $file; 
-                }                  
-            }          
-        }       
-               
+        $proClasses = $userMeta->loadProControllers( $classes, $controllersPath );
+        if( is_array($proClasses) )
+            $classes = $proClasses;
+                
         foreach( $classes as $className => $classPath ){
             require_once( $classPath );
             if( !in_array( $className, $controllersOrder ) )
@@ -91,11 +84,9 @@ class umInitPlugin {
         if( $subdir )
             $subdir = $subdir . '/';
         
-        if( self::isPro() ){
-            foreach( $userMeta->extensions as $extName => $extPath )
-                $locations[] = $extPath . '/views/pro/';
-            $locations[] = $userMeta->viewsPath . 'pro/';
-        }
+        $proLocations = $userMeta->locateProView( $locations );
+        if( is_array( $proLocations ) )
+            $locations = $proLocations;
         
         foreach( $userMeta->extensions as $extName => $extPath )
             $locations[] = $extPath . '/views/';
@@ -109,18 +100,6 @@ class umInitPlugin {
         
         return false;
     }
-    
-    function isPro(){
-        global $userMeta;
-        
-        if( !$userMeta->isPro )
-            return false;
-        
-        if( $userMeta->isLicenceValidated() )
-            return true;
-        
-        return false;    
-    }    
                
 }
 endif;
