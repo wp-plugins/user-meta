@@ -109,10 +109,21 @@ WordPress doesn't allow to register new user by default settings. To allow user 
 
 == Screenshots ==
 
-1. Fields Editor
-2. Forms Field selector
-3. Frontend Profile
-4. Frontend Login
+1. Front-end user registration form.
+2. Extra fields on user registration form.
+3. Update profile from front-end.
+4. Extra fields on user profile form.
+5. Remove existing fields or add new fields to WordPress default backend profile.
+6. Front-end user login form / widget.
+7. Login configuration.
+8. Supported fields for creating profile or registration form.
+9. User export screen.
+10. User import screen after uploading csv.
+11. Email notifications.
+12. Customization of email notification.
+13. Change default email sender.
+14. Auto login, admin approval, email verification on registration.
+15. Role based redirection on login, logout and registration.
 
 == Changelog ==
 
