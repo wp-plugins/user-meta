@@ -109,15 +109,15 @@ WordPress doesn't allow to register new user by default settings. To allow user 
 
 == Screenshots ==
 
-1. Front-end user registration form.
-2. Extra fields on user registration form.
-3. Update profile from front-end.
-4. Extra fields on user profile form.
-5. Remove existing fields or add new fields to WordPress default backend profile.
-6. Front-end user login form / widget.
-7. Login configuration.
-8. Supported fields for creating profile or registration form.
-9. User export screen.
+01. Front-end user registration with extra fields.
+02. Front-end user profile with extra fields.
+03. Front-end user login form / widget.
+04. Supported fields for creating profile or registration form.
+05. Simple registration form.
+06. Simple profile form.
+07. Remove existing fields or add new fields to WordPress default backend profile.
+08. Login configuration.
+09. User export screen.
 10. User import screen after uploading csv.
 11. Email notifications.
 12. Customization of email notification.
