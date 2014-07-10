@@ -81,6 +81,9 @@ $onsubmit   = !empty( $form['onsubmit'] ) ? "onsubmit=\"" . $form['onsubmit'] . 
 
 $html = null;
 
+if ( $actionType == 'registration' && $userMeta->isHookEnable( 'login_form_register', array( 'form' => $form['form_key'] ) ) )
+    do_action( 'login_form_register' );
+
 if( @$_REQUEST['form_key'] == $form['form_key'] && @$_REQUEST['action_type'] == $actionType ){
     if( isset( $userMeta->um_post_method_status->$methodName ) )
         $html .= $userMeta->um_post_method_status->$methodName;
@@ -150,9 +153,15 @@ $html .= "<form method=\"post\" $formAction id=\"$formID\" class=\"$formClass\" 
             ) );                        
             //$html .= "<input type='button' onclick='umPageNavi($previousPage)' value='" . __( 'Previous', $userMeta->name ) . "'>";
         }                           
-
         // End
-                       
+        
+        if ( $actionType == 'registration' && $userMeta->isHookEnable( 'register_form', array( 'form' => $form['form_key'] ) ) ) {
+            ob_start();
+            do_action( 'register_form' );
+            $html .= ob_get_contents();
+            ob_end_clean();
+        }
+        
         $html .= $userMeta->createInput( "form_key", "hidden", array(
             "value"     => $form['form_key'],
         ) );                           
@@ -189,7 +198,7 @@ $html .= "<form method=\"post\" $formAction id=\"$formID\" class=\"$formClass\" 
             $html .= $userMeta->createInput( "um_sibmit_button", "submit", array(
                 "value"     => $buttonValue,
                 "id"        => "insert_user",
-                "class"     => !empty( $form['button_class'] ) ? $form['button_class'] : "",
+                "class"     => !empty( $form['button_class'] ) ? $form['button_class'] : 'um_button',
                 'enclose'   => 'div',
             ) );
         }
@@ -227,5 +236,3 @@ $html .= "</script>\n\r";
 
 
 $html = apply_filters( 'user_meta_form_display', $html, $form['form_key'], $form, $userID );
-    
-?>

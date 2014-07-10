@@ -32,6 +32,7 @@ global $userMeta;
                         <li><a href="#um_settings_backend_profile"><?php echo $title['profile']; ?></a></li>
                         <li><a href="#um_settings_text"><?php _e( 'Text', $userMeta->name ); ?></a></li>
                         <!--<li><a href="#um_settings_misc"><?php //_e( 'Misc', $userMeta->name ); ?></a></li>-->
+                        <?php do_action( 'user_meta_settings_tab' ); ?>
                 	</ul>  
                                                                
                     <div id="um_settings_general">
@@ -88,6 +89,8 @@ global $userMeta;
                         ?>
                     </div> 
                     
+                    <?php do_action( 'user_meta_settings_tab_details' ); ?>
+                    
                     <!--<div id="um_settings_misc">
                         <?php/*
                         echo $userMeta->renderPro( "miscSettings", array(
@@ -118,8 +121,8 @@ global $userMeta;
                 echo $userMeta->metaBox( __( '3 steps to get started', $userMeta->name ),  $userMeta->boxHowToUse());               
                 if( !@$userMeta->isPro )
                     echo $userMeta->metaBox( __( 'User Meta Pro', $userMeta->name ),   $userMeta->boxGetPro());
-                echo $userMeta->metaBox( __( 'Shortcode', $userMeta->name ),   $userMeta->boxShortcodesDocs());
-                echo $userMeta->metaBox( __( 'Tips', $userMeta->name ),   $userMeta->boxTips(), false, false);
+                echo $userMeta->metaBox( 'Shortcodes',   $userMeta->boxShortcodesDocs());
+                //echo $userMeta->metaBox( __( 'Tips', $userMeta->name ),   $userMeta->boxTips(), false, false);
                 ?>
             </div>
         </div>
@@ -137,25 +140,18 @@ jQuery(function() {
         activeClass: 'um_highlight'
     });   
 
-    jQuery( "#um_settings_tab" ).tabs();
+    jQuery("#um_settings_tab").tabs();
+    jQuery("#loggedin_profile_tabs").tabs();
+    jQuery("#redirection_tabs").tabs();
     
-    umAdminRegistratioUserActivationChange(); 
-    umAdminToggleCreatePage();
-    
-    umAdminRegistratioUserActivationError();
-    jQuery('#registration_email_verification_page').change(function(){
-        umAdminRegistratioUserActivationError();
-        umAdminToggleCreatePage();
+    umSettingsToggleCreatePage();
+    umSettingsToggleError();
+    jQuery('#um_login_login_page, #um_login_resetpass_page, #um_registration_email_verification_page').change(function() {
+        umSettingsToggleCreatePage();
+        umSettingsToggleError();
     });
     
-    umAdminLoginResetpassError();
-    jQuery('#um_login_resetpass_page').change(function(){
-        umAdminLoginResetpassError();
-        umAdminToggleCreatePage();
-    });
+    umSettingsRegistratioUserActivationChange(); 
+   
 });
-
-
-
-
 </script>

@@ -14,11 +14,11 @@
   * Use plugin instance (eg. $userMeta) for accessing framework/plugins model's' method
   */
 
-if (realpath(__FILE__) == realpath($_SERVER['SCRIPT_FILENAME'])) {
-    exit('Please don\'t access this file directly.');
+if ( realpath(__FILE__) == realpath( $_SERVER['SCRIPT_FILENAME'] ) ) {
+    exit( 'Please don\'t access this file directly.' );
 }
 
-if (!class_exists( 'pluginFramework' )) :
+if ( ! class_exists( 'pluginFramework' ) ) :
 class pluginFramework {
     public $version = '1.0.0';
     public $prefix  = 'pf_';
@@ -37,7 +37,7 @@ class pluginFramework {
     public $scripts = array();
     
     
-    function __construct(){                          
+    function __construct() {                          
         $this->frameworkPath   = dirname( __FILE__ );
         $this->modelsPath      = $this->frameworkPath . '/models/';
         $this->controllersPath = $this->frameworkPath . '/controllers/';
@@ -50,16 +50,16 @@ class pluginFramework {
         $this->assetsUrl       = $this->pluginUrl . '/assets/';                                      
     }
         
-    function init(){        
+    function init() {        
         add_action( 'wp_ajax_pf_ajax_request',                   array( $this, 'pfAjaxRequest' ) );
         add_action( 'wp_ajax_nopriv_pf_ajax_request',            array( $this, 'pfAjaxRequest' ) );     
         
         $this->pluginInit();        
     }
     
-    function pfAjaxRequest(){  
-        $methodName = @$_REQUEST[ 'method_name' ];
-        if( $methodName ){                        
+    function pfAjaxRequest() {  
+        $methodName = @$_REQUEST['method_name'];
+        if ( $methodName ) {                        
             $methodName = 'ajax' . ucwords( $methodName );
             $this->$methodName();
         }
@@ -70,12 +70,12 @@ class pluginFramework {
      * get data from option table with or without cache
      * @param $key      : field key without prefix.
      */
-    function getData( $key, $networkwide=false ){
+    function getData( $key, $networkwide = false ) {
         $cacheName = $this->cacheName;
         global $$cacheName;
         
-        if( ! isset( $$cacheName->$key ) ){
-			if( $networkwide && is_multisite() )
+        if ( ! isset( $$cacheName->$key ) ) {
+			if ( $networkwide && is_multisite() )
 				$$cacheName->$key = get_site_option( $this->prefixLong . $key );
 			else
 				$$cacheName->$key = get_option( $this->prefixLong . $key );
@@ -89,13 +89,13 @@ class pluginFramework {
      * @param $key      : field key without prefix.
      * @param $data     : Data to be set
      */
-    function updateData( $key, $data, $networkwide=false ){
+    function updateData( $key, $data, $networkwide = false ) {
         $cacheName = $this->cacheName;
         global $$cacheName;        
         
         $$cacheName->$key   = $data;
 
-		if( $networkwide && is_multisite() )
+		if ( $networkwide && is_multisite() )
 			return update_site_option( $this->prefixLong . $key, $data );
 		else
         	return update_option( $this->prefixLong . $key, $data );
@@ -104,10 +104,10 @@ class pluginFramework {
     /**
      * Load all class from models directory
      */
-    function loadModels( $dir, $enc=false ){
-        $classes = !$enc ? $this->loadDirectory( $dir ) : $this->loadEncDirectory( $dir );
-        if( !is_array( $classes ) ) return;
-        foreach( $classes as $class )
+    function loadModels( $dir, $enc = false ) {
+        $classes = ! $enc ? $this->loadDirectory( $dir ) : $this->loadEncDirectory( $dir );
+        if ( ! is_array( $classes ) ) return;
+        foreach ( $classes as $class )
             $this->objects[] = $class;
     }
              
@@ -119,7 +119,7 @@ class pluginFramework {
      * Default: common
      * @param string|int  $depends: for conditional loading, arg: name of shortcode, admin page hook, post/page id
      */
-    function addScript( $scriptName, $type=null, $depends=null, $subdir=null ){    
+    function addScript( $scriptName, $type = null, $depends = null, $subdir = null ) {    
         $scriptData = $this->fileinfo( $scriptName );
         $handle     = $scriptData->name;      
         $scriptType = $scriptData->ext;
@@ -130,13 +130,13 @@ class pluginFramework {
         $type    = $type ? $type : 'common';
         
         //for enque wp script
-        if( !$scriptType ){
+        if ( !$scriptType ) {
             $handle = $scriptName;
             $url    = null;
             $scriptType = 'js';
         }
 
-        if( $type == 'shortcode' ):
+        if ( $type == 'shortcode' ):
             $scripts[$type][$depends][] = array(
                 'handle' => $handle,
                 'url'    => $url,
@@ -159,13 +159,13 @@ class pluginFramework {
      * Enque all scripts/styles those are added by addScript method
      * Should call this method after all clntroller loaded
      */
-    function loadScript(){
+    function loadScript() {
         $scripts = $this->scripts;
-        if(empty($scripts)) return;
+        if ( empty( $scripts ) ) return;
         
         $load = false;
-        foreach( $scripts as $key => $data ){
-            switch ($key) {
+        foreach ( $scripts as $key => $data ) {
+            switch ( $key ) {
                 case 'all' :
                     $load = true;
                 break;     
@@ -192,13 +192,13 @@ class pluginFramework {
      * Include all file from directory
      * Create instence of each class and add return all instance as an array
      */  
-    function loadDirectory( $dir ){
-        if (!file_exists($dir)) return false;
-        foreach (scandir($dir) as $item) {
-            if( preg_match( "/.php$/i" , $item ) ) {
+    function loadDirectory( $dir ) {
+        if ( ! file_exists( $dir ) ) return false;
+        foreach ( scandir( $dir ) as $item) {
+            if ( preg_match( "/.php$/i" , $item ) ) {
                 require_once( $dir . $item );
                 $className = str_replace( ".php", "", $item );
-                if( class_exists( $className ) )
+                if ( class_exists( $className ) )
                     $classes[] = new $className;
             }      
         }
@@ -209,39 +209,39 @@ class pluginFramework {
      * Render view file
      * @param string $viewName: name of view file without extension
      */
-    function render( $viewName, $parameter = array() ){
-        if( $parameter ) extract($parameter);            
+    function render( $viewName, $parameter = array() ) {
+        if ( $parameter ) extract( $parameter );            
         include( $this->viewsPath . $viewName . '.php' );
-        if( isset($html) ) return $html;
+        if ( isset( $html ) ) return $html;
     }        
          
     /**
      * Dynamicaly call any  method from models class
      * by pluginFramework instance
      */
-    function __call( $name, $args ){
-        if( !is_array(@$this->objects) ) return;
+    function __call( $name, $args ) {
+        if ( ! is_array( @$this->objects ) ) return;
         
         global $pfInstance;
         $pfInstance = $this;
         
-        foreach($this->objects as $object){
-            if(method_exists($object, $name)){
-                $count = count($args);
-                if($count == 0)
+        foreach( $this->objects as $object ) {
+            if ( method_exists( $object, $name ) ) {
+                $count = count( $args );
+                if ( $count == 0 )
                     return $object->$name();
-                elseif($count == 1)
-                    return $object->$name($args[0]);
-                elseif($count == 2)
-                    return $object->$name($args[0], $args[1]);     
-                elseif($count == 3)
-                    return $object->$name($args[0], $args[1], $args[2]);      
-                elseif($count == 4)
-                    return $object->$name($args[0], $args[1], $args[2], $args[3]);  
-                elseif($count == 5)
-                    return $object->$name($args[0], $args[1], $args[2], $args[3], $args[4]);         
-                elseif($count == 6)
-                    return $object->$name($args[0], $args[1], $args[2], $args[3], $args[4], $args[5]);                                                                                             
+                elseif ( $count == 1 )
+                    return $object->$name( $args[0] );
+                elseif ( $count == 2 )
+                    return $object->$name( $args[0], $args[1] );     
+                elseif ( $count == 3 )
+                    return $object->$name( $args[0], $args[1], $args[2] );      
+                elseif ( $count == 4 )
+                    return $object->$name( $args[0], $args[1], $args[2], $args[3] );  
+                elseif ( $count == 5 )
+                    return $object->$name( $args[0], $args[1], $args[2], $args[3], $args[4] );         
+                elseif ( $count == 6 )
+                    return $object->$name( $args[0], $args[1], $args[2], $args[3], $args[4], $args[5] );                                                                                             
             }
         }
         return false;
@@ -251,9 +251,7 @@ class pluginFramework {
 endif;
 
 global $pluginFramework;
-if( !is_object( $pluginFramework ) )
+if ( ! is_object( $pluginFramework ) )
     $pluginFramework = new pluginFramework;
     
 $pluginFramework->loadDirectory( $pluginFramework->controllersPath );
-    
-?>

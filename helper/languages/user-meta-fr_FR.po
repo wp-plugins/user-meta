@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: User Meta Pro v1.1.5\n"
+"Project-Id-Version: User Meta Pro v1.1.6\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-01-11 14:49+0600\n"
-"PO-Revision-Date: 2014-02-15 23:35:50+0000\n"
+"PO-Revision-Date: 2014-07-08 13:28:21+0000\n"
 "Last-Translator: \n"
 "Language-Team: User Meta Pro <support@user-meta.com>\n"
 "MIME-Version: 1.0\n"
@@ -20,25 +20,25 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Textdomain-Support: yes"
 
-#: models/umSupportArray.php:26
+#: models/umSupportArray.php:27
 #@ user-meta
 msgid "User Meta Fields Editor"
 msgstr "Éditeur de champs User Meta"
 
-#: models/umSupportArray.php:25
-#: models/umSupportModel.php:461
+#: models/umSupportArray.php:26
+#: models/umSupportModel.php:555
 #: views/fieldsEditorPage.php:5
 #@ user-meta
 msgid "Fields Editor"
 msgstr "Éditeur de champs"
 
-#: models/umSupportArray.php:33
+#: models/umSupportArray.php:34
 #@ user-meta
 msgid "User Meta Forms Editor"
 msgstr "Éditeur de Formulaire User Meta"
 
-#: models/umSupportArray.php:32
-#: models/umSupportModel.php:464
+#: models/umSupportArray.php:33
+#: models/umSupportModel.php:558
 #: views/formsEditorPage.php:6
 #@ user-meta
 msgid "Forms Editor"
@@ -55,32 +55,33 @@ msgstr "Toutes les clés du formulaire sont requises !"
 msgid "Form key should be unique. \"%s\" is duplicated!"
 msgstr "Chaque clé du formulaire doit être unique. \"%s\" est dupliqué !"
 
-#: controllers/umFormsController.php:63
+#: controllers/umFormsController.php:65
 #@ user-meta
 msgid "Form Successfully saved."
 msgstr "Formulaire enregistré avec succès."
 
-#: controllers/umPreloadsController.php:99
-#: models/umSupportArray.php:612
+#: controllers/umPreloadsController.php:105
+#: models/umSupportArray.php:702
 #: views/pro/settings/redirectionSettings.php:31
 #@ user-meta
 msgid "Profile"
 msgstr "Profil"
 
-#: controllers/umPreloadsController.php:149
+#: controllers/umPreloadsController.php:155
 #, php-format
 #@ user-meta
 msgid "There is a new version of %1$s available. <a href=\"%2$s\">update automatically</a>."
 msgstr "Il y a une nouvelle version de %1$s disponible. <a href=\"%2$s\">mettre à jour automatiquement</a>."
 
-#: models/umSupportArray.php:54
+#: models/umSupportArray.php:55
 #: views/settingsPage.php:8
 #@ user-meta
 msgid "User Meta Settings"
 msgstr "User Meta paramètres"
 
-#: models/umSupportArray.php:53
-#: models/umSupportModel.php:467
+#: controllers/umAdminPagesController.php:44
+#: models/umSupportArray.php:54
+#: models/umSupportModel.php:561
 #: views/pro/exportImport/exportImportUm.php:25
 #@ user-meta
 msgid "Settings"
@@ -92,28 +93,28 @@ msgstr "Paramètres"
 msgid "type=\"%s\" is invalid."
 msgstr "Le type=\"%s\" est on valide."
 
-#: views/email/emailNotificationPage.php:9
+#: views/email/emailNotificationPage.php:10
 #: views/pro/email/emailNotificationPage.php:8
 #@ user-meta
 msgid "E-mail Notification"
 msgstr "Notification par courriel"
 
-#: controllers/pro/umEmailNotificationController.php:123
-#: controllers/pro/umEmailNotificationController.php:129
+#: controllers/pro/umEmailNotificationController.php:94
+#: controllers/pro/umEmailNotificationController.php:100
 #, php-format
 #@ user-meta
 msgid "Email verification url: %s"
 msgstr "URL de courriel de vérification : %s"
 
-#: controllers/pro/umEmailNotificationController.php:126
-#: controllers/pro/umEmailNotificationController.php:131
+#: controllers/pro/umEmailNotificationController.php:97
+#: controllers/pro/umEmailNotificationController.php:102
 #, php-format
 #@ user-meta
 msgid "Activation url: %s"
 msgstr "Url d'activation : %s"
 
-#: models/umSupportArray.php:46
 #: models/umSupportArray.php:47
+#: models/umSupportArray.php:48
 #: views/exportImport/importExportPage.php:9
 #: views/pro/exportImport/importExportPage.php:9
 #, fuzzy
@@ -159,9 +160,9 @@ msgid "Login Widget"
 msgstr "Widget de connexion"
 
 #: controllers/pro/umLoginWidgetController.php:79
-#: models/umSupportArray.php:589
-#: models/umSupportArray.php:592
-#: views/generateForm.php:179
+#: models/umSupportArray.php:678
+#: models/umSupportArray.php:681
+#: views/generateForm.php:188
 #: views/settingsPage.php:18
 #@ user-meta
 msgid "Login"
@@ -172,20 +173,14 @@ msgstr "Connexion"
 msgid "Hide this widget when viewing login page"
 msgstr "Masquer ce widget lorsque la page de connexion est affiché"
 
-#: controllers/pro/umPreloadsProController.php:156
-#, php-format
-#@ user-meta
-msgid "There is a new version <strong>%1$s</strong> of <strong>%2$s</strong> available. <a href=\"%3$s\">update automatically.</a>"
-msgstr "Il y a une nouvelle version <strong>%1$s</strong> de <strong>%2$s</strong> disponible. <a href=\"%3$s\">mettre à jour automatiquement.</a>"
-
-#: controllers/pro/umPreloadsProController.php:209
-#: models/umSupportArray.php:594
+#: controllers/pro/umPreloadsProController.php:211
+#: models/umSupportArray.php:683
 #, php-format
 #@ user-meta
 msgid "<strong>ERROR</strong>: Invalid %s."
-msgstr "<strong>ERREUR</strong>: Non valide <strong>%s</strong>."
+msgstr "<strong>ERREUR</strong>: Non valide %s."
 
-#: controllers/pro/umPreloadsProController.php:212
+#: controllers/pro/umPreloadsProController.php:214
 #, php-format
 #@ user-meta
 msgid "<strong>ERROR</strong>: Incorrect Password. <a href=\"%s\" title=\"Password Lost and Found\">Lost your password</a>?"
@@ -194,7 +189,7 @@ msgstr "<strong>ERREUR</strong>: Mot de passe incorrect. <a href=\"%s\" title=\"
 #: controllers/pro/umUserActivationController.php:29
 #: controllers/pro/umUserActivationController.php:34
 #: controllers/pro/umUserActivationController.php:138
-#: controllers/pro/umUserActivationController.php:253
+#: controllers/pro/umUserActivationController.php:255
 #@ user-meta
 msgid "Activate"
 msgstr "Activer"
@@ -202,7 +197,7 @@ msgstr "Activer"
 #: controllers/pro/umUserActivationController.php:37
 #: controllers/pro/umUserActivationController.php:42
 #: controllers/pro/umUserActivationController.php:138
-#: controllers/pro/umUserActivationController.php:258
+#: controllers/pro/umUserActivationController.php:260
 #@ user-meta
 msgid "Deactivate"
 msgstr "Désactiver"
@@ -217,47 +212,47 @@ msgstr "Active"
 msgid "Inactive"
 msgstr "Inactive"
 
-#: models/umSupportArray.php:638
+#: models/umSupportArray.php:728
 #@ user-meta
 msgid "<strong>ERROR:</strong> your account is not yet activated."
 msgstr "<strong>ERREUR:</strong> votre compte n'est pas encore activé."
 
-#: controllers/pro/umUserActivationController.php:252
+#: controllers/pro/umUserActivationController.php:254
 #, php-format
 #@ user-meta
 msgid "New user %s registered on your site."
 msgstr "Nouvel utilisateur %s inscrit sur votre site."
 
-#: controllers/pro/umUserActivationController.php:257
+#: controllers/pro/umUserActivationController.php:259
 #, php-format
 #@ user-meta
 msgid "User %s is already activated."
-msgstr "L'utilisateur <strong>%s</strong> est déjà activé."
+msgstr "L'utilisateur %s est déjà activé."
 
-#: controllers/pro/umUserActivationController.php:264
+#: controllers/pro/umUserActivationController.php:266
 #@ user-meta
 msgid "activated"
 msgstr "activé"
 
-#: controllers/pro/umUserActivationController.php:266
+#: controllers/pro/umUserActivationController.php:268
 #@ user-meta
 msgid "deactivated"
 msgstr "désactivé"
 
-#: controllers/pro/umUserActivationController.php:269
+#: controllers/pro/umUserActivationController.php:271
 #, php-format
 #@ user-meta
 msgid "%1$s users have been %2$s"
 msgstr "%1$s utilisateurs ont été %2$s"
 
-#: controllers/pro/umUserActivationController.php:271
+#: controllers/pro/umUserActivationController.php:273
 #, php-format
 #@ user-meta
 msgid "User has been %s"
-msgstr "L'utilisateur a été <strong>%s</strong>"
+msgstr "L'utilisateur a été %s"
 
 #: framework/helper/uploader.php:155
-#: framework/models/PluginFrameworkWPSupport.php:275
+#: framework/models/PluginFrameworkWPSupport.php:306
 #@ user-meta
 msgid "Server error. Upload directory is not writable."
 msgstr ""
@@ -279,15 +274,15 @@ msgid "File is too large"
 msgstr ""
 
 #: framework/helper/uploader.php:181
-#: framework/models/PluginFrameworkWPSupport.php:295
-#, fuzzy, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format
+#: framework/models/PluginFrameworkWPSupport.php:326
+#, fuzzy, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format
 #@ user-meta
 msgid "File %1$s has an invalid extension, it should be one of %2$s."
 msgstr "%1$s a une extension non valide. Sont autorisés uniquement %2$s."
 
 #: framework/models/PluginFrameworkArray.php:22
-#: models/umSupportArray.php:159
-#: models/umSupportArray.php:375
+#: models/umSupportArray.php:230
+#: models/umSupportArray.php:451
 #: views/pro/settings/backendProfile.php:24
 #@ user-meta
 msgid "Username"
@@ -301,9 +296,9 @@ msgstr "Adresse de courriel"
 
 #: framework/models/PluginFrameworkArray.php:24
 #: framework/phpunit/models/PluginFrameworkArrayTest.php:34
-#: models/umSupportArray.php:169
-#: models/umSupportArray.php:286
-#: models/umSupportArray.php:590
+#: models/umSupportArray.php:240
+#: models/umSupportArray.php:362
+#: models/umSupportArray.php:679
 #: views/settings/activationForm.php:55
 #@ user-meta
 msgid "Password"
@@ -316,36 +311,35 @@ msgid "Nicename"
 msgstr "Surnom"
 
 #: framework/models/PluginFrameworkArray.php:26
-#: models/umSupportArray.php:178
-#: models/umSupportArray.php:316
+#: models/umSupportArray.php:249
 #: views/pro/settings/backendProfile.php:34
 #@ user-meta
 msgid "Website"
 msgstr "Site web"
 
 #: framework/models/PluginFrameworkArray.php:27
-#: models/umSupportArray.php:183
+#: models/umSupportArray.php:254
 #: views/pro/settings/backendProfile.php:28
 #@ user-meta
 msgid "Display Name"
 msgstr "Nom affiché"
 
 #: framework/models/PluginFrameworkArray.php:28
-#: models/umSupportArray.php:188
+#: models/umSupportArray.php:259
 #: views/pro/settings/backendProfile.php:27
 #@ user-meta
 msgid "Nickname"
 msgstr "Surnom"
 
 #: framework/models/PluginFrameworkArray.php:29
-#: models/umSupportArray.php:193
+#: models/umSupportArray.php:264
 #: views/pro/settings/backendProfile.php:25
 #@ user-meta
 msgid "First Name"
 msgstr "Prénom"
 
 #: framework/models/PluginFrameworkArray.php:30
-#: models/umSupportArray.php:198
+#: models/umSupportArray.php:269
 #: views/pro/settings/backendProfile.php:26
 #@ user-meta
 msgid "Last Name"
@@ -358,31 +352,31 @@ msgid "Description"
 msgstr "Description du champ"
 
 #: framework/models/PluginFrameworkArray.php:32
-#: models/umSupportArray.php:208
+#: models/umSupportArray.php:279
 #@ user-meta
 msgid "Registration Date"
 msgstr "Date d'inscription"
 
 #: framework/models/PluginFrameworkArray.php:33
-#: models/umSupportArray.php:213
+#: models/umSupportArray.php:284
 #@ user-meta
 msgid "Role"
 msgstr "Rôle"
 
 #: framework/models/PluginFrameworkArray.php:34
-#: models/umSupportArray.php:218
+#: models/umSupportArray.php:289
 #@ user-meta
 msgid "Jabber"
 msgstr "Jabber"
 
 #: framework/models/PluginFrameworkArray.php:35
-#: models/umSupportArray.php:223
+#: models/umSupportArray.php:294
 #@ user-meta
 msgid "Aim"
 msgstr "Aim"
 
 #: framework/models/PluginFrameworkArray.php:36
-#: models/umSupportArray.php:228
+#: models/umSupportArray.php:299
 #@ user-meta
 msgid "Yim"
 msgstr "Yim"
@@ -391,334 +385,291 @@ msgstr "Yim"
 #, fuzzy
 #@ user-meta
 msgid "<strong>ERROR</strong>: Enter a username or e-mail address."
-msgstr "<strong>ERREUR</strong>: Non valide <strong>%s</strong>."
+msgstr ""
 
-#: framework/models/PluginFrameworkBuiltinFunction.php:36
+#: framework/models/PluginFrameworkBuiltinFunction.php:38
 #, fuzzy
 #@ user-meta
 msgid "<strong>ERROR</strong>: Invalid username or e-mail."
-msgstr "<strong>ERREUR</strong>: Non valide <strong>%s</strong>."
+msgstr ""
 
-#: framework/models/PluginFrameworkBuiltinFunction.php:49
+#: framework/models/PluginFrameworkBuiltinFunction.php:53
 #@ user-meta
 msgid "Password reset is not allowed for this user"
 msgstr ""
 
-#: framework/models/PluginFrameworkBuiltinFunction.php:75
-#, fuzzy, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format
+#: framework/models/PluginFrameworkBuiltinFunction.php:107
+#, fuzzy, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format
 #@ user-meta
 msgid "Username: %s"
-msgstr "Nom d'utilisateur"
+msgstr "Nom d'utilisateur: %s"
 
-#: framework/models/PluginFrameworkBuiltinFunction.php:77
+#: framework/models/PluginFrameworkBuiltinFunction.php:109
 #, fuzzy
 #@ user-meta
 msgid "To reset your password, visit the following address:"
 msgstr "Pour réinitialiser votre mot de passe, reportez-vous à l'adresse suivante :"
 
-#: framework/models/PluginFrameworkBuiltinFunction.php:88
-#, fuzzy, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format
+#: framework/models/PluginFrameworkBuiltinFunction.php:120
+#, fuzzy, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format
 #@ user-meta
 msgid "[%s] Password Reset"
-msgstr "Mot de passe : <strong>%s</strong>"
+msgstr "[%s] Mot de passe"
 
-#: framework/models/PluginFrameworkBuiltinFunction.php:95
+#: framework/models/PluginFrameworkBuiltinFunction.php:130
 #@ user-meta
 msgid "The e-mail could not be sent. Possible reason: your host may have disabled the mail() function..."
 msgstr ""
 
-#: framework/models/PluginFrameworkBuiltinFunction.php:119
-#: framework/models/PluginFrameworkBuiltinFunction.php:122
-#: framework/models/PluginFrameworkBuiltinFunction.php:127
-#: models/umSupportArray.php:642
+#: framework/models/PluginFrameworkBuiltinFunction.php:154
+#: framework/models/PluginFrameworkBuiltinFunction.php:157
+#: framework/models/PluginFrameworkBuiltinFunction.php:161
+#: framework/models/PluginFrameworkBuiltinFunction.php:172
+#: framework/models/PluginFrameworkBuiltinFunction.php:191
 #, fuzzy
 #@ user-meta
+#@ default
 msgid "Invalid key"
 msgstr "Clé non valide"
 
-#: controllers/umPreloadsController.php:246
+#: controllers/umPreloadsController.php:255
 #@ user-meta
 msgid "Security check"
 msgstr ""
 
 #: framework/models/PluginFrameworkWPSupport.php:24
+#: framework/models/PluginFrameworkWPSupport.php:34
 #@ user-meta
 msgid "Security check: admin only"
 msgstr ""
 
-#: framework/models/PluginFrameworkWPSupport.php:197
+#: framework/models/PluginFrameworkWPSupport.php:216
 #@ user-meta
 msgid "Cannot create a user with an empty login name and empty email"
 msgstr ""
 
-#: framework/models/PluginFrameworkWPSupport.php:265
+#: framework/models/PluginFrameworkWPSupport.php:296
 #@ user-meta
 msgid "No file upload field found!"
 msgstr ""
 
-#: framework/models/PluginFrameworkWPSupport.php:272
+#: framework/models/PluginFrameworkWPSupport.php:303
 #@ user-meta
 msgid "File is empty."
 msgstr ""
 
-#: framework/models/PluginFrameworkWPSupport.php:278
+#: framework/models/PluginFrameworkWPSupport.php:309
 #, php-format
 #@ user-meta
 msgid "File %s is too large."
 msgstr ""
 
-#: framework/views/metaBox.php:12
+#: framework/views/metaBox.php:13
 #@ user-meta
 msgid "Click to toggle"
 msgstr ""
 
-#: helper/umLocalizeScript.php:17
-#: models/umSupportArray.php:501
+#: models/umSupportArray.php:590
 #, php-format
 #@ user-meta
 msgid "Get pro version from %s to use this feature."
-msgstr "Obtenir la version pro de <strong>%s</strong> pour utiliser cette fonctionnalité."
+msgstr "Obtenir la version pro de %s pour utiliser cette fonctionnalité."
 
-#: helper/umLocalizeScript.php:18
-#: models/umSupportArray.php:502
+#: models/umSupportArray.php:591
 #@ user-meta
 msgid "Please Wait..."
 msgstr "Attendez s'il vous plaît..."
 
-#: helper/umLocalizeScript.php:21
-#: models/umSupportArray.php:505
+#: models/umSupportArray.php:594
 #@ user-meta
 msgid "Upload"
-msgstr "Envoyer"
+msgstr "Charger"
 
-#: helper/umLocalizeScript.php:22
-#: models/umSupportArray.php:506
+#: models/umSupportArray.php:595
 #@ user-meta
 msgid "Drop files here to upload"
 msgstr "Tracter les fichiers ici pour les envoyer"
 
-#: helper/umLocalizeScript.php:23
-#: models/umSupportArray.php:507
+#: models/umSupportArray.php:596
 #: views/settings/activationForm.php:68
 #@ user-meta
 msgid "Cancel"
 msgstr "Annuler"
 
-#: helper/umLocalizeScript.php:24
-#: models/umSupportArray.php:508
+#: models/umSupportArray.php:597
 #@ user-meta
 msgid "Failed"
 msgstr "Echec"
 
-#: helper/umLocalizeScript.php:25
-#: models/umSupportArray.php:509
+#: models/umSupportArray.php:598
 #, php-format
 #@ user-meta
 msgid "%1$s has invalid extension. Only %2$s are allowed."
 msgstr "%1$s a une extension non valide. Sont autorisés uniquement %2$s."
 
-#: helper/umLocalizeScript.php:26
-#: models/umSupportArray.php:510
+#: models/umSupportArray.php:599
 #, php-format
 #@ user-meta
 msgid "%1$s is too large, maximum file size is %2$s."
 msgstr "%1$s est trop grand, la taille de fichier maximale est de %2$s."
 
-#: helper/umLocalizeScript.php:27
-#: models/umSupportArray.php:511
+#: models/umSupportArray.php:600
 #, php-format
 #@ user-meta
 msgid "%s is empty, please select files again without it."
-msgstr "<strong>%s</strong> est vide, veuillez à nouveau sélectionner les fichiers sans ce dernier."
+msgstr "%s est vide, veuillez à nouveau sélectionner les fichiers sans ce dernier."
 
-#: helper/umLocalizeScript.php:30
-#: models/umSupportArray.php:514
+#: models/umSupportArray.php:603
 #@ user-meta
 msgid "Too weak"
 msgstr "Trop faible"
 
-#: helper/umLocalizeScript.php:31
-#: models/umSupportArray.php:515
+#: models/umSupportArray.php:604
 #@ user-meta
 msgid "Weak password"
 msgstr "Mot de passe faible"
 
-#: helper/umLocalizeScript.php:32
-#: models/umSupportArray.php:516
+#: models/umSupportArray.php:605
 #@ user-meta
 msgid "Normal strength"
 msgstr "Force normale"
 
-#: helper/umLocalizeScript.php:33
-#: models/umSupportArray.php:517
+#: models/umSupportArray.php:606
 #@ user-meta
 msgid "Strong password"
 msgstr "Mot de passe fort"
 
-#: helper/umLocalizeScript.php:34
-#: models/umSupportArray.php:518
+#: models/umSupportArray.php:607
 #@ user-meta
 msgid "Very strong password"
 msgstr "Mot de passe très fort"
 
-#: helper/umLocalizeScript.php:37
-#: models/umSupportArray.php:521
+#: models/umSupportArray.php:610
 #@ user-meta
 msgid "* This field is required"
 msgstr "* Ce champ est requis"
 
-#: helper/umLocalizeScript.php:38
-#: models/umSupportArray.php:522
+#: models/umSupportArray.php:611
 #@ user-meta
 msgid "* Please select an option"
 msgstr "* Veuillez sélectionner une option"
 
-#: helper/umLocalizeScript.php:39
-#: models/umSupportArray.php:523
+#: models/umSupportArray.php:612
 #@ user-meta
 msgid "* This checkbox is required"
 msgstr "* Cette case à cocher est requise"
 
-#: helper/umLocalizeScript.php:40
-#: models/umSupportArray.php:524
+#: models/umSupportArray.php:613
 #@ user-meta
 msgid "* Minimum "
 msgstr "* Minimum "
 
-#: helper/umLocalizeScript.php:41
-#: models/umSupportArray.php:525
+#: models/umSupportArray.php:614
 #@ user-meta
 msgid "* Maximum "
 msgstr "* Maximum "
 
-#: helper/umLocalizeScript.php:42
-#: models/umSupportArray.php:526
+#: models/umSupportArray.php:615
 #@ user-meta
 msgid " characters allowed"
 msgstr " caractères autorisés"
 
-#: helper/umLocalizeScript.php:43
-#: models/umSupportArray.php:527
+#: models/umSupportArray.php:616
 #@ user-meta
 msgid "* Minimum value is "
 msgstr "* La valeur minimale est de "
 
-#: helper/umLocalizeScript.php:44
-#: models/umSupportArray.php:528
+#: models/umSupportArray.php:617
 #@ user-meta
 msgid "* Maximum value is "
 msgstr "* La valeur maximale est de "
 
-#: helper/umLocalizeScript.php:45
-#: models/umSupportArray.php:529
+#: models/umSupportArray.php:618
 #@ user-meta
 msgid "* Date prior to "
 msgstr "* Date antérieure à "
 
-#: helper/umLocalizeScript.php:46
-#: models/umSupportArray.php:530
+#: models/umSupportArray.php:619
 #@ user-meta
 msgid "* Date past "
 msgstr "* Date antérieure "
 
-#: helper/umLocalizeScript.php:47
-#: models/umSupportArray.php:531
+#: models/umSupportArray.php:620
 #@ user-meta
 msgid " options allowed"
 msgstr " options autorisées"
 
-#: helper/umLocalizeScript.php:48
-#: models/umSupportArray.php:532
+#: models/umSupportArray.php:621
 #@ user-meta
 msgid "* Please select "
 msgstr "* Veuillez sélectionner "
 
-#: helper/umLocalizeScript.php:49
-#: models/umSupportArray.php:533
+#: models/umSupportArray.php:622
 #@ user-meta
 msgid " options"
 msgstr " options"
 
-#: helper/umLocalizeScript.php:50
-#: models/umSupportArray.php:534
+#: models/umSupportArray.php:623
 #@ user-meta
 msgid "* Fields do not match"
 msgstr "* Les champs ne correspondent pas"
 
-#: helper/umLocalizeScript.php:51
-#: models/umSupportArray.php:535
+#: models/umSupportArray.php:624
 #@ user-meta
 msgid "* Invalid phone number"
 msgstr "* Numéro de téléphone non valable"
 
-#: helper/umLocalizeScript.php:52
-#: models/umSupportArray.php:536
+#: models/umSupportArray.php:625
 #@ user-meta
 msgid "* Invalid email address"
 msgstr "* Adresse de courriel non valide"
 
-#: helper/umLocalizeScript.php:53
-#: models/umSupportArray.php:537
+#: models/umSupportArray.php:626
 #@ user-meta
 msgid "* Not a valid integer"
 msgstr "* Nombre entier non valable"
 
-#: helper/umLocalizeScript.php:54
-#: models/umSupportArray.php:538
-#@ user-meta
-msgid "* Invalid floating decimal number"
-msgstr "* Nombre décimal flottant non valable"
-
-#: helper/umLocalizeScript.php:55
-#: models/umSupportArray.php:539
+#: models/umSupportArray.php:628
 #@ user-meta
 msgid "* Invalid date, must be in YYYY-MM-DD format"
 msgstr "* Date non valable, doit être au format AAAA-MM-JJ"
 
-#: helper/umLocalizeScript.php:56
-#: models/umSupportArray.php:540
+#: models/umSupportArray.php:629
 #@ user-meta
 msgid "* Invalid time, must be in hh:mm:ss format"
 msgstr "* Heure non valable, doit être au format hh:mm:ss"
 
-#: helper/umLocalizeScript.php:57
-#: models/umSupportArray.php:541
+#: models/umSupportArray.php:630
 #@ user-meta
 msgid "* Invalid datetime, must be in YYYY-MM-DD hh:mm:ss format"
 msgstr "* Dates et heures non valables, doit être au format  AAAA-MM-JJ hh:mm:ss"
 
-#: helper/umLocalizeScript.php:58
-#: models/umSupportArray.php:542
+#: models/umSupportArray.php:631
 #@ user-meta
 msgid "* Invalid IP address"
 msgstr "* Address IP non valable"
 
-#: helper/umLocalizeScript.php:59
-#: models/umSupportArray.php:543
+#: models/umSupportArray.php:632
 #@ user-meta
 msgid "* Invalid URL"
 msgstr "* URL non valide"
 
-#: helper/umLocalizeScript.php:60
-#: models/umSupportArray.php:545
+#: models/umSupportArray.php:634
 #@ user-meta
 msgid "* Numbers only"
 msgstr "* Chiffres uniquement"
 
-#: helper/umLocalizeScript.php:61
-#: models/umSupportArray.php:546
+#: models/umSupportArray.php:635
 #@ user-meta
 msgid "* Letters only"
 msgstr "* Lettres uniquement"
 
-#: helper/umLocalizeScript.php:62
-#: models/umSupportArray.php:547
+#: models/umSupportArray.php:636
 #@ user-meta
 msgid "* No special characters allowed"
 msgstr "* Aucun caractère spécial autorisé"
 
-#: helper/umLocalizeScript.php:63
-#: models/umSupportArray.php:548
+#: models/umSupportArray.php:637
 #@ user-meta
 msgid "* This user is already taken"
 msgstr "* Ce nom d'utilisateur est déjà pris"
@@ -729,140 +680,140 @@ msgstr "* Ce nom d'utilisateur est déjà pris"
 msgid "%1$s: \"%2$s\" already taken"
 msgstr "%1$s: \"%2$s\" déjà prises"
 
-#: models/umAjaxModel.php:159
+#: models/umAjaxModel.php:165
 #@ user-meta
 msgid "No data to update"
 msgstr "Aucune donnée à mettre à jour"
 
-#: models/umAjaxModel.php:196
+#: models/umAjaxModel.php:202
 #@ user-meta
 msgid "User must be logged in to update profile"
 msgstr "L'utilisateur doit être connecté pour mettre à jour son profil"
 
-#: models/umAjaxModel.php:237
+#: models/umAjaxModel.php:243
 #, php-format
 #@ user-meta
 msgid "%s already taken"
 msgstr "<strong>%s</strong> déjà pris"
 
-#: models/umMethods.php:26
+#: models/umMethods.php:27
 #@ user-meta
 msgid "Please provide a name of action type."
 msgstr "Veuillez fournir un nom de type d'action."
 
-#: models/umMethods.php:105
+#: models/umMethods.php:107
 #@ user-meta
 msgid "Please provide a form name."
 msgstr "Fournissez s'il vous plaît la clé publique et privée reCaptcha depuis la page User Meta <strong>%s</strong>"
 
-#: models/umMethods.php:74
+#: models/umMethods.php:75
 #@ user-meta
 msgid "User registration is currently not allowed."
 msgstr "L'enregistrement d'utilisateurs n'est actuellement pas autorisé."
 
-#: models/umSupportArray.php:164
-#: models/umSupportArray.php:291
-#: models/umSupportArray.php:376
+#: models/umSupportArray.php:235
+#: models/umSupportArray.php:367
+#: models/umSupportArray.php:452
 #: views/settings/activationForm.php:46
 #@ user-meta
 msgid "Email"
 msgstr "Courriel"
 
-#: models/umSupportArray.php:203
+#: models/umSupportArray.php:274
 #: views/pro/settings/backendProfile.php:42
 #@ user-meta
 msgid "Biographical Info"
 msgstr "Info biographique"
 
-#: controllers/pro/umExportImportController.php:82
-#: models/pro/umAjaxProModel.php:277
-#: models/umSupportArray.php:233
+#: controllers/pro/umExportImportController.php:83
+#: models/pro/umAjaxProModel.php:293
+#: models/umSupportArray.php:304
 #@ user-meta
 msgid "Avatar"
 msgstr "Avatar"
 
-#: models/umSupportArray.php:239
+#: models/umSupportArray.php:310
 #, fuzzy
 #@ user-meta
 msgid "New Blog"
 msgstr "Nouveau formulaire"
 
-#: models/umSupportArray.php:246
+#: models/umSupportArray.php:317
 #@ user-meta
 msgid "Textbox"
 msgstr "Zone de texte"
 
-#: models/umSupportArray.php:251
+#: models/umSupportArray.php:322
 #@ user-meta
 msgid "Paragraph"
 msgstr "Paragraphe"
 
-#: models/umSupportArray.php:256
+#: models/umSupportArray.php:327
 #@ user-meta
 msgid "Rich Text"
 msgstr "Texte avec enrichissements"
 
-#: models/umSupportArray.php:261
+#: models/umSupportArray.php:332
 #@ user-meta
 msgid "Hidden Field"
 msgstr "Champ masqué"
 
-#: models/umSupportArray.php:266
+#: models/umSupportArray.php:337
 #@ user-meta
 msgid "Drop Down"
 msgstr "Menu déroulant"
 
-#: models/umSupportArray.php:271
+#: models/umSupportArray.php:347
 #@ user-meta
 msgid "Checkbox"
 msgstr "Case à cocher"
 
-#: models/umSupportArray.php:276
+#: models/umSupportArray.php:342
 #@ user-meta
 msgid "Select One (radio)"
 msgstr "Choix unique (radio&nbsp;bouton)"
 
-#: models/umSupportArray.php:281
+#: models/umSupportArray.php:357
 #@ user-meta
 msgid "Date / Time"
 msgstr "Date / heure"
 
-#: models/umSupportArray.php:296
+#: models/umSupportArray.php:372
 #@ user-meta
 msgid "File Upload"
 msgstr "Téléchargement des fichiers"
 
-#: models/umSupportArray.php:301
+#: models/umSupportArray.php:377
 #@ user-meta
 msgid "Image URL"
 msgstr "URL de l'image"
 
-#: models/umSupportArray.php:306
+#: models/umSupportArray.php:382
 #@ user-meta
 msgid "Phone Number"
 msgstr "Numéro de téléphone"
 
-#: models/umSupportArray.php:311
+#: models/umSupportArray.php:387
 #@ user-meta
 msgid "Number"
 msgstr "Nombre"
 
-#: models/umSupportArray.php:321
+#: models/umSupportArray.php:397
 #@ user-meta
 msgid "Country"
 msgstr "Pays"
 
-#: models/umSupportArray.php:334
+#: models/umSupportArray.php:410
 #@ user-meta
 msgid "Page Heading"
 msgstr "Titre de la page"
 
-#: models/umSupportArray.php:339
+#: models/umSupportArray.php:415
 #@ user-meta
 msgid "Section Heading"
 msgstr "Titre de l'article"
 
-#: models/umSupportArray.php:344
+#: models/umSupportArray.php:420
 #: views/pro/email/mailForm.php:24
 #: views/pro/email/singleEmailForm.php:33
 #: views/settings/generalSettings.php:28
@@ -870,62 +821,62 @@ msgstr "Titre de l'article"
 msgid "HTML"
 msgstr "HTML"
 
-#: models/umSupportArray.php:349
+#: models/umSupportArray.php:425
 #@ user-meta
 msgid "Captcha"
 msgstr "Captcha"
 
-#: models/umSupportArray.php:377
+#: models/umSupportArray.php:453
 #@ user-meta
 msgid "Username or Email"
 msgstr "Nom d'utilisateur ou adresse de courriel"
 
-#: models/umSupportArray.php:639
+#: models/umSupportArray.php:729
 #@ user-meta
 msgid "Check your e-mail for the confirmation link."
 msgstr "Vérifiez votre courriel pour le lien de confirmation."
 
-#: models/umSupportArray.php:640
+#: models/umSupportArray.php:730
 #@ user-meta
 msgid "Email not found"
 msgstr "Courriel non trouvé"
 
-#: models/umSupportArray.php:635
+#: models/umSupportArray.php:725
 #@ user-meta
 msgid "User is not member of this site."
 msgstr ""
 
-#: models/umSupportArray.php:610
+#: models/umSupportArray.php:700
 #@ user-meta
 msgid "Your password has been reset."
 msgstr "Votre mot de passe a été réinitialisé."
 
-#: models/umSupportArray.php:609
+#: models/umSupportArray.php:699
 #@ user-meta
 msgid "The passwords do not match."
 msgstr "Les mots de passe ne correspondent pas"
 
-#: models/umSupportArray.php:615
+#: models/umSupportArray.php:705
 #@ user-meta
 msgid "Profile successfully updated."
 msgstr "Profil mis à jour le succès."
 
-#: models/umSupportArray.php:623
+#: models/umSupportArray.php:713
 #@ user-meta
 msgid "Registration successfully completed."
 msgstr "Inscription effectué avec succès."
 
-#: models/umSupportArray.php:619
+#: models/umSupportArray.php:709
 #@ user-meta
 msgid "We have sent you a verification link to your email. Please verify your email by clicking the link and wait for admin approval."
 msgstr "Nous vous avons envoyé un lien de vérification à votre adresse de courriel. Merci de bien vouloir valider votre adresse de courriel en cliquant sur le lien contenu dans le message et après attendre l'approbation de l'admin."
 
-#: models/umSupportArray.php:618
+#: models/umSupportArray.php:708
 #@ user-meta
 msgid "We have sent you a verification link to your email. Please complete your registration by clicking the link."
 msgstr "Nous vous avons envoyé un lien de vérification à l'adresse de courriel que vous venez de nous communiquer. Merci de bien vouloir  compléter votre inscription en cliquant sur le lien qu'il contient."
 
-#: models/umSupportArray.php:636
+#: models/umSupportArray.php:726
 #@ user-meta
 msgid "User already activated"
 msgstr "Utilisateur déjà activé"
@@ -947,8 +898,7 @@ msgstr "<p><strong>Etape 2.</strong> Aller à la page User Meta <strong>%s</stro
 msgid "Visit Plugin Site"
 msgstr "Visitez le site du Plugin"
 
-#: models/umSupportHtml.php:59
-#: models/umSupportHtml.php:70
+#: models/umSupportHtml.php:58
 #: views/pro/settings/generalProSettings.php:11
 #@ user-meta
 msgid "Read More"
@@ -960,35 +910,35 @@ msgstr "Lire la suite"
 msgid "Please enter your license information to <a href=\"%s\">activate User Meta Pro</a>."
 msgstr "S'il vous plaît, entrez vos informations de licence pour <a href=\"%s\">activer User Meta Pro</a>."
 
-#: models/pro/umAjaxProModel.php:151
-#: models/pro/umAjaxProModel.php:173
+#: models/pro/umAjaxProModel.php:167
+#: models/pro/umAjaxProModel.php:189
 #@ user-meta
 msgid "Nothing to import!"
 msgstr ""
 
-#: models/pro/umSupportProModel.php:474
+#: models/pro/umSupportProModel.php:434
 #, php-format
 #@ user-meta
 msgid "Congratulations! Your new site, %s, is almost ready."
 msgstr ""
 
-#: models/pro/umSupportProModel.php:475
+#: models/pro/umSupportProModel.php:435
 #@ user-meta
 msgid "But, before you can start using your site, <strong>you must activate it</strong>."
 msgstr ""
 
-#: models/pro/umSupportProModel.php:476
+#: models/pro/umSupportProModel.php:436
 #, php-format
 #@ user-meta
 msgid "Check your inbox at <strong>%s</strong> and click the link given."
 msgstr ""
 
-#: models/pro/umSupportProModel.php:477
+#: models/pro/umSupportProModel.php:437
 #@ user-meta
 msgid "If you do not activate your site within two days, you will have to sign up again."
 msgstr ""
 
-#: models/pro/umSupportProModel.php:671
+#: models/pro/umSupportProModel.php:631
 #@ user-meta
 msgid "Disable this notification"
 msgstr "Désactiver cette notification"
@@ -1028,251 +978,251 @@ msgstr ""
 msgid "Inline"
 msgstr ""
 
-#: views/field.php:111
+#: views/field.php:112
 #, fuzzy
 #@ user-meta
 msgid "Hidden"
 msgstr "Champ masqué"
 
-#: views/field.php:116
+#: views/field.php:117
 #@ user-meta
 msgid "Field Description"
 msgstr "Description du champ"
 
-#: views/field.php:124
+#: views/field.php:125
 #: views/pro/exportImport/exportForm.php:40
 #@ user-meta
 msgid "Meta Key"
 msgstr "Clé Meta"
 
-#: views/field.php:134
+#: views/field.php:135
 #@ user-meta
 msgid "Default Value"
 msgstr "Valeur par défaut"
 
-#: views/field.php:142
+#: views/field.php:143
 #@ user-meta
 msgid "Field Options"
 msgstr "Options du champ :"
 
-#: views/field.php:151
+#: views/field.php:152
 #: views/shortcodePopup.php:14
-#: views/shortcodePopup.php:81
+#: views/shortcodePopup.php:82
 #@ user-meta
 msgid "Required"
 msgstr "Requis"
 
-#: views/field.php:157
+#: views/field.php:158
 #@ user-meta
 msgid "Admin Only"
 msgstr "Administrateur seulement"
 
-#: views/field.php:163
-#: views/field.php:187
+#: views/field.php:164
+#: views/field.php:188
 #, fuzzy
 #@ user-meta
 msgid "Non-Admin Only"
 msgstr "Non-administrateur seulement"
 
-#: views/field.php:169
+#: views/field.php:170
 #@ user-meta
 msgid "Read Only for all user"
 msgstr "Lecture seule pour tous les utilisateurs"
 
-#: views/field.php:175
+#: views/field.php:176
 #@ user-meta
 msgid "Read Only for non admin"
 msgstr "Lecture seule pour les non-administrateurs"
 
-#: views/field.php:181
+#: views/field.php:182
 #@ user-meta
 msgid "Unique"
 msgstr "Unique"
 
-#: views/field.php:193
+#: views/field.php:194
 #@ user-meta
 msgid "Only on Registration Page"
 msgstr "Seulement sur Page d'inscription"
 
-#: views/field.php:199
+#: views/field.php:200
 #@ user-meta
 msgid "Disable AJAX upload"
 msgstr "Désactiver l'envoi par AJAX"
 
-#: views/field.php:205
+#: views/field.php:206
 #@ user-meta
 msgid "Hide default avatar"
 msgstr "Masquer l'avatar par défaut"
 
-#: views/field.php:211
+#: views/field.php:212
 #@ user-meta
 msgid "Crop Image"
 msgstr ""
 
-#: views/field.php:217
+#: views/field.php:218
 #@ default
 msgid "Line Break"
 msgstr ""
 
-#: views/field.php:236
+#: views/field.php:243
 #, fuzzy
 #@ user-meta
 msgid "Role Selection Type"
 msgstr "Sélection du type"
 
-#: views/field.php:247
+#: views/field.php:254
 #, fuzzy
 #@ user-meta
 msgid "Allowed Roles"
 msgstr "Autoriser extension"
 
-#: views/field.php:261
+#: views/field.php:268
 #@ user-meta
 msgid "CSS Class"
 msgstr "Classe CSS"
 
-#: views/field.php:270
+#: views/field.php:277
 #@ user-meta
 msgid "CSS Style"
 msgstr "Style CSS"
 
-#: views/field.php:278
+#: views/field.php:285
 #@ user-meta
 msgid "Field Size"
 msgstr "Taille du champ"
 
-#: views/field.php:287
+#: views/field.php:294
 #@ user-meta
 msgid "Field Height"
 msgstr "Hauteur du champ"
 
-#: views/field.php:296
+#: views/field.php:303
 #@ user-meta
 msgid "Max Char"
 msgstr "Nombre maximal de caractères"
 
-#: views/field.php:307
+#: views/field.php:314
 #@ user-meta
 msgid "Force to change username"
 msgstr "Forcer à changer le nom d'utilisateur"
 
-#: views/field.php:312
+#: views/field.php:319
 #@ user-meta
 msgid "Retype Email"
 msgstr "Confirmer l'adresse de courriel"
 
-#: views/field.php:317
+#: views/field.php:324
 #@ user-meta
 msgid "Retype Password"
 msgstr "Confirmer le mot de passe"
 
-#: views/field.php:322
+#: views/field.php:329
 #@ user-meta
 msgid "Show password strength meter"
 msgstr "Afficher la complexité de mot de passe"
 
-#: views/field.php:333
+#: views/field.php:340
 #@ user-meta
 msgid "Show Divider"
 msgstr "Afficher séparateur"
 
-#: views/field.php:339
+#: views/field.php:346
 #@ user-meta
 msgid "Use Rich Text"
 msgstr "Utiliser format de texte enrichi"
 
-#: views/field.php:357
+#: views/field.php:364
 #@ user-meta
 msgid "Allowed Extension"
 msgstr "Autoriser extension"
 
-#: views/field.php:366
+#: views/field.php:373
 #@ user-meta
 msgid "Type Selection"
 msgstr "Sélection du type"
 
-#: views/field.php:372
+#: views/field.php:379
 #@ user-meta
 msgid "Date"
 msgstr "Date"
 
-#: views/field.php:372
+#: views/field.php:379
 #@ user-meta
 msgid "Time"
 msgstr "Heure"
 
-#: views/field.php:372
+#: views/field.php:379
 #@ user-meta
 msgid "Date and Time"
 msgstr "Date et heure"
 
-#: views/field.php:385
+#: views/field.php:392
 #@ user-meta
 msgid "Save meta value by"
 msgstr "Enregistrez la valeur meta par"
 
-#: views/field.php:390
+#: views/field.php:397
 #@ user-meta
 msgid "Country Code"
 msgstr "Code du pays"
 
-#: views/field.php:390
+#: views/field.php:397
 #@ user-meta
 msgid "Country Name"
 msgstr "Nom du pays"
 
-#: views/field.php:394
+#: views/field.php:401
 #@ user-meta
 msgid "Maximum Number"
 msgstr "Nombre maximal"
 
-#: views/field.php:402
+#: views/field.php:409
 #@ user-meta
 msgid "Minimum Number"
 msgstr "Nombre minimal"
 
-#: views/field.php:410
+#: views/field.php:417
 #@ user-meta
 msgid "Max File Size"
 msgstr "Taille maximale du fichier"
 
-#: views/field.php:413
+#: views/field.php:420
 #@ user-meta
 msgid "(in KB. Default: 1024KB)"
 msgstr "(en Ko. Par défaut : 1024Ko)"
 
-#: views/field.php:419
+#: views/field.php:426
 #@ user-meta
 msgid "Image Width (px)"
 msgstr "Largeur de l'image (en pixels)"
 
-#: views/field.php:422
+#: views/field.php:429
 #@ user-meta
 msgid "(For Image Only. e.g. 640)"
 msgstr "(Pour l'image uniquement. 640 par exemple)"
 
-#: views/field.php:428
+#: views/field.php:435
 #@ user-meta
 msgid "Image Height (px)"
 msgstr "Hauteur de l'image (en pixels)"
 
-#: views/field.php:431
+#: views/field.php:438
 #@ user-meta
 msgid "(For Image Only. e.g. 480)"
 msgstr "(Pour l'image uniquement. 480 par exemple)"
 
-#: views/field.php:437
+#: views/field.php:444
 #@ user-meta
 msgid "Image Size (px) width/height"
 msgstr ""
 
-#: views/field.php:440
+#: views/field.php:447
 #, fuzzy
 #@ user-meta
 msgid "(Default 96)"
 msgstr "Valeur par défaut"
 
-#: views/field.php:615
+#: views/field.php:624
 #@ user-meta
 msgid "New Field"
 msgstr "Nouveau champ"
@@ -1281,8 +1231,8 @@ msgstr "Nouveau champ"
 #: views/fieldsEditorPage.php:36
 #: views/formsEditorPage.php:14
 #: views/formsEditorPage.php:36
-#: views/pro/email/emailNotificationPage.php:119
-#: views/settingsPage.php:105
+#: views/pro/email/emailNotificationPage.php:138
+#: views/settingsPage.php:108
 #@ user-meta
 msgid "Save Changes"
 msgstr "Appliquer les réglages"
@@ -1302,22 +1252,16 @@ msgstr "Champs supplémentaires"
 msgid "Formatting Fields"
 msgstr "Mise en forme des champs"
 
+#: views/email/emailNotificationPage.php:49
+#: views/exportImport/importExportPage.php:23
 #: views/fieldsEditorPage.php:57
 #: views/formsEditorPage.php:57
-#: views/pro/email/emailNotificationPage.php:160
+#: views/pro/email/emailNotificationPage.php:179
 #: views/pro/exportImport/importExportPage.php:37
-#: views/settingsPage.php:120
+#: views/settingsPage.php:123
 #@ user-meta
 msgid "User Meta Pro"
 msgstr "User Meta Pro"
-
-#: views/fieldsEditorPage.php:59
-#: views/formsEditorPage.php:58
-#: views/pro/exportImport/importExportPage.php:38
-#: views/settingsPage.php:121
-#@ user-meta
-msgid "Shortcode"
-msgstr "Shortcode"
 
 #: views/form.php:11
 #: views/shortcodePopup.php:20
@@ -1384,31 +1328,33 @@ msgstr "Ne pas utiliser l'envoi par Ajax"
 msgid "New Form"
 msgstr "Nouveau formulaire"
 
-#: views/generateField.php:141
-#: views/generateField.php:163
-#, fuzzy, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format
+#: views/generateField.php:152
+#: views/generateField.php:154
+#: views/generateField.php:179
+#: views/generateField.php:181
+#, fuzzy, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format
 #@ user-meta
 msgid "Retype %s"
-msgstr "Confirmer "
+msgstr "Confirmer %s"
 
 #: views/generateForm.php:23
 #@ user-meta
 msgid "Fields were saved incorrectly."
 msgstr ""
 
-#: views/generateForm.php:147
-#: views/pro/generateProField.php:132
+#: views/generateForm.php:150
+#: views/pro/generateProField.php:149
 #@ user-meta
 msgid "Previous"
 msgstr "Précédent"
 
-#: views/generateForm.php:175
+#: views/generateForm.php:184
 #: views/settings/activationForm.php:77
 #@ user-meta
 msgid "Update"
 msgstr "Mise à jour"
 
-#: views/generateForm.php:177
+#: views/generateForm.php:186
 #@ user-meta
 msgid "Register"
 msgstr "S'inscrire"
@@ -1418,7 +1364,7 @@ msgstr "S'inscrire"
 msgid "General"
 msgstr "Général"
 
-#: models/umSupportArray.php:617
+#: models/umSupportArray.php:707
 #: views/settingsPage.php:19
 #@ user-meta
 msgid "Registration"
@@ -1476,30 +1422,30 @@ msgstr "Partie principale"
 msgid "Disable Notification"
 msgstr "Désactiver la notification"
 
-#: views/pro/generateProField.php:17
+#: views/pro/generateProField.php:33
 #, fuzzy
 #@ user-meta
 msgid "Site registration has been disabled."
 msgstr "L'enregistrement d'utilisateurs n'est actuellement pas autorisé."
 
-#: views/pro/generateProField.php:26
+#: views/pro/generateProField.php:42
 #, fuzzy
 #@ user-meta
 msgid "Site Name"
 msgstr "Prénom"
 
-#: views/pro/generateProField.php:26
+#: views/pro/generateProField.php:42
 #@ user-meta
 msgid "Site Domain"
 msgstr ""
 
-#: views/pro/generateProField.php:33
+#: views/pro/generateProField.php:49
 #, fuzzy
 #@ user-meta
 msgid "Site Title "
 msgstr "Titre du champ"
 
-#: views/pro/generateProField.php:140
+#: views/pro/generateProField.php:157
 #@ user-meta
 msgid "Next"
 msgstr "Suivant"
@@ -1514,7 +1460,7 @@ msgstr "<strong>Ce courriel sera envoyé au nouvel utilisateur après l'enregist
 #: views/pro/email/emailNotificationPage.php:63
 #: views/pro/email/emailNotificationPage.php:75
 #: views/pro/email/emailNotificationPage.php:87
-#: views/pro/email/emailNotificationPage.php:100
+#: views/pro/email/emailNotificationPage.php:119
 #@ user-meta
 msgid "User Notification"
 msgstr "Notification envoyée à l'utilisateur"
@@ -1535,6 +1481,7 @@ msgstr "<strong>Ce courriel sera envoyé à l'administrateur après inscription 
 #: views/pro/email/emailNotificationPage.php:30
 #: views/pro/email/emailNotificationPage.php:50
 #: views/pro/email/emailNotificationPage.php:107
+#: views/pro/email/emailNotificationPage.php:126
 #@ user-meta
 msgid "Admin Notification"
 msgstr "Notification envoyée à l'administrateur"
@@ -1569,37 +1516,42 @@ msgstr "Courriel de désactivation de l'utilisateur"
 msgid "Lost Password E-mail"
 msgstr "Courriel pour mot de passe perdu"
 
-#: views/pro/email/emailNotificationPage.php:99
+#: views/pro/email/emailNotificationPage.php:118
 #@ user-meta
 msgid "This e-mail will be sent to user when they update their front-end profile."
 msgstr "<strong>Ce courriel sera envoyé à l'utilisateur lorsqu'il met à jour son profil frontal.</strong>"
 
-#: views/pro/email/emailNotificationPage.php:106
+#: views/pro/email/emailNotificationPage.php:125
 #@ user-meta
 msgid "This e-mail will be sent to admin when user update their front-end profile."
 msgstr "<strong>Ce courriel sera envoyé à l'admin quand un utilisateur met à jour son profil frontal.</strong>"
 
-#: views/pro/email/emailNotificationPage.php:110
+#: views/pro/email/emailNotificationPage.php:129
 #@ user-meta
 msgid "Profile Update E-mail"
 msgstr "Courriel de mise à jour de profil"
 
-#: views/pro/email/emailNotificationPage.php:132
+#: views/email/emailNotificationPage.php:21
+#: views/pro/email/emailNotificationPage.php:151
 #@ user-meta
 msgid "Site Placeholder"
 msgstr "Termes réservés  du site"
 
-#: views/pro/email/emailNotificationPage.php:141
+#: views/email/emailNotificationPage.php:30
+#: views/pro/email/emailNotificationPage.php:160
 #@ user-meta
 msgid "User Placeholder"
 msgstr "Termes réservés utilisateur"
 
-#: views/pro/email/emailNotificationPage.php:151
+#: views/email/emailNotificationPage.php:40
+#: views/pro/email/emailNotificationPage.php:170
 #@ user-meta
 msgid "Custom Field"
 msgstr "Champ personnalisé"
 
-#: views/pro/email/emailNotificationPage.php:156
+#: views/email/emailNotificationPage.php:45
+#: views/field.php:111
+#: views/pro/email/emailNotificationPage.php:175
 #@ user-meta
 msgid "Placeholder"
 msgstr "Termes réservés"
@@ -1665,7 +1617,7 @@ msgid "Save & Export"
 msgstr "Sauver & Exporter"
 
 #: views/pro/exportImport/exportForm.php:129
-#: views/showFile.php:52
+#: views/showFile.php:54
 #@ user-meta
 msgid "Remove"
 msgstr "Supprimer"
@@ -1729,6 +1681,7 @@ msgstr ""
 msgid "Export & Import User Meta Pro"
 msgstr "User Meta Pro"
 
+#: views/exportImport/importExportPage.php:16
 #: views/pro/exportImport/importExportPage.php:30
 #, fuzzy
 #@ user-meta
@@ -1813,7 +1766,7 @@ msgstr "Import"
 msgid "User Import Status"
 msgstr "Statut d'importation utilisateurs"
 
-#: models/pro/umAjaxProModel.php:171
+#: models/pro/umAjaxProModel.php:187
 #: views/pro/exportImport/importStep3.php:20
 #@ user-meta
 msgid "Import completed."
@@ -1915,39 +1868,39 @@ msgstr ""
 msgid "Do not import any settings"
 msgstr ""
 
-#: models/umSupportArray.php:598
+#: models/umSupportArray.php:688
 #@ user-meta
 msgid "Lost your password?"
 msgstr "Mot de passe perdu ?"
 
-#: models/umSupportArray.php:600
+#: models/umSupportArray.php:690
 #@ user-meta
 msgid "Username or E-mail"
 msgstr "Nom d'utilisateur ou courriel"
 
-#: models/umSupportArray.php:601
+#: models/umSupportArray.php:691
 #@ user-meta
 msgid "Get New Password"
 msgstr "Obtenir un nouveau mot de passe"
 
-#: models/umSupportArray.php:603
-#: models/umSupportArray.php:604
-#: models/umSupportArray.php:608
+#: models/umSupportArray.php:693
+#: models/umSupportArray.php:694
+#: models/umSupportArray.php:698
 #@ user-meta
 msgid "Reset Password"
 msgstr "Réinitialiser le mot de passe"
 
-#: models/umSupportArray.php:605
+#: models/umSupportArray.php:695
 #@ user-meta
 msgid "Enter your new password below."
 msgstr "Entrer le nouveau mot de passe ci-dessous."
 
-#: models/umSupportArray.php:606
+#: models/umSupportArray.php:696
 #@ user-meta
 msgid "New password"
 msgstr "Nouveau mot de passe"
 
-#: models/umSupportArray.php:607
+#: models/umSupportArray.php:697
 #@ user-meta
 msgid "Confirm new password"
 msgstr "Confirmer le nouveau mot de passe"
@@ -2068,51 +2021,45 @@ msgstr "Ouverture de session par "
 msgid "Login Page"
 msgstr "Page de connexion"
 
-#: views/pro/settings/loginSettings.php:34
-#, fuzzy, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format
-#@ user-meta
-msgid "Login page should contain shortcode: %s"
-msgstr "La page de connexion doit contenir le shortcode :"
-
-#: views/pro/settings/loginSettings.php:38
+#: views/pro/settings/loginSettings.php:47
 #, php-format
 #@ user-meta
 msgid "Disable default login url (%s)"
 msgstr "Désactiver l'url de connexion par défaut de WordPress <strong>(%s)</strong>"
 
-#: views/pro/settings/loginSettings.php:46
+#: views/pro/settings/loginSettings.php:55
 #, php-format
 #@ user-meta
 msgid "Disable wp-login.php and redirect to front-end login page %s"
 msgstr "Désactiver wp-login.php et rediriger vers la page de connexion frontal <strong>%s</strong>"
 
-#: views/pro/settings/loginSettings.php:54
+#: views/pro/settings/loginSettings.php:66
 #@ user-meta
 msgid "Login Form"
 msgstr "Formulaire de connexion"
 
-#: views/pro/settings/loginSettings.php:69
+#: views/pro/settings/loginSettings.php:81
 #, fuzzy
 #@ user-meta
 msgid "Disable lost password feature"
 msgstr "Désactiver la fonctionnalité de redirection"
 
-#: views/pro/settings/loginSettings.php:83
+#: views/pro/settings/loginSettings.php:104
 #@ user-meta
 msgid "Disable AJAX submit"
 msgstr "Désactiver l'envoi par AJAX"
 
-#: views/pro/settings/loginSettings.php:117
+#: views/pro/settings/loginSettings.php:138
 #@ user-meta
 msgid "Logged in user profile settings"
 msgstr "Profil de l'utilisateur connecté"
 
-#: views/pro/settings/loginSettings.php:142
+#: views/pro/settings/loginSettings.php:163
 #@ user-meta
 msgid "Multisite"
 msgstr ""
 
-#: views/pro/settings/loginSettings.php:147
+#: views/pro/settings/loginSettings.php:168
 #@ user-meta
 msgid "Prevent user login if user is not member of current site."
 msgstr ""
@@ -2219,19 +2166,19 @@ msgstr "Un lien de vérification sera envoyé à l'adresse de courriel de l'util
 msgid "User Activation"
 msgstr "Activation de l'utilisateur"
 
-#: views/pro/settings/registrationSettings.php:31
+#: views/pro/settings/registrationSettings.php:46
 #@ user-meta
 msgid "Auto login after registration"
 msgstr ""
 
-#: views/pro/settings/registrationSettings.php:66
+#: views/pro/settings/registrationSettings.php:81
 #, fuzzy
 #@ user-meta
 msgid "Multisite Registration"
 msgstr "Inscription"
 
 #: views/settings/activationForm.php:8
-#, fuzzy, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format
+#, fuzzy, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format
 #@ user-meta
 msgid "Version: %s"
 msgstr "Version : %s"
@@ -2241,13 +2188,7 @@ msgstr "Version : %s"
 msgid "User Meta Pro Account Information"
 msgstr "Information sur le compte User Meta Pro"
 
-#: views/email/emailNotificationPage.php:4
-#: views/exportImport/importExportPage.php:4
-#: views/settings/backendProfile.php:4
-#: views/settings/loginSettings.php:4
 #: views/settings/miscSettings.php:4
-#: views/settings/redirectionSettings.php:4
-#: views/settings/registrationSettings.php:4
 #, php-format
 #@ user-meta
 msgid "This feature is only supported in Pro version. Get %s"
@@ -2265,7 +2206,7 @@ msgid "Show profile link to <a href=\"%s\">Users<a> administration page."
 msgstr "Show profile link to <a href=\"%s\">Users<a> administration page."
 
 #: views/settings/generalSettings.php:20
-#, fuzzy, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format
+#, fuzzy, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format, php-format
 #@ user-meta
 msgid "Profile page should contain shortcode like: %s"
 msgstr "La page de profil doit contenir un shortcode du style : "
@@ -2295,7 +2236,7 @@ msgstr "Depuis l'adresse de courriel :"
 msgid "Email Format:"
 msgstr "Format de courriel :"
 
-#: controllers/pro/umEmailNotificationController.php:58
+#: controllers/pro/umEmailNotificationController.php:116
 #, php-format
 #@ user-meta
 msgid ""
@@ -2314,7 +2255,7 @@ msgstr ""
 msgid "Show user registration, profile or login form as widget"
 msgstr ""
 
-#: framework/models/PluginFrameworkWPSupport.php:414
+#: framework/models/PluginFrameworkWPSupport.php:413
 #@ user-meta
 msgid "Redirecting..."
 msgstr ""
@@ -2339,12 +2280,12 @@ msgstr ""
 msgid "Pending Approval"
 msgstr ""
 
-#: controllers/pro/umUserActivationController.php:275
+#: controllers/pro/umUserActivationController.php:277
 #@ user-meta
 msgid "No user updated"
 msgstr ""
 
-#: controllers/umShortcodesController.php:65
+#: controllers/umShortcodesController.php:134
 #@ user-meta
 msgid "Add User Meta Shortcode"
 msgstr ""
@@ -3544,85 +3485,85 @@ msgstr ""
 msgid "Zimbabwe"
 msgstr ""
 
-#: models/umAjaxModel.php:313
+#: models/umAjaxModel.php:319
 #@ user-meta
 msgid "License has been withdrawn"
 msgstr ""
 
-#: controllers/pro/umExportImportController.php:67
-#: models/umAjaxModel.php:316
+#: controllers/pro/umExportImportController.php:68
+#: models/umAjaxModel.php:322
 #@ user-meta
 msgid "Something went wrong!"
 msgstr ""
 
-#: models/umSupportArray.php:39
 #: models/umSupportArray.php:40
+#: models/umSupportArray.php:41
 #@ user-meta
 msgid "Email Notification"
 msgstr ""
 
-#: models/umSupportArray.php:637
+#: models/umSupportArray.php:727
 #@ user-meta
 msgid "<strong>ERROR:</strong> your account is inactive"
 msgstr ""
 
-#: models/umSupportArray.php:622
+#: models/umSupportArray.php:712
 #, php-format
 #@ user-meta
 msgid "Your email is successfully verified and the account has been activated. <a href=\"%s\">Login now</a>"
 msgstr ""
 
-#: models/umSupportArray.php:620
+#: models/umSupportArray.php:710
 #@ user-meta
 msgid "Your email is successfully verified. Please wait for admin approval."
 msgstr ""
 
-#: models/umSupportArray.php:597
+#: models/umSupportArray.php:687
 #@ user-meta
 msgid "Lost Password"
 msgstr ""
 
-#: views/field.php:224
+#: views/field.php:231
 #@ user-meta
 msgid "Default Role"
 msgstr ""
 
-#: views/field.php:229
+#: views/field.php:236
 #@ user-meta
 msgid "Should be one of the Allowed Roles"
 msgstr ""
 
-#: views/field.php:369
+#: views/field.php:376
 #@ user-meta
 msgid "Date, Time or Date & Time"
 msgstr ""
 
-#: views/field.php:376
+#: views/field.php:383
 #@ user-meta
 msgid "Date Format"
 msgstr ""
 
-#: views/field.php:480
+#: views/field.php:487
 #@ user-meta
 msgid "reCaptcha Theme"
 msgstr ""
 
-#: views/field.php:486
+#: views/field.php:493
 #@ user-meta
 msgid "Red"
 msgstr ""
 
-#: views/field.php:487
+#: views/field.php:494
 #@ user-meta
 msgid "White"
 msgstr ""
 
-#: views/field.php:488
+#: views/field.php:495
 #@ user-meta
 msgid "Black Glass"
 msgstr ""
 
-#: views/field.php:489
+#: views/field.php:496
 #@ user-meta
 msgid "Clean"
 msgstr ""
@@ -3701,12 +3642,12 @@ msgstr ""
 msgid "Insert Shortcode"
 msgstr ""
 
-#: views/shortcodePopup.php:79
+#: views/shortcodePopup.php:80
 #@ user-meta
 msgid "Optional"
 msgstr ""
 
-#: models/umMethods.php:58
+#: models/umMethods.php:59
 #@ user-meta
 msgid "You do not have permission to access user profile."
 msgstr ""
@@ -3716,20 +3657,20 @@ msgstr ""
 msgid "Diff (optional):"
 msgstr ""
 
-#: models/umMethods.php:29
+#: models/umMethods.php:30
 #, php-format
 #@ user-meta
 msgid "Sorry. type=\"%s\" is not valid."
 msgstr ""
 
-#: models/umMethods.php:56
-#: models/umMethods.php:81
+#: models/umMethods.php:57
+#: models/umMethods.php:83
 #@ user-meta
 msgid "No user found!."
 msgstr ""
 
-#: models/umSupportArray.php:613
-#: models/umSupportArray.php:614
+#: models/umSupportArray.php:703
+#: models/umSupportArray.php:704
 #@ user-meta
 msgid "Please login to access your profile."
 msgstr "Connectez-vous afin d’accèder à votre profil."
@@ -3740,57 +3681,52 @@ msgstr "Connectez-vous afin d’accèder à votre profil."
 msgid "Form \"%s\" is not found."
 msgstr ""
 
-#: models/umSupportArray.php:627
+#: models/umSupportArray.php:717
 #, php-format
 #@ user-meta
 msgid "%s is required"
 msgstr ""
 
-#: models/umSupportArray.php:628
+#: models/umSupportArray.php:718
 #@ user-meta
 msgid "Invalid email address"
 msgstr ""
 
 #: models/classes/umValidationRulesClass.php:64
-#: models/umSupportArray.php:626
+#: models/umSupportArray.php:716
 #, php-format
 #@ user-meta
 msgid "Invalid %s"
 msgstr ""
 
-#: models/umSupportArray.php:544
+#: models/umSupportArray.php:633
 #@ user-meta
 msgid "* Invalid field"
 msgstr ""
 
-#: views/field.php:446
+#: views/field.php:453
 #@ user-meta
 msgid "Regex"
 msgstr ""
 
-#: views/field.php:455
+#: views/field.php:462
 #@ user-meta
 msgid "Error Text"
 msgstr ""
 
-#: views/field.php:458
+#: views/field.php:465
 #@ user-meta
 msgid "Default: Invalid field"
 msgstr ""
 
-#: views/generateField.php:434
+#: views/generateField.php:459
 #@ user-meta
 msgid "description"
 msgstr ""
 
-#: models/pro/umSupportProModel.php:663
+#: models/pro/umSupportProModel.php:623
 #@ user-meta
 msgid "Send email to all admin"
-msgstr ""
-
-#: views/pro/settings/loginSettings.php:76
-#@ user-meta
-msgid "Use default lostpassword url"
 msgstr ""
 
 #: views/settings/textSettings.php:9
@@ -3803,27 +3739,27 @@ msgstr ""
 msgid "Text"
 msgstr ""
 
-#: controllers/pro/umExportImportController.php:114
+#: controllers/pro/umExportImportController.php:115
 #@ user-meta
 msgid "CSV file is not found for import!"
 msgstr ""
 
-#: controllers/pro/umExportImportController.php:116
+#: controllers/pro/umExportImportController.php:117
 #@ user-meta
 msgid "Error occurred while importing."
 msgstr ""
 
-#: controllers/pro/umExportImportController.php:120
+#: controllers/pro/umExportImportController.php:121
 #@ user-meta
 msgid "Email should be selected as one of the fields."
 msgstr ""
 
-#: controllers/pro/umExportImportController.php:123
+#: controllers/pro/umExportImportController.php:124
 #@ user-meta
 msgid "Username should be selected as one of the fields."
 msgstr ""
 
-#: controllers/pro/umExportImportController.php:126
+#: controllers/pro/umExportImportController.php:127
 #@ user-meta
 msgid "Both Email and Username should be selected as any of the fields."
 msgstr ""
@@ -3845,22 +3781,22 @@ msgstr ""
 msgid "For showing role based on user profile"
 msgstr ""
 
-#: controllers/pro/umPreloadsProController.php:222
-#: controllers/pro/umPreloadsProController.php:225
+#: controllers/pro/umPreloadsProController.php:224
+#: controllers/pro/umPreloadsProController.php:227
 #, php-format
 #@ user-meta
 msgid "Please set %s!"
 msgstr ""
 
-#: controllers/pro/umPreloadsProController.php:222
-#: views/pro/settings/loginSettings.php:91
+#: controllers/pro/umPreloadsProController.php:224
+#: views/pro/settings/loginSettings.php:112
 #@ user-meta
 msgid "Reset Password Page"
 msgstr ""
 
-#: controllers/pro/umPreloadsProController.php:225
+#: controllers/pro/umPreloadsProController.php:227
 #: views/pro/settings/miscSettings.php:19
-#: views/pro/settings/registrationSettings.php:41
+#: views/pro/settings/registrationSettings.php:56
 #@ user-meta
 msgid "Email verification page"
 msgstr ""
@@ -3875,39 +3811,39 @@ msgstr ""
 msgid "Settings successfully saved."
 msgstr ""
 
-#: controllers/umVersionUpdateController.php:341
+#: controllers/umVersionUpdateController.php:342
 #@ default
 msgid "Some texts of UserMetaPro have been updated. If you are using your site in any other languages than english, please update your translation."
 msgstr ""
 
-#: controllers/umVersionUpdateController.php:342
+#: controllers/umVersionUpdateController.php:343
 #@ user-meta
 msgid "Dismiss"
 msgstr ""
 
 #: framework/helper/uploader.php:200
-#: framework/models/PluginFrameworkWPSupport.php:307
+#: framework/models/PluginFrameworkWPSupport.php:338
 #@ user-meta
 msgid "Uploaded file could not be saved."
 msgstr ""
 
 #: framework/helper/uploader.php:201
-#: framework/models/PluginFrameworkWPSupport.php:308
+#: framework/models/PluginFrameworkWPSupport.php:339
 #@ user-meta
 msgid "The upload was cancelled due to server error"
 msgstr ""
 
-#: framework/models/PluginFrameworkBuiltinFunction.php:73
+#: framework/models/PluginFrameworkBuiltinFunction.php:105
 #@ user-meta
 msgid "Someone requested to reset the password for the following account:"
 msgstr ""
 
-#: framework/models/PluginFrameworkBuiltinFunction.php:76
+#: framework/models/PluginFrameworkBuiltinFunction.php:108
 #@ user-meta
 msgid "If you did not authorize this then please ignore this email and nothing will happen."
 msgstr ""
 
-#: framework/models/PluginFrameworkWPSupport.php:66
+#: framework/models/PluginFrameworkWPSupport.php:81
 #@ user-meta
 msgid "No role defined"
 msgstr ""
@@ -3917,23 +3853,25 @@ msgstr ""
 msgid "Click to remove"
 msgstr ""
 
-#: models/pro/umAjaxProModel.php:84
+#: models/pro/umAjaxProModel.php:100
+#: models/umAjaxModel.php:332
 #@ user-meta
 msgid "Error occurred while updating"
 msgstr ""
 
-#: models/pro/umAjaxProModel.php:90
+#: models/pro/umAjaxProModel.php:106
+#: models/umAjaxModel.php:338
 #@ user-meta
 msgid "Successfully saved."
 msgstr ""
 
-#: models/pro/umAjaxProModel.php:132
-#: models/pro/umAjaxProModel.php:136
+#: models/pro/umAjaxProModel.php:148
+#: models/pro/umAjaxProModel.php:152
 #@ user-meta
 msgid "Something went wrong. File has not been uploaded"
 msgstr ""
 
-#: models/pro/umSupportProModel.php:88
+#: models/pro/umSupportProModel.php:94
 #@ user-meta
 msgid "Password reset is currently not allowed."
 msgstr ""
@@ -3953,70 +3891,70 @@ msgstr ""
 msgid "No field to update"
 msgstr ""
 
-#: models/umMethods.php:72
+#: models/umMethods.php:73
 #, php-format
 #@ user-meta
 msgid "You have already registered. See your <a href=\"%s\">profile</a>"
 msgstr ""
 
-#: models/umSupportArray.php:591
+#: models/umSupportArray.php:680
 #@ user-meta
 msgid "Remember me"
 msgstr ""
 
-#: models/umSupportArray.php:593
+#: models/umSupportArray.php:682
 #@ user-meta
 msgid "Both username and email are required"
 msgstr ""
 
-#: models/umSupportArray.php:595
+#: models/umSupportArray.php:684
 #@ user-meta
 msgid "Login successfuly"
 msgstr ""
 
-#: models/umSupportArray.php:599
+#: models/umSupportArray.php:689
 #@ user-meta
 msgid "Please enter your username or email address. You will receive a link to reset your password via email."
 msgstr ""
 
-#: models/umSupportArray.php:621
+#: models/umSupportArray.php:711
 #@ user-meta
 msgid "Please wait until an admin approves your account."
 msgstr ""
 
-#: models/umSupportArray.php:625
+#: models/umSupportArray.php:715
 #@ user-meta
 msgid "Validation"
 msgstr ""
 
-#: models/umSupportArray.php:629
+#: models/umSupportArray.php:719
 #, php-format
 #@ user-meta
 msgid "%s does not match"
 msgstr ""
 
-#: models/umSupportArray.php:630
+#: models/umSupportArray.php:720
 #@ user-meta
 msgid "Please provide valid current password"
 msgstr ""
 
-#: models/umSupportArray.php:631
+#: models/umSupportArray.php:721
 #, php-format
 #@ user-meta
 msgid "Current %s is required"
 msgstr ""
 
-#: models/umSupportArray.php:634
+#: models/umSupportArray.php:724
 #@ user-meta
 msgid "Misc"
 msgstr ""
 
-#: models/umSupportArray.php:641
+#: models/umSupportArray.php:731
 #@ user-meta
 msgid "Incorrect captcha code"
 msgstr ""
 
-#: models/umSupportArray.php:643
+#: models/umSupportArray.php:734
 #@ user-meta
 msgid "Invalid parameter"
 msgstr ""
@@ -4027,80 +3965,28 @@ msgstr ""
 msgid "<p><strong>Step 3.</strong> Write shortcode to your page or post. Shortcode (e.g.): %s</p>"
 msgstr ""
 
-#: models/umSupportHtml.php:12
-#: models/umSupportHtml.php:50
-#@ user-meta
-msgid "your_form_name"
-msgstr ""
-
-#: models/umSupportHtml.php:51
-#, php-format
-#@ user-meta
-msgid "%s for showing profile form."
-msgstr ""
-
-#: models/umSupportHtml.php:52
-#, php-format
-#@ user-meta
-msgid "%s for showing registration form."
-msgstr ""
-
-#: models/umSupportHtml.php:53
-#, php-format
-#@ user-meta
-msgid "%s for showing profile form if user logged in, or showing registration form, if user not logged in."
-msgstr ""
-
-#: models/umSupportHtml.php:54
-#, php-format
-#@ user-meta
-msgid "%s for showing public profile if user_id parameter provided as GET request."
-msgstr ""
-
-#: models/umSupportHtml.php:55
-#, php-format
-#@ user-meta
-msgid "%s for showing login page."
-msgstr ""
-
-#: models/umSupportHtml.php:58
-#@ user-meta
-msgid "<p>N.B. \"registration\", \"profile-registration\" and \"login\" is only supported in pro version.</p>"
-msgstr ""
-
-#: models/umSupportHtml.php:68
-#, php-format
-#@ user-meta
-msgid "Admin users can view frontend profiles from User Administration screen. To enable this feature, select a profile page from Profile Page Selection in <a href=\"%s\">General settings</a> tab and enable the checkbox to the right."
-msgstr ""
-
-#: models/umSupportHtml.php:69
-#@ user-meta
-msgid "In case of extra field, you need to define unique meta_key. That meta_key will be use to save extra data in usermeta table. Without defining meta_key, extra data won't save."
-msgstr ""
-
-#: views/field.php:327
+#: views/field.php:334
 #@ user-meta
 msgid "Current password is required"
 msgstr ""
 
-#: views/field.php:449
+#: views/field.php:456
 #, php-format
 #@ user-meta
 msgid "e.g.: %s"
 msgstr ""
 
-#: views/field.php:505
+#: views/field.php:512
 #@ user-meta
 msgid "By default, <strong>Required</strong> and <strong>Unique</strong> validation will be will be applied on this field. <strong>Read Only</strong> will be applied conditionally."
 msgstr ""
 
-#: views/field.php:511
+#: views/field.php:518
 #@ user-meta
 msgid "By default, <strong>Required</strong> and <strong>Unique</strong> validation will be applied on this field."
 msgstr ""
 
-#: views/field.php:517
+#: views/field.php:524
 #@ user-meta
 msgid "<strong>Required</strong> validation will be applied automatically when password field is being used for registration."
 msgstr ""
@@ -4110,20 +3996,15 @@ msgstr ""
 msgid "Click field from right side panel for creating a new field"
 msgstr ""
 
+#: views/email/emailNotificationPage.php:47
+#: views/exportImport/importExportPage.php:21
 #: views/fieldsEditorPage.php:58
 #: views/formsEditorPage.php:55
-#: views/pro/email/emailNotificationPage.php:158
+#: views/pro/email/emailNotificationPage.php:177
 #: views/pro/exportImport/importExportPage.php:35
-#: views/settingsPage.php:118
+#: views/settingsPage.php:121
 #@ user-meta
 msgid "3 steps to get started"
-msgstr ""
-
-#: views/fieldsEditorPage.php:60
-#: views/formsEditorPage.php:59
-#: views/settingsPage.php:122
-#@ user-meta
-msgid "Tips"
 msgstr ""
 
 #: views/form.php:74
@@ -4131,13 +4012,15 @@ msgstr ""
 msgid "Drag fields from right block to left block to add them to your form."
 msgstr ""
 
-#: views/generateField.php:169
+#: views/generateField.php:187
+#: views/generateField.php:191
 #, php-format
 #@ user-meta
 msgid "Current %s"
 msgstr ""
 
-#: views/generateField.php:179
+#: views/generateField.php:188
+#: views/generateField.php:194
 #, php-format
 #@ user-meta
 msgid "New %s"
@@ -4179,7 +4062,8 @@ msgstr ""
 msgid "Use placeholder %s or it will included automatically."
 msgstr ""
 
-#: views/pro/email/emailNotificationPage.php:154
+#: views/email/emailNotificationPage.php:43
+#: views/pro/email/emailNotificationPage.php:173
 #@ user-meta
 msgid "Placeholder will be replaced with the relevant value when used in email subject or body."
 msgstr ""
@@ -4215,13 +4099,13 @@ msgstr ""
 msgid "Read: %1$s, Created: %2$s, Updated: %3$s, Skipped: %4$s"
 msgstr ""
 
-#: views/pro/fieldPro.php:82
+#: views/pro/fieldPro.php:88
 #, php-format
 #@ user-meta
 msgid "Please provide reCaptcha public and private keys in User Meta %s page"
 msgstr ""
 
-#: views/pro/generateProField.php:205
+#: views/pro/generateProField.php:223
 #@ user-meta
 msgid "Please set public and private keys in User Meta >> Settings Page"
 msgstr ""
@@ -4231,12 +4115,12 @@ msgstr ""
 msgid "<p>User Meta Pro use reCAPTCHA as Captcha field. reCAPTCHA public and private Keys are required for using Captcha validation. Get these keys for free. <a href='http://www.google.com/recaptcha/whyrecaptcha' target='_blank'>Sign up now</a>.</p>"
 msgstr ""
 
-#: views/pro/settings/loginSettings.php:109
+#: views/pro/settings/loginSettings.php:130
 #@ user-meta
 msgid "Please select any page for resetting password as your default login url is disabled!"
 msgstr ""
 
-#: views/pro/settings/loginSettings.php:110
+#: views/pro/settings/loginSettings.php:131
 #@ user-meta
 msgid "This is the page a user will be redirected to when they want to retrieve/reset their password."
 msgstr ""
@@ -4261,22 +4145,22 @@ msgstr ""
 msgid "Referer (<em>Send the user back to the page where they come from</em>)"
 msgstr ""
 
-#: views/pro/settings/registrationSettings.php:35
+#: views/pro/settings/registrationSettings.php:50
 #@ user-meta
 msgid "If checked, user will be automatically logged in after registration."
 msgstr ""
 
-#: views/pro/settings/registrationSettings.php:59
+#: views/pro/settings/registrationSettings.php:74
 #@ user-meta
 msgid "Email verification will not work until a page is selected here!"
 msgstr ""
 
-#: views/pro/settings/registrationSettings.php:60
+#: views/pro/settings/registrationSettings.php:75
 #@ user-meta
 msgid "This is the page a user will be redirected to when they want to verify their email address."
 msgstr ""
 
-#: views/pro/settings/registrationSettings.php:71
+#: views/pro/settings/registrationSettings.php:86
 #@ user-meta
 msgid "Allow user registration if user already exists in any of the other sites in the network"
 msgstr ""
@@ -4291,8 +4175,75 @@ msgstr ""
 msgid "This will withdraw license from all sites under the network. Are you sure you want to withdraw pro license from all sites?"
 msgstr ""
 
-#: models/umSupportArray.php:679
+#: models/umSupportArray.php:770
 #@ user-meta
 msgid "Reset password"
+msgstr ""
+
+#: models/umSupportArray.php:352
+#@ user-meta
+msgid "Multi Select"
+msgstr ""
+
+#: models/umSupportArray.php:392
+#@ user-meta
+msgid "URL"
+msgstr ""
+
+#: models/umSupportArray.php:627
+#@ user-meta
+msgid "* Not a valid number"
+msgstr ""
+
+#: models/umSupportArray.php:685
+#, php-format
+#@ user-meta
+msgid "Don't have an account? <a href=\"%s\">Sign up</a>"
+msgstr ""
+
+#: models/umSupportArray.php:732
+#@ user-meta
+msgid "Sorry, that key does not appear to be valid."
+msgstr ""
+
+#: models/umSupportArray.php:733
+#@ user-meta
+msgid "Sorry, that key has expired. Please try again."
+msgstr ""
+
+#: views/field.php:224
+#@ default
+msgid "Allow integer only"
+msgstr ""
+
+#: views/pro/email/emailNotificationPage.php:106
+#@ user-meta
+msgid "This e-mail will be sent to admin when user reset their password."
+msgstr ""
+
+#: views/pro/email/emailNotificationPage.php:110
+#@ user-meta
+msgid "Reset Password E-mail"
+msgstr ""
+
+#: views/pro/settings/loginSettings.php:44
+#, php-format
+#@ user-meta
+msgid "Login page should contain shortcode like: %s"
+msgstr ""
+
+#: views/pro/settings/loginSettings.php:97
+#@ user-meta
+msgid "Hide registration link"
+msgstr ""
+
+#: views/pro/settings/registrationSettings.php:30
+#@ user-meta
+msgid "User registration page"
+msgstr ""
+
+#: models/umSupportHtml.php:57
+#@ user-meta
+msgid "<p><strong>Note: </strong>user-meta-login, user-meta-field and user-meta-field_value shortcode is only supported for pro version.</p>"
 msgstr ""
 

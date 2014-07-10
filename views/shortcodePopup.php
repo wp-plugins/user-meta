@@ -54,15 +54,16 @@ global $userMeta;
         'class'         => 'button-primary',
         'enclose'       => 'p'
     ) );
+    
 
     ?>
 </div>
 
-<?php if( !$userMeta->isPro() ){ ?>
+<?php if ( ! $userMeta->isPro() ){ ?>
     <script type="text/javascript">
         jQuery(document).ready(function(){
             jQuery("#um_action_type option").each(function(){
-                if( !( (jQuery(this).text() == "profile") || (jQuery(this).text() == "public") )  )
+                if( jQuery(this).text() == "login" )
                     jQuery(this).attr("disabled","disabled");
             });
         });

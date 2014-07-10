@@ -17,7 +17,7 @@ $html .= $userMeta->createInput( "general[profile_in_admin]", "checkbox", array(
     'id'    => 'um_general_profile_in_admin',
     'label' => sprintf( __( 'Show profile link to <a href="%s">Users<a> administration page.', $userMeta->name ), admin_url( 'users.php' ) ),
 ) );             
-$html .= "<p>" . sprintf( __( "Profile page should contain shortcode like: %s", $userMeta->name ), "[user-meta type=\"profile\" form=\"your_form_name\"]") . "</p>";    
+$html .= "<p>" . sprintf( __( "Profile page should contain shortcode like: %s", $userMeta->name ), "[user-meta-profile form=\"your_form_name\"]") . "</p>";    
 // End Profile Page Selection
 
 $html .= "<div class='pf_divider'></div>";  

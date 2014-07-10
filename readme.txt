@@ -1,10 +1,9 @@
 === User Meta ===
 Contributors: khaledsaikat
-Donate link: http://user-meta.com/donation
 Tags: user, profile, registration, login, frontend, users, usermeta, import, csv, upload, AJAX, admin, plugin, page, image, images, photo, picture, file, email, shortcode, captcha, avatar, redirect, register, password, custom, csv, import, user import, widget
 Requires at least: 3.3.0
-Tested up to: 3.9
-Stable tag: 1.1.5
+Tested up to: 3.9.1
+Stable tag: 1.1.6
 Copyright: Khaled Hossain, user-meta.com
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -13,55 +12,46 @@ WordPress user management plugin. Custom user profile,registration with extra fi
 
 == Description ==
 
-= WordPress user management plugin =
+= Features =
+* Allows user to update their profile on front-end.
+* Add extra fields to custom user profile.
+* Front-end user registration by shortcode.
+* Add extra fields to custom user registration.
+* Add profile link to users listing page.
+* Fields and forms editor to customize front-end user profile and registration.
+* Create unlimited forms for custom user registration or profile.
+* Show role based user profile. Users from different role can see different profile form.
+* Users can register their account with different role by using different registration form.
+* Show user avatar to profile and registration page (both ajax and non ajax).
+* Modify default email sender information (Let your user get email from your preferred name and email instead of wordpress@example.com)
 
-Support custom user profile, both back-end and front-end. Custom registration with extra fields. Login widget/shortcode, user login by username or email. Import user from csv with meta data.
-Themes the WordPress profile, register and login pages according to your theme. Add extra fields(meta data) to user profile or registration page, User Meta plugin support variety of fields to create profile or registration form. More features: admin approval, user activation/deactivation, email verification, role based redirection, modify default email sender, custom email template etc.
 
-= Custom user profile and registration page =
+= Extra features for User Meta Pro =
+* Front-end custom user login by username or email.
+* Front-end lost password and reset password.
+* User Profile widget, registration widget and login widget.
+* Auto user login after registration.
+* Email verification on registration.
+* Admin approval on user registration.
+* Admin can activate or deactivate any user form user listing page.
+* Add extra fields to default profile or hide existing fields.
+* Role based redirection after user login, logout and registration.
+* Customize emails sent from your WordPress site. Add default field or extra fields content to each email.
+* Bulk users import/export from/to csv file with extra fields.
+* Customize, filter, or change user order while exporting users.
+* User import/export with hashed or plain text password.
 
-User Meta Pro allow to fully customize user profile or registration page by providing form editor tools. any page or post can be use as profile/registration page by using shortcode. support ajax user avatar, ajax file upload, and ajax input validation, captcha validation, pagination for break long page to paginated page. Let user login with or without username or email.
+Get [User Meta Pro](http://user-meta.com/ "User Meta Pro").
 
-= Login widget/shortcode, login with username or email =
-
-Let user to login by email instead of username. Or both email or username. Customize login form by adding own html. Customize logged in user profile.
-
-= Front-end lost password and reset password tools =
-
-wp-login.php is no longer needed for lost password and reset password. Also restrict access to wp-login.php and redirect them to front-end login page.
-
-= Import user from csv =
-
-Import user from csv with extra meta data. Assign role to newly imported user. Update current user data by csv file.
-
-= Redirection =
-
-Role based redirection after user login, logout and registration.
-
-= Admin approval, user activation or deactivation =
-
-Allow admin to approve user upon registration and activate or deactivate any user, any time.
-
-= E-mail verification =
-
-Verify user email in order to activate a new user.
-
-= Customize Email Template =
-
-Customize user registration, activation, deactivation, lostpassword etc emails with including extra fields data.
-
-= Modify default email sender information =
-
-Let your user get email from your prefered name and email instead of wordpress@userdomain.com
 
 = Supported field for form builder =
-
 * User Avatar
 * TextBox
 * Paragraph
 * Rich Text
 * Hidden Field
 * DropDown
+* Multi select
 * CheckBox
 * Select One (radio)
 * Date /Time
@@ -79,6 +69,8 @@ Let your user get email from your prefered name and email instead of wordpress@u
 * HTML
 * Captcha
 
+
+
 You can create unlimited number of fields. All newly created field's data will save to WordPress default usermeta table. so you can retrieve all user data by calling wordpress default functions(e.g. get_userdata(), get_user_meta() ). User Meta plugin separates fields and forms. So, a single field can be used among several forms.
 
 = Documentation =
@@ -87,18 +79,17 @@ You can create unlimited number of fields. All newly created field's data will s
 
 1. Create Field from User Meta >> Fields Editor.
 1. Go to User Meta >> Forms Editor, Give a name to your form. Drag and drop fields from right to left and save the form.
-1. Write shortcode to your page or post. e.g.: Shortcode: [user-meta type='profile' form='your_form_name']
+1. Write shortcode to your page or post. e.g.: Shortcode: [user-meta-profile form='your_form_name']
 
 [View Documentation](http://user-meta.com/documentation/ "User Meta Pro Documentation")
 
-**NB:** User Registration, login and some extra fields are only supported in pro version.
 Get [User Meta Pro](http://user-meta.com/ "User Meta Pro").
-
 
 == Installation ==
 
-1. Upload and extract `user-meta.zip` to the `/wp-content/plugins/` directory
+1. Upload and extract `user-meta.zip` to the `/wp-content/plugins/` directory or add the plugin from Plugin >> Add New menu
 2. Activate the plugin through the 'Plugins' menu in WordPress
+
 
 == Frequently Asked Questions ==
 
@@ -126,6 +117,28 @@ WordPress doesn't allow to register new user by default settings. To allow user 
 15. Role based redirection on login, logout and registration.
 
 == Changelog ==
+
+= 1.1.6 =
+* Support user registration for free version.
+* Pro: Added registration link with login form/widget.
+* Remove plugin-framework.css/js. Split user-meta.js into user-meta.js and user-meta-admin.js
+* Optimize the plugin for user-meta-advanced add-on.
+* Allow action/filter hook enable/disable by ‘user_meta_wp_hook’ filter.
+* Added Chinese translation.
+* Fix: postbox toggle icon and allows drag texts inside postbox.
+* Removed users_can_register option dependencies for user registration form.
+* Added role placeholder.
+* Added ver paramater to js and css files.
+* Pro: Shortcode: [user-meta-field id=Field_ID] for showing single field.
+* Pro: Shortcode: [user-meta-field-value id=Field_ID] to show stored field content.
+* Pro: Store resetpass hashed key instead of plaintext as of WP-3.7
+* Pro: Added Lost Password email notification.
+* Pro: Number field allows integer and decimal point.
+* Pro: Filter: user_meta_admin_email_recipient to filter admin notification email.
+* Pro: Added multiselect field and allow optgroup on select.
+* Pro: Import both plain text and hashed password with users import.
+* Pro: Allow override of WordPress default user registration and reset password email by add-on.
+* Pro: try to send single email when sending multiple email at a time failed.
 
 = 1.1.5 =
 * Add user_id parameter to user_meta_pre_user_update filter hook.
@@ -242,19 +255,5 @@ WordPress doesn't allow to register new user by default settings. To allow user 
 = 1.0.1 =
 * Some Bug Free.
 
-= 1.0 =
-* First version.
-
-== Upgrade Notice ==
-
-= 1.1.1 =
-* Added Support while fail AJAX call.
-
-= 1.1.0 =
-* Introduce with User Meta Pro.
-
-= 1.0.5 =
-* Added new fields with new look and feel also functionality.
-
-= 1.0 =
+= 1.0.0 =
 * First version.

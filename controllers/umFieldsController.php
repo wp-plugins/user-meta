@@ -1,20 +1,20 @@
 <?php
 
-if( !class_exists( 'umFieldsController' ) ) :
+if ( ! class_exists( 'umFieldsController' ) ) :
 class umFieldsController {
     
-    function __construct(){      
+    function __construct() {      
         add_action( 'wp_ajax_um_add_field',     array($this, 'ajaxAddField' ) ); 
         add_action( 'wp_ajax_um_change_field',  array($this, 'ajaxChangeField' ) ); 
         add_action( 'wp_ajax_um_update_field',  array($this, 'ajaxUpdateField' ) );                
     }
     
 
-    function ajaxAddField(){
+    function ajaxAddField() {
         global $userMeta;
         $userMeta->verifyNonce();
                   
-        if( isset( $_REQUEST['field_type'] ) ){
+        if ( isset( $_REQUEST['field_type'] ) ) {
             unset( $_REQUEST['action'] );
             $userMeta->render( 'field', $_REQUEST );
         }
@@ -23,11 +23,11 @@ class umFieldsController {
     }
     
     
-    function ajaxChangeField(){
+    function ajaxChangeField() {
         global $userMeta;
         $userMeta->verifyNonce();
         
-        if( !isset( $_POST['fields'] ) ) return;
+        if ( ! isset( $_POST['fields'] ) ) return;
         
         $data       =  $_POST['fields'] ;
         $fieldID    = key( $data );
@@ -41,12 +41,12 @@ class umFieldsController {
     }
     
     
-    function ajaxUpdateField( ){
+    function ajaxUpdateField( ) {
         global $userMeta;                        
         $userMeta->verifyNonce();            
              
         $data = array();
-        if( isset( $_POST['fields'] ) )
+        if ( isset( $_POST['fields'] ) )
             $data = $userMeta->arrayRemoveEmptyValue( $_POST['fields'] );
  
         $data = apply_filters( 'user_meta_pre_configuration_update', $data, 'fields_editor' );

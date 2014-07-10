@@ -1,15 +1,15 @@
 <?php
 
-if( !class_exists( 'umFormsController' ) ) :
+if ( ! class_exists( 'umFormsController' ) ) :
 class umFormsController {
     
-    function __construct(){      
+    function __construct() {      
         add_action( 'wp_ajax_um_add_form',      array( $this, 'ajaxAddForm' ) ); 
         add_action( 'wp_ajax_um_update_forms',  array( $this, 'ajaxUpdateForms' ) );                
     }
     
     
-    function ajaxAddForm(){
+    function ajaxAddForm() {
         global $userMeta;
         $userMeta->verifyNonce(); 
         
@@ -19,18 +19,18 @@ class umFormsController {
     }
     
     
-    function ajaxUpdateForms( ){
+    function ajaxUpdateForms() {
         global $userMeta;
         $userMeta->verifyNonce();
               
         $error = null;
         $data = array();
-        if( isset( $_POST['forms'] ) ){
-            foreach( $_POST['forms'] as $formID => $formData ){                
-                if( is_array( $formData['fields'] ) ){
-                    foreach( $formData['fields'] as $fieldID => $fieldKey ){
-                        if( $fieldID >= $formData['field_count'] )
-                            unset( $formData['fields'][$fieldID] );
+        if ( isset( $_POST['forms'] ) ) {
+            foreach ( $_POST['forms'] as $formID => $formData ) {                
+                if ( is_array( $formData['fields'] ) ) {
+                    foreach ( $formData['fields'] as $fieldID => $fieldKey ) {
+                        if ( $fieldID >= $formData['field_count'] )
+                            unset( $formData['fields'][ $fieldID ] );
                     }                    
                 }                 
                 
@@ -42,19 +42,21 @@ class umFormsController {
                 } */    
                 unset( $formData['field_count'] );
                 
-                if( !$formData['form_key'] )
+                if ( !$formData['form_key'] )
                     $error[] = __( 'All form keys are required!', $userMeta->name );
-                if( isset( $data[ $formData['form_key'] ] ) )
+                if ( isset( $data[ $formData['form_key'] ] ) )
                     $error[] = sprinft( __( 'Form key should be unique. "%s" is duplicated!', $userMeta->name ), $formData['form_key'] );              
                     
                 $data[ $formData['form_key'] ] = $formData;               
             }
         }           
         
-        if( $error ){
+        if ( $error ) {
             echo $userMeta->showError( $error );
             die();
         }
+        
+        $data = $userMeta->arrayRemoveEmptyValue( $data );
         
         $data = apply_filters( 'user_meta_pre_configuration_update', $data, 'forms_editor' );
         

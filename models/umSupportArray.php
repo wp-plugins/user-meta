@@ -1,9 +1,10 @@
 <?php
 
-if( !class_exists( 'umSupportArray' ) ) :
+if ( ! class_exists( 'umSupportArray' ) ) :
 class umSupportArray {
     
-    function controllersOrder(){
+    function controllersOrder() {
+        return array(); // This array causes to load the file twice.
         return array(
             'umPreloadsController',
             'umPreloadsProController',
@@ -17,7 +18,7 @@ class umSupportArray {
         );
     }
     
-    function adminPages(){
+    function adminPages() {
         global $userMeta;
 
         $pages = array(
@@ -64,46 +65,105 @@ class umSupportArray {
         return $pages;
     }
     
-    function isFilterEnable( $hookName ){
+    function hooksList() {
+        return array(          
+            'group_login'               => 'Login', 
+            'login_form_login'          => false,   //action
+            'login_redirect'            => false,   //filter
+            'wp_login_errors'           => false,   //filter
+            'login_form'                => false,   //action
+            'login_form_logout'         => false,   //action
+            
+            'group_lostpassword'        => 'Lost Password',
+            'login_form_lostpassword'   => false,   //action
+            'login_form_retrievepassword' => false, //action
+            'lostpassword_post'         => false,   //action
+            'retrieve_password'         => false,   //action
+            'allow_password_reset'      => false,   //filter
+            'retrieve_password_key'     => false,   //action
+            'retrieve_password_title'   => false,   //filter
+            'retrieve_password_message' => false,   //filter 
+            'lostpassword_redirect'     => false,   //filter
+            'lost_password'             => false,   //action
+            'lostpassword_form'         => false,   //action
+            
+            'group_resetpass'           => 'Reset Password',
+            'login_form_resetpass'      => false,   //action
+            'login_form_rp'             => false,   //action
+            'password_reset_key_expired'=> false,   //filter
+            'validate_password_reset'   => false,   //action
+            'password_reset'            => false,   //action
+            'resetpass_form'            => false,   //action
+            
+            'group_register'            => 'User Registration',
+            'login_form_register'       => false,   //action
+            //'wp_signup_location'        => false,   //filter for multisite found in wp-login.php
+            'registration_redirect'     => false,   //filter
+            'register_form'             => false,   //action
+            'user_registration_email'   => false,   //filter
+            'register_post'             => false,   //action
+            'registration_errors'       => false,   //filter
+        );
+    }
+    
+    /**
+     * 
+     * @param type $hookName
+     * @param type $hookType: action | filter
+     * @return boolean
+     */
+    function isHookEnable( $hookName, $args = array() ) {
+        global $userMetaCache;
+        
+        if( empty( $userMetaCache->hooksList ) )
+            $userMetaCache->hooksList = self::hooksList();
+        
+        $enable = ! empty( $userMetaCache->hooksList[ $hookName ] ) ? true : false;
+ 
+        return apply_filters( "user_meta_wp_hook", $enable, $hookName, $args );
+    }
+    
+    // Not in use since 1.1.6rc2
+    function isFilterEnable( $hookName ) {
         $list = array( 
-            'login_redirect'    => false,
-            'logout_redirect'   => true,
-            'registration_redirect' => true,
+            'login_redirect'    => false,   //Commit
+            'logout_redirect'   => true,    //Commit changed to user_meta_logout_redirect
+            'registration_redirect' => true, // commit
         );
         
         $list = apply_filters( 'user_meta_filter_list', $list );
         
-        if( ! empty( $list[$hookName] ) )
+        if ( ! empty( $list[$hookName] ) )
             return true;
         return false;
     }
     
-    function isActionEnable( $hookName ){
+    // Not in use since 1.1.6rc2
+    function isActionEnable( $hookName ) {
         $list = array( 
             'lostpassword_form'    => false,
         );
         
         $list = apply_filters( 'user_meta_action_list', $list );
         
-        if( ! empty( $list[$hookName] ) )
+        if ( ! empty( $list[$hookName] ) )
             return true;
         return false;
     }
     
-    function enqueueScripts( $scripts=array() ){
+    function enqueueScripts( $scripts=array() ) {
         global $userMeta;
         
         $jsUrl  = $userMeta->assetsUrl . 'js/';
         $cssUrl = $userMeta->assetsUrl . 'css/';
                
-        $list = array(
-            'plugin-framework' => array(
-                'plugin-framework.js' => '',
-                'plugin-framework.css' => '',
-            ),   
+        $list = array(  
             'user-meta' => array(
                 'user-meta.js' => '',
-                'user-meta.css' => '',
+                'user-meta.css' => ''
+            ),   
+            'user-meta-admin' => array(
+                'user-meta-admin.js' => ''
             ),   
             'jquery-ui-all' => array(
                 'jquery.ui.all.css' => 'jqueryui/',
@@ -133,26 +193,34 @@ class umSupportArray {
             'placeholder' => array(
                 'jquery.placeholder.js'   => 'jquery/',
             ),
+            'multiple-select' => array(
+                'jquery.multiple.select.js'  => 'jquery/',
+                'multiple-select.css' => 'jquery/',
+            ),
         );
+        
+        $list = apply_filters( 'user_meta_scripts', $list );
+        
+        $version = $userMeta->version;
     
-        foreach( $scripts as $script ){
-            if( isset( $list[$script] ) ){
-                foreach( $list[$script]  as $key => $val ){
+        foreach ( $scripts as $script ) {
+            if ( isset( $list[ $script ] ) ) {
+                foreach ( $list[$script]  as $key => $val ) {
                     $file = $userMeta->fileinfo( $key );
-                    if( $file->ext == 'js' )
-                        wp_enqueue_script( $file->name, $jsUrl . $val . $key, array('jquery') );  
-                    elseif( $file->ext == 'css' )
-                        wp_enqueue_style( $file->name, $cssUrl . $val . $key );  
+                    if ( $file->ext == 'js' )
+                        wp_enqueue_script( $file->name, $jsUrl . $val . $key, array( 'jquery' ), $version );  
+                    elseif ( $file->ext == 'css' )
+                        wp_enqueue_style( $file->name, $cssUrl . $val . $key, array(), $version );  
                 }
-            }else
-                wp_enqueue_script($script);
+            } else
+                wp_enqueue_script( $script );
                        
         }      
                 
     }    
     
     
-    function umFields(){   
+    function umFields() {
         global $userMeta;
         
         $fieldsList = array(
@@ -269,17 +337,22 @@ class umSupportArray {
                 'title'         => __( 'Drop Down', $userMeta->name ),
                 'field_group'   => 'standard',
                 'is_free'       => true,   
-            ),   
-            'checkbox' => array(
-                'title'         => __( 'Checkbox', $userMeta->name ),
-                'field_group'   => 'standard',
-                'is_free'       => true,  
-            ),   
+            ), 
             'radio' => array(
                 'title'         => __( 'Select One (radio)', $userMeta->name ),
                 'field_group'   => 'standard',
                 'is_free'       => true,  
-            ),     
+            ), 
+            'checkbox' => array(
+                'title'         => __( 'Checkbox', $userMeta->name ),
+                'field_group'   => 'standard',
+                'is_free'       => true,  
+            ),      
+            'multiselect' => array(
+                'title'         => __( 'Multi Select', $userMeta->name ),
+                'field_group'   => 'standard',
+                'is_free'       => false,  
+            ),
             'datetime' => array(
                 'title'         => __( 'Date / Time', $userMeta->name ),
                 'field_group'   => 'standard',
@@ -316,7 +389,7 @@ class umSupportArray {
                 'is_free'       => false, 
             ), 
             'url' => array(
-                'title'         => __( 'Website', $userMeta->name ),
+                'title'         => __( 'URL', $userMeta->name ),
                 'field_group'   => 'standard',
                 'is_free'       => false,
             ),                          
@@ -361,18 +434,18 @@ class umSupportArray {
      * Supported action type
      * @return (array) if type=null || (bool) check for valid action type
      */
-    function validActionType( $type=null ){
+    function validActionType( $type=null ) {
         $types = array(
             'profile', 'registration', 'profile-registration', 'public', 'login'
         );  
         
-        if( empty( $type ) )
+        if ( empty( $type ) )
             return $types;
         
         return in_array( $type , $types ) ? true : false;
     }
     
-    function loginByArray(){
+    function loginByArray() {
         global $userMeta;
         return array( 
             'user_login' => __( 'Username', $userMeta->name ),
@@ -381,7 +454,7 @@ class umSupportArray {
         );
     }
     
-    function defaultSettingsArray( $key=null ){
+    function defaultSettingsArray( $key=null ) {
         $settings = array(
         
             'general' => array(),
@@ -421,12 +494,12 @@ class umSupportArray {
                 
         );
         
-        if( $key )
+        if ( $key )
             return @$settings[ $key ];
         return $settings;        
     }
     
-    function defaultEmailsArray( $key = null ){
+    function defaultEmailsArray( $key = null ) {
         global $userMeta;
 
         $emails = array(
@@ -475,6 +548,19 @@ class umSupportArray {
                 ),                
             ), 
             
+            'reset_password'  => array(
+                //'user_email'    => array(
+                    //'subject'   => '[%site_title%] Password Lost/Changed',
+                    //'body'      => "Password Lost and Changed for user: %user_login% \r\n",
+                    //'um_disable'=> true,
+                //),
+                'admin_email'    => array(
+                    'subject'   => '[%site_title%] Password Lost/Changed',
+                    'body'      => "Password Lost and Changed for user: %user_login% \r\n",
+                    'um_disable'=> false,
+                ),                
+            ),  
+            
             'profile_update'  => array(
                 'user_email'    => array(
                     'subject'   => '[%site_title%] Profile Updated',
@@ -490,15 +576,15 @@ class umSupportArray {
             
         );
         
-        if( $key )
+        if ( $key )
             return @$emails[ $key ];
         return $emails;         
     }
     
-    function runLocalization(){
+    function runLocalization() {
         global $userMeta, $userMetaCache;
         
-        if( empty( $userMetaCache->localizedStrings ) ){                  
+        if ( empty( $userMetaCache->localizedStrings ) ) {                  
             $userMetaCache->localizedStrings = array(
                 'user-meta' => array(
                     'get_pro_link'=> sprintf( __( 'Get pro version from %s to use this feature.', $userMeta->name ), $userMeta->website ),
@@ -538,7 +624,7 @@ class umSupportArray {
                     'invalid_phone'     => __( '* Invalid phone number', $userMeta->name ),
                     'invalid_email'     => __( '* Invalid email address', $userMeta->name ),
                     'invalid_integer'   => __( '* Not a valid integer', $userMeta->name ),
-                    'invalid_number'    => __( '* Invalid floating decimal number', $userMeta->name ),
+                    'invalid_number'    => __( '* Not a valid number', $userMeta->name ),
                     'invalid_date'      => __( '* Invalid date, must be in YYYY-MM-DD format', $userMeta->name ),
                     'invalid_time'      => __( '* Invalid time, must be in hh:mm:ss format', $userMeta->name ),
                     'invalid_datetime'  => __( '* Invalid datetime, must be in YYYY-MM-DD hh:mm:ss format', $userMeta->name ),
@@ -556,7 +642,7 @@ class umSupportArray {
             );
         }
         
-        foreach( $userMetaCache->localizedStrings as $scriptName => $data ){
+        foreach ( $userMetaCache->localizedStrings as $scriptName => $data ) {
             $objectName = str_replace( array( '.', '-' ), '_', $scriptName );
             wp_localize_script( $scriptName, $objectName, $data );
         }
@@ -564,15 +650,15 @@ class umSupportArray {
     } 
     
     
-    function getMsg( $key, $arg1=null, $arg2=null ){
+    function getMsg( $key, $arg1=null, $arg2=null ) {
         global $userMeta;
         
         $msgs = self::msgs();
              
-        if( isset( $msgs[ $key ] ) ){
+        if ( isset( $msgs[ $key ] ) ) {
             $msg = __( $msgs[ $key ] , $userMeta->name );
             
-            if( ! (strpos($msg, '%s') === false ) )
+            if ( ! ( strpos($msg, '%s' ) === false ) )
                     $msg = sprintf( $msg, $arg1 );
             //elseif( ! (strpos($msg, '%2$s') === false ) )
                     //$msg = sprintf( $msg, $arg1, $arg2 );
@@ -584,7 +670,7 @@ class umSupportArray {
     }
     
     
-    function msgs(){
+    function msgs() {
         global $userMeta;
 
         $msgs = array(
@@ -596,6 +682,7 @@ class umSupportArray {
             'login_email_required'      => __( 'Both username and email are required', $userMeta->name ),
             'invalid_login'             => __( '<strong>ERROR</strong>: Invalid %s.', $userMeta->name ),
             'login_success'             => __( 'Login successfuly', $userMeta->name ),
+            'registration_link'         => __( "Don't have an account? <a href=\"%s\">Sign up</a>", $userMeta->name ),
             
             'group_2'                   => __( 'Lost Password', $userMeta->name ),
             'lostpassword_link'         => __( 'Lost your password?', $userMeta->name ),
@@ -642,15 +729,16 @@ class umSupportArray {
             'check_email_for_link'      => __( 'Check your e-mail for the confirmation link.', $userMeta->name ),
             'email_not_found'           => __( 'Email not found', $userMeta->name ),
             'incorrect_captcha'         => __( 'Incorrect captcha code', $userMeta->name ),
-            'invalid_key'               => __( 'Invalid key', $userMeta->name ),
+            'invalid_key'               => __( 'Sorry, that key does not appear to be valid.', $userMeta->name ),
+            'expired_key'               => __( 'Sorry, that key has expired. Please try again.', $userMeta->name ),
             'invalid_parameter'         => __( 'Invalid parameter', $userMeta->name ),                          
         );
         
         $text = $userMeta->getSettings( 'text' );
-        if( is_array( $text ) ) {
-            foreach( $msgs as $key => $msg ) {
-                if( ! empty( $text[$key] ) )
-                    $msgs[$key] = $text[$key];
+        if ( is_array( $text ) ) {
+            foreach ( $msgs as $key => $msg ) {
+                if ( ! empty( $text[ $key ] ) )
+                    $msgs[ $key ] = $text[ $key ];
             }
         }
         
@@ -664,13 +752,13 @@ class umSupportArray {
         $settings = $userMeta->getData( 'settings' );
         
         $lostPassTitle = 'Lost password';
-        if( !empty( $settings['login']['resetpass_page'] ) )
+        if ( ! empty( $settings['login']['resetpass_page'] ) )
             $lostPassTitle = get_the_title( (int) $settings['login']['resetpass_page'] );
           
         $emailVerifyTitle = 'Email verification';
-        if( !empty( $settings['registration']['email_verification_page'] ) ){
+        if ( !empty( $settings['registration']['email_verification_page'] ) ) {
             $emailVerifyTitle = get_the_title( (int) $settings['registration']['email_verification_page'] );
-            if( $emailVerifyTitle == 'Lost password' )
+            if ( $emailVerifyTitle == 'Lost password' )
                 $emailVerifyTitle = 'Email verification';
         }
             

@@ -38,6 +38,12 @@ class umPreloadsController {
         
         add_action( 'init', array( $this, 'processPostRequest' ) );
         
+        add_action( 'wp_ajax_um_show_uploaded_file',            array( &$userMeta, 'ajaxShowUploadedFile' ) );
+        add_action( 'wp_ajax_nopriv_um_show_uploaded_file',     array( &$userMeta, 'ajaxShowUploadedFile' ) );
+          
+        add_action( 'wp_ajax_um_validate_unique_field',         array( &$userMeta, 'ajaxValidateUniqueField' ) );
+        add_action( 'wp_ajax_nopriv_um_validate_unique_field',  array( &$userMeta, 'ajaxValidateUniqueField' ) );
+        
         if ( $userMeta->isPro )
             add_action( 'wp', array( $userMeta, 'validateUMPKey' ) );
     }

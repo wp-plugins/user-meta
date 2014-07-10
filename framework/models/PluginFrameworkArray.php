@@ -1,13 +1,13 @@
 <?php
-if (!class_exists( 'PluginFrameworkArray' )):
+if ( ! class_exists( 'PluginFrameworkArray' ) ):
 class PluginFrameworkArray {
     
-    function settingsArray( $key=null ){
+    function settingsArray( $key=null ) {
         $data = array(
             'nonce'    => 'plugin_framework', 
         ); 
         
-        if( $key )
+        if ( $key )
             if( isset( $data[$key] ) ) return $data[$key];
         return $data;              
     }
@@ -15,7 +15,7 @@ class PluginFrameworkArray {
     /**
      * @return array: wp default userfields. key as field name, val as title
      */
-    function defaultUserFieldsArray( $key=null ){
+    function defaultUserFieldsArray( $key=null ) {
         global $pfInstance;
         
         $data = array(
@@ -36,13 +36,13 @@ class PluginFrameworkArray {
             'yim'           => __( 'Yim',           $pfInstance->name ),
         );
         
-        if( $key )
-            if( isset( $data[$key] ) ) return $data[$key];
+        if ( $key )
+            if ( isset( $data[$key] ) ) return $data[ $key ];
         return $data;                                  
     }      
     
     // not in used
-    function wpDefaultScripts(){
+    function wpDefaultScripts() {
         return array(
             'jquery',
             'jquery-color',
@@ -65,13 +65,13 @@ class PluginFrameworkArray {
 
     }
 
-    function wpUserTableFieldsArray(){
+    function wpUserTableFieldsArray() {
         return array( 
             'ID', 'user_login', 'user_pass', 'user_nicename', 'user_email', 'user_url', 'user_registered', 'user_activation_key', 'user_status', 'display_name'
         );
     }
 
-    function countryArray( $key=null ){
+    function countryArray( $key=null ) {
         global $pfInstance;
         
         $countries =        
@@ -318,8 +318,8 @@ class PluginFrameworkArray {
         "ZW" => __( "Zimbabwe", $pfInstance->name )
         );      
         
-        if( $key ){
-            if( isset( $countries[$key] ) ) return $countries[$key];
+        if ( $key ) {
+            if ( isset( $countries[ $key ] ) ) return $countries[ $key ];
         }
         
         return $countries;                     
@@ -327,4 +327,3 @@ class PluginFrameworkArray {
     
 }
 endif;
-?>

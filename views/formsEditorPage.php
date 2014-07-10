@@ -55,8 +55,8 @@
                 echo $userMeta->metaBox( __( '3 steps to get started', $userMeta->name ),  $userMeta->boxHowToUse());               
                 if( !@$userMeta->isPro )
                     echo $userMeta->metaBox( __( 'User Meta Pro', $userMeta->name ),   $userMeta->boxGetPro());
-                echo $userMeta->metaBox( __( 'Shortcode', $userMeta->name ),   $userMeta->boxShortcodesDocs());
-                echo $userMeta->metaBox( __( 'Tips', $userMeta->name ),   $userMeta->boxTips(), false, false);
+                echo $userMeta->metaBox( 'Shortcodes',   $userMeta->boxShortcodesDocs());
+                //echo $userMeta->metaBox( __( 'Tips', $userMeta->name ),   $userMeta->boxTips(), false, false);
                 ?>
             </div>
         </div>
@@ -82,7 +82,15 @@ jQuery(function() {
     
 //jQuery(".form_tabs").tabs();  
     
-jQuery( "#um_admin_sidebar" ).sortable();    
+ 
+
+jQuery( "#um_fields_container" ).sortable({
+    handle: '.hndle'
+}); 
+
+jQuery( "#um_admin_sidebar" ).sortable({
+    handle: '.hndle'
+});   
 
 jQuery('.um_dropme').sortable({
     connectWith: '.um_dropme',

@@ -4,7 +4,7 @@ Plugin Name: User Meta
 Plugin URI: http://user-meta.com
 Description: User management plugin. Frontend user profile, user egistration with extra fields. Login widget, user import, user redirection, email verification, admin approval, frontend lost-reset passwod and many more.
 Author: Khaled Hossain
-Version: 1.1.5
+Version: 1.1.6
 Author URI: http://khaledsaikat.com
 */
 
@@ -37,14 +37,14 @@ class userMeta extends pluginFramework {
         $this->assetsUrl        = $this->pluginUrl  . '/assets/';  
         
         $pluginHeaders = array(
-            'Name' => 'Plugin Name',
-            'Version' => 'Version',
+            'Name'              => 'Plugin Name',
+            'Version'           => 'Version',
         );
         
         $pluginData = get_file_data( $this->file, $pluginHeaders );
         
-        $this->title = $pluginData['Name'];
-        $this->version = $pluginData['Version'];
+        $this->title            = $pluginData['Name'];
+        $this->version          = $pluginData['Version'];
                   
         //Load Plugins & Framework modal classes
         global $pluginFramework, $userMetaCache;

@@ -1,6 +1,6 @@
 <?php
 
-if( !class_exists( 'umSettingsController' ) ) :
+if ( ! class_exists( 'umSettingsController' ) ) :
 class umSettingsController {
     
     function __construct() {
@@ -8,7 +8,7 @@ class umSettingsController {
     }
 
     
-    function ajaxUpdateSettings(){
+    function ajaxUpdateSettings() {
         global $userMeta;
         $userMeta->verifyNonce();
         
@@ -20,9 +20,9 @@ class umSettingsController {
         $extraFieldCount    = @$settings['backend_profile']['field_count'];
         $extraFields        = @$settings['backend_profile']['fields'];
         
-        if( is_array( $extraFields ) ){
-            foreach( $extraFields as $key => $val ){
-                if( $key >= $extraFieldCount )
+        if ( is_array( $extraFields ) ) {
+            foreach ( $extraFields as $key => $val ) {
+                if ( $key >= $extraFieldCount )
                     unset( $settings['backend_profile']['fields'][ $key ] );
             }                    
         }

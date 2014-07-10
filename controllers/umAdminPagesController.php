@@ -1,17 +1,17 @@
 <?php
 
-if( !class_exists( 'umAdminPagesController' ) ) :
+if ( ! class_exists( 'umAdminPagesController' ) ) :
 class umAdminPagesController {
     
-    function __construct(){      
-        add_action('admin_menu',    array( $this, 'menuItem' ) );
-        add_action('admin_notices', array( $this, 'umAdminNotices' ) );
+    function __construct() {      
+        add_action( 'admin_menu',    array( $this, 'menuItem' ) );
+        add_action( 'admin_notices', array( $this, 'umAdminNotices' ) );
     }
     
-    function menuItem(){
-        global $userMeta;
-        global $umAdminPages;
-                  
+    
+    function menuItem() {
+        global $userMeta, $umAdminPages;
+   
         $parentSlug = 'usermeta';
         
         // Top Level Menu
@@ -19,29 +19,43 @@ class umAdminPagesController {
         
         $pages  = $userMeta->adminPages();
         $isPro  = $userMeta->isPro();
-        foreach( $pages as $key => $page ){
-            $menuTitle  = (!$isPro && !$page['is_free']) ? '<span style="opacity:.5;filter:alpha(opacity=50);">' . $page['menu_title'] . '</span>' : $page['menu_title'];
-            $callBack   = !empty( $page['callback'] ) ? $page['callback'] : array( $this, $key . '_init' );
+        foreach( $pages as $key => $page ) {
+            $menuTitle  = ( ! $isPro && ! $page['is_free'] ) ? '<span style="opacity:.5;filter:alpha(opacity=50);">' . $page['menu_title'] . '</span>' : $page['menu_title'];
+            $callBack   = ! empty( $page['callback'] ) ? $page['callback'] : array( $this, $key . '_init' );
             $hookName   = add_submenu_page( $parentSlug, $page['page_title'], $menuTitle, 'manage_options', $page['menu_slug'], $callBack );
             add_action( 'load-' . $hookName, array( $this, 'onLoadUmAdminPages' ) );
             $pages[$key]['hookname'] = $hookName;
         }
         
         $umAdminPages = $pages;
+        
+        add_filter( 'plugin_action_links_' . $userMeta->pluginSlug, array( &$this, 'pluginSettingsMenu' ) );
     }
     
-    function onLoadUmAdminPages(){
+    
+    function onLoadUmAdminPages() {
         do_action( 'user_meta_load_admin_pages' );
     }
     
-    function umAdminNotices(){
+    
+    function pluginSettingsMenu( $links ) {
+        global $userMeta;
+        
+        $settings_link = '<a href="'. get_admin_url(null, 'admin.php?page=user-meta-settings') .'">' . __( 'Settings', $userMeta->name ) . '</a>';
+        array_unshift( $links, $settings_link );
+        return $links;
+    }
+    
+    
+    function umAdminNotices() {
         global $current_screen;
         
         if( $current_screen->parent_base == 'usermeta' ) 
             do_action( 'user_meta_admin_notices' );
     }
     
-    function fields_editor_init(){
+    
+    function fields_editor_init() {
         global $userMeta;        
         
          $userMeta->enqueueScripts( array(
@@ -52,8 +66,8 @@ class umAdminPagesController {
             'jquery-ui-draggable',
             'jquery-ui-droppable',
              
-            'plugin-framework', 
             'user-meta',
+            'user-meta-admin',
             'validationEngine',
         ) );                      
         $userMeta->runLocalization();     
@@ -64,7 +78,8 @@ class umAdminPagesController {
         ) );       
     }
     
-    function forms_editor_init(){
+    
+    function forms_editor_init() {
         global $userMeta;     
         
          $userMeta->enqueueScripts( array(
@@ -75,8 +90,8 @@ class umAdminPagesController {
             'jquery-ui-draggable',
             'jquery-ui-droppable',
              
-            'plugin-framework', 
             'user-meta',
+            'user-meta-admin',
             'validationEngine',
         ) );                      
         $userMeta->runLocalization();
@@ -89,7 +104,8 @@ class umAdminPagesController {
         ) );        
     }
     
-    function email_notification_init(){
+    
+    function email_notification_init() {
         global $userMeta;
         
         $userMeta->enqueueScripts( array(
@@ -97,8 +113,8 @@ class umAdminPagesController {
             'jquery-ui-tabs',
             'jquery-ui-all',
 
-            'plugin-framework', 
             'user-meta',
+            'user-meta-admin',
         ) );                      
         $userMeta->runLocalization();
                 
@@ -109,6 +125,7 @@ class umAdminPagesController {
             'deactivation'          => $userMeta->getEmailsData( 'deactivation' ),
             'email_verification'    => $userMeta->getEmailsData( 'email_verification' ),
             'lostpassword'          => $userMeta->getEmailsData( 'lostpassword' ),
+            'reset_password'        => $userMeta->getEmailsData( 'reset_password' ),
         );
         
         $userMeta->renderPro( 'emailNotificationPage', array(
@@ -117,7 +134,8 @@ class umAdminPagesController {
         ), 'email' );         
     }
     
-    function export_import_init(){
+    
+    function export_import_init() {
         global $userMeta;     
         
         $userMeta->enqueueScripts( array( 
@@ -129,8 +147,8 @@ class umAdminPagesController {
             'jquery-ui-dialog',
             'jquery-ui-progressbar',
             
-            'plugin-framework', 
-            'user-meta',           
+            'user-meta',  
+            'user-meta-admin',
             'jquery-ui-all',
             'fileuploader',            
         ) );                      
@@ -146,7 +164,8 @@ class umAdminPagesController {
         ), 'exportImport' );          
     }
     
-    function settings_init(){
+    
+    function settings_init() {
         global $userMeta;
         
         self::moreExecution();
@@ -162,8 +181,8 @@ class umAdminPagesController {
             'jquery-ui-tabs',
             'jquery-ui-all',
 
-            'plugin-framework', 
             'user-meta',
+            'user-meta-admin',
             'validationEngine',
         ) );                      
         $userMeta->runLocalization();
@@ -173,7 +192,7 @@ class umAdminPagesController {
         $fields     = $userMeta->getData( 'fields' );
         $default    = $userMeta->defaultSettingsArray();                        
         
-        $userMeta->render("settingsPage", array(
+        $userMeta->render( 'settingsPage', array(
             'settings'  => $settings,
             'forms'     => $forms,
             'fields'    => $fields,
@@ -183,14 +202,37 @@ class umAdminPagesController {
         
     }
     
-    function moreExecution(){
-        $actionType = !empty( $_GET['action_type'] ) ? $_REQUEST['action_type'] : false;
-        if( $actionType == 'notice' ){
-            if( !empty($_GET['action_name'] ) )
+    
+    function advanced_init() {
+        global $userMeta;
+        
+        $userMeta->enqueueScripts( array(
+            'jquery-ui-core',
+            'jquery-ui-tabs',
+            'jquery-ui-all',
+
+            'user-meta',
+            'user-meta-admin',
+            'bootstrap',
+            'bootstrap-multiselect',
+            'multiple-select'
+        ) );                      
+        $userMeta->runLocalization();                  
+        
+        $userMeta->renderPro( 'advancedPage', array(
+            'advanced' => $userMeta->getData( 'advanced' )
+        ), 'advanced' );
+    }
+    
+    
+    function moreExecution() {
+        $actionType = ! empty( $_GET['action_type'] ) ? $_REQUEST['action_type'] : false;
+        if ( $actionType == 'notice' ){
+            if ( ! empty($_GET['action_name'] ) )
                 $_GET['action_name'] == 'dismiss_translation_notice' ? delete_option( 'user_meta_show_translation_update_notice' ) : false;
         }
     }
     
 
 }
-endif;      
+endif;

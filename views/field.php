@@ -2,17 +2,17 @@
 <?php 
 global $userMeta;
 
-$roles              = $userMeta->getRoleList(true);
+$roles              = $userMeta->getRoleList( true );
 $emptyFirstRoles    = $roles;
 array_unshift( $emptyFirstRoles, null );
 
 $field_type_data    = $userMeta->getFields( 'key', $field_type );
 $field_type_title   = $field_type_data['title'];
 $field_group        = $field_type_data['field_group'];
-$field_types_options = $userMeta->getFields( 'field_group', $field_group, 'title', !$userMeta->isPro );
+$field_types_options = $userMeta->getFields( 'field_group', $field_group, 'title', ! $userMeta->isPro );
 
-if( $field_group == 'wp_default' )
-    $field_title = isset($field_title) ? $field_title : $field_types_options[$field_type];
+if ( $field_group == 'wp_default' )
+    $field_title = isset( $field_title ) ? $field_title : $field_types_options[$field_type];
 
 /**
  * Defining $fieldXXX variable to populate back-end field options.
@@ -214,9 +214,15 @@ $fieldCropImage = $userMeta->createInput( "fields[$id][crop_image]", "checkbox",
 ) ); 
 
 $fieldLineBreak = $userMeta->createInput( "fields[$id][line_break]", "checkbox", array( 
-    "value"     => isset($line_break) ? $line_break : null,
+    "value"     => isset( $line_break ) ? $line_break : null,
     "label"     => __( 'Line Break' ) . "<br />",
     "id"        => "um_fields_{$id}_line_break",
+) ); 
+    
+$fieldIntegerOnly = $userMeta->createInput( "fields[$id][integer_only]", "checkbox", array( 
+    "value"     => isset( $integer_only ) ? $integer_only : null,
+    "label"     => __( 'Allow integer only' ) . "<br />",
+    "id"        => "um_fields_{$id}_integer_only",
 ) ); 
 
 
@@ -546,7 +552,7 @@ elseif( $field_type == 'hidden' ):
     $html .= "$fieldMetaKey $fieldDefaultValue";
     $html .= "<div class='um_segment'>$fieldAdminOnly</div>";      
         
-elseif( $field_type == 'select' OR $field_type == 'checkbox' OR $field_type == 'radio' ):    
+elseif( $field_type == 'select' || $field_type == 'radio' || $field_type == 'checkbox' ):    
     $html .= "$fieldDescription $fieldMetaKey";
     $html .= "<div class='um_segment'>$fieldRequired $fieldAdminOnly $fieldReadOnly $fieldLineBreak</div>";
     $html .= "$fieldDefaultValue $fieldOptions";
@@ -565,6 +571,7 @@ elseif( ! $field_type_data['is_free'] ) :
         'fieldReadOnly'             => $fieldReadOnly,
         'fieldUnique'               => $fieldUnique,
         'fieldDefaultValue'         => $fieldDefaultValue,
+        'fieldOptions'              => $fieldOptions,
         'fieldSize'                 => $fieldSize,
         'fieldMaxChar'              => $fieldMaxChar,
         'fieldCssClass'             => $fieldCssClass,
@@ -573,6 +580,7 @@ elseif( ! $field_type_data['is_free'] ) :
         'fieldRegistrationOnly'     => $fieldRegistrationOnly,
         'fieldDisableAjax'          => $fieldDisableAjax,
         'fieldCropImage'            => $fieldCropImage,
+        'fieldIntegerOnly'          => $fieldIntegerOnly,
         'fieldDivider'              => $fieldDivider,
         
         'fieldDateTimeSelection'    => $fieldDateTimeSelection,

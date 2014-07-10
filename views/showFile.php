@@ -5,13 +5,14 @@ global $userMeta;
 $html = null;
 
 // If avatar
-if( !empty( $avatar ) ) :
+if ( ! empty( $avatar ) ) :
     $html .= $avatar;
 
 // Showing Uploaded file
-elseif( !empty( $filepath ) ) :
+elseif ( ! empty( $filepath ) ) :
     $uploads    = $userMeta->determinFileDir( $filepath );
-    if( empty( $uploads ) ) return;
+
+    if ( empty( $uploads ) ) return;
 
     $path       = $uploads['path'];
     $url        = $uploads['url'];
@@ -20,21 +21,21 @@ elseif( !empty( $filepath ) ) :
     $fileName   = $fileData['basename'];      
 
     // In case of image
-    if( $userMeta->isImage( $url ) ){
-        if( !empty( $width ) && !empty( $height ) ){
+    if ( $userMeta->isImage( $url ) ) {
+        if ( ! empty( $width ) && ! empty( $height ) ) {
             
             /**
              * image_resize is depreated from version 3.5 
              */
-            if( version_compare( get_bloginfo('version'), '3.5', '>=' ) ){
+            if ( version_compare( get_bloginfo('version'), '3.5', '>=' ) ) {
                 $image = wp_get_image_editor( $path );
                 if ( ! is_wp_error( $image ) ) {
                     $image->resize( $width, $height, $crop );
                     $image->save( $path );
                 }                
-            }else{
+            } else {
                 $resizedImage = image_resize( $path, $width, $height, $crop );
-                if( !is_wp_error($resizedImage) )
+                if ( !is_wp_error($resizedImage) )
                     $path = $resizedImage;               
             }     
             
@@ -42,8 +43,9 @@ elseif( !empty( $filepath ) ) :
             //$filepath   = str_replace( $uploads['basedir'], '', $path );            
             
         }        
-        $html.= "<img src='$url' alt='$fileName' title='$fileName' />";  
-    }else
+        $html.= "<img src='$url' alt='$fileName' title='$fileName' />";
+        
+    } else
         $html.= "<a href='$url'>$fileName</a>";           
 endif;
 
