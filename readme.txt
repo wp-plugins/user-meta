@@ -8,7 +8,7 @@ Copyright: Khaled Hossain, user-meta.com
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-WordPress user management plugin. Custom user profile,registration with extra fields. Custom Login, Import/export users from/to csv and many more.
+WordPress user management plugin. Custom user profile, custom Login, registration with extra fields and many more.
 
 == Description ==
 
