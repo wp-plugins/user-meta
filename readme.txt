@@ -2,7 +2,7 @@
 Contributors: khaledsaikat
 Tags: user, profile, registration, login, frontend, users, usermeta, import, csv, upload, AJAX, admin, plugin, page, image, images, photo, picture, file, email, shortcode, captcha, avatar, redirect, register, password, custom, csv, import, user import, widget
 Requires at least: 3.3.0
-Tested up to: 4.1
+Tested up to: 4.2.2
 Stable tag: 1.1.6
 Copyright: Khaled Hossain, user-meta.com
 License: GPLv2
