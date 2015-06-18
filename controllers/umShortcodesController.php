@@ -6,16 +6,16 @@ class umShortcodesController {
     function __construct() {
         global $userMeta;
         
-        add_shortcode( 'user-meta',                 array( &$this, 'init' ) );
+        add_shortcode( 'user-meta',                 array( $this, 'init' ) );
         
-        add_shortcode( 'user-meta-login',           array( &$this, 'loginShortcode' ) );
-        add_shortcode( 'user-meta-profile',         array( &$this, 'profileShortcode' ) );
-        add_shortcode( 'user-meta-registration',    array( &$this, 'registrationShortcode' ) ); 
-        add_shortcode( 'user-meta-field',           array( &$this, 'fieldShortcode' ) );   
-        add_shortcode( 'user-meta-field-value',     array( &$this, 'fieldValueShortcode' ) );
+        add_shortcode( 'user-meta-login',           array( $this, 'loginShortcode' ) );
+        add_shortcode( 'user-meta-profile',         array( $this, 'profileShortcode' ) );
+        add_shortcode( 'user-meta-registration',    array( $this, 'registrationShortcode' ) ); 
+        add_shortcode( 'user-meta-field',           array( $this, 'fieldShortcode' ) );   
+        add_shortcode( 'user-meta-field-value',     array( $this, 'fieldValueShortcode' ) );
         
-        add_action( 'media_buttons_context',        array( &$this, 'addUmButton' ) );
-        add_action( 'admin_footer',                 array( &$this, 'shortcodeGeneratorPopup' ) );
+        //add_action( 'media_buttons_context',        array( $this, 'addUmButton' ) );
+        //add_action( 'admin_footer',                 array( $this, 'shortcodeGeneratorPopup' ) );
     }
 
 
@@ -36,27 +36,38 @@ class umShortcodesController {
         // Replace "both" to "profile-registration" and "none" to "public"
         $actionType = str_replace( array( 'both', 'none' ), array( 'profile-registration', 'public' ), $actionType );
         
-        if ( $actionType == 'login' )
+        if ( $actionType == 'login' ) :
             return $userMeta->userLoginProcess( $form ); 
         
-        elseif ( $actionType == 'field' )
+        elseif ( $actionType == 'field' ) :
             return $this->fieldShortcode( array(
                 'id'    => $id
             ) );
         
-        elseif ( $actionType == 'field-value' )
+        elseif ( $actionType == 'field-value' ) :
             return $this->fieldValueShortcode( array(
                 'id'    => $id,
                 'key'   => $key
             ) );
         
-        else
-            return $userMeta->userUpdateRegisterProcess( $actionType, $form, $diff );          
+        elseif ( $actionType == 'reset-password' ) :
+            return $this->resetPasswordShortcode();
+        
+        elseif ( $actionType == 'email-verification' ) :
+            return $this->emailVerificationShortcode();
+        
+        else :
+            return $userMeta->userUpdateRegisterProcess( $actionType, $form, $diff ); 
+        
+        endif;
     }   
     
     
     function loginShortcode( $atts ) {
         global $userMeta;
+        
+        if ( ! $userMeta->isPro() )
+            return self::getProError();
         
         extract( shortcode_atts( array(
             'form'      => null,
@@ -97,24 +108,98 @@ class umShortcodesController {
     	), $atts ) );
         
         if ( ! $userMeta->isPro() )
-            return $userMeta->showError( "This shortcode is only supported on pro version. Get " . $userMeta->getProLink( 'User Meta Pro' ), "info", false );                                    
+            return self::getProError();                                 
 
-        return $userMeta->generateField( $id );
+        $userMeta->enqueueScripts( array( 
+            'user-meta',           
+            'jquery-ui-all',
+            'fileuploader',
+            'wysiwyg',
+            'jquery-ui-datepicker',
+            'jquery-ui-slider',
+            'timepicker',
+            'validationEngine',
+            'password_strength',
+            'placeholder',
+            'multiple-select'
+        ) );                      
+        $userMeta->runLocalization(); 
+        
+        $umField = new umField( $id );
+        
+        return $umField->generateField();
     }
     
     
     function fieldValueShortcode( $atts ) {
         global $userMeta;
-        
+
         extract( shortcode_atts( array(
             'id'        => null,
             'key'       => null,
-    	), $atts ) );
-        
-       if ( ! $userMeta->isPro() )
-            return $userMeta->showError( "This shortcode is only supported on pro version. Get " . $userMeta->getProLink( 'User Meta Pro' ), "info", false );                                    
+        ), $atts ) );
 
-        return $userMeta->getFieldValue( $id , $key );
+        if ( ! $userMeta->isPro() )
+            return self::getProError();                                
+
+        if ( empty( $id ) && empty( $key ) )
+            return $userMeta->showError( 'Please provide field id or meta_key.', 'info', false );
+
+        $umField = new umField( $id );
+
+        return $umField->displayValue( $key );
+    }
+    
+    
+    function resetPasswordShortcode() {
+        global $userMeta;
+                
+        if ( ! $userMeta->isPro() )
+            return self::getProError();                                 
+
+        $userMeta->enqueueScripts( array(
+            'user-meta',           
+            'validationEngine',
+            'password_strength',
+        ) );                      
+        $userMeta->runLocalization();
+        
+        $action = isset( $_REQUEST['action'] ) ? $_REQUEST['action'] : '';
+        switch ( $action ) {
+            case 'resetpass' :
+            case 'rp' :
+                return $userMeta->resetPassword();
+            break; 
+
+            default:
+                $config = $userMeta->getExecutionPageConfig( 'lostpassword' );
+                $config[ 'only_lost_pass_form' ] = true;
+                return $userMeta->lostPasswordForm( $config ); 
+            break;
+        }
+    }
+    
+    
+    function emailVerificationShortcode() {
+       global $userMeta;
+                
+        if ( ! $userMeta->isPro() )
+            return self::getProError();                                   
+
+        $userMeta->enqueueScripts( array(
+            'user-meta',           
+            'validationEngine',
+            'password_strength',
+        ) );                      
+        $userMeta->runLocalization();
+          
+        $action = isset( $_REQUEST['action'] ) ? $_REQUEST['action'] : '';
+        switch ( $action ) {
+            case 'email_verification' :
+            case 'ev' :
+                return $userMeta->emailVerification();
+            break;
+        }
     }
     
     
@@ -169,6 +254,11 @@ class umShortcodesController {
         ) );
     }
     
+    
+    function getProError() {
+        global $userMeta;
+        return '<div style="color:red">This shortcode is only supported on pro version. Get ' . $userMeta->getProLink( 'User Meta Pro' ) . '</div>';
+    }
     
 }
 endif;

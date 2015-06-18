@@ -15,7 +15,7 @@ if ( ! class_exists( 'PluginFrameworkRawFunction' ) ):
          */
         function createInput( $name='', $type='text', $attr=array(), $options=array() ) {
             $name   = trim( $name );
-            $name   = $name ? "name=\"$name\"" : '';      
+            $name   = $name ? "name=\"$name\"" : '';
             
             if ( isset( $attr['value'] ) ) {
                 if ( is_string( $attr['value'] ) )
@@ -27,8 +27,11 @@ if ( ! class_exists( 'PluginFrameworkRawFunction' ) ):
             $value  = isset( $attr['value'] ) ? $attr['value'] : null;       
             
             //filter attr for add
-            $excludeAttr = array( 'before', 'after', 'enclose', 'label', 'by_key', 'label_class', 'combind', 'option_before', 'option_after' );      
-            $excludeType = array( 'select', 'radio', 'label', 'checkbox', 'textarea', 'a' );  //exclude adding value                          
+            $excludeAttr = array( 'checked', 'before', 'after', 'enclose', 'field_enclose', 'label', 'by_key', 'label_class', 'combind', 'option_before', 'option_after' ); 
+            if ( $type == 'checkbox' && ! empty( $attr['combind'] ) )
+                array_push ( $excludeAttr, 'required' );
+            
+            $excludeType = array( 'select', 'radio', 'label', 'checkbox', 'textarea', 'a', 'img' );  //exclude adding value                          
             if ( in_array( $type, $excludeType ) ) $excludeAttr[] = 'value';   
             $include = null;                  
             if ( is_array( @$attr ) ) {
@@ -100,7 +103,7 @@ if ( ! class_exists( 'PluginFrameworkRawFunction' ) ):
                     $name = rtrim( $name, "\"") . "[]\"";
                     if ( is_array( @$options ) ) {
                         $i = 0;
-                        foreach ( $options as $key => $val ) {                         
+                        foreach ( $options as $key => $val ) {
                             if ( ! $by_key ) $key = $val; 
                             $key = is_string( $key ) ? trim( $key ) : $key;
                             if ( is_array( $value ) )
@@ -120,9 +123,18 @@ if ( ! class_exists( 'PluginFrameworkRawFunction' ) ):
                             $html .= "$option_before<input type=\"$type\" {$name} $includeModify value=\"$key\" $checked /> $label $option_after";
                             $i++;
                         }     
-                    }          
-                } else {             
-                    $checked = $value ? "checked=\"checked\"" : "";                
+                    }
+                    
+                } else {
+                    $checked = '';
+                    if ( isset( $attr['checked'] ) )
+                        $checked = ! empty( $attr['checked'] ) ? "checked=\"checked\"" : "";
+                    elseif ( ! empty( $value ) )
+                        $checked = "checked=\"checked\"";
+                    
+                    $checkboxValue = ( ! empty( $value ) && ! is_array( $value ) ) ? $value : 1;
+                    $include .= 'value="' . $checkboxValue . '"';
+                    
                     $html .= "<input type=\"$type\" $name $include $checked />";
                 }
                 
@@ -133,6 +145,9 @@ if ( ! class_exists( 'PluginFrameworkRawFunction' ) ):
                 
             } elseif ( $type == 'a' ) {
                 $html .= "<a $name $include>$value</a>";
+                
+            } elseif ( $type == 'img' ) {
+                $html .= "<img $include />";
                 
                 
             } elseif ( $type == 'file' ) {
@@ -161,18 +176,26 @@ if ( ! class_exists( 'PluginFrameworkRawFunction' ) ):
             $after   = isset( $attr['after'] )   ? $attr['after']  : null;            
             $html = $before . $html . $after;
             
+            //Enclose by other html element
+            if ( ! empty( $attr['field_enclose'] ) ) {
+                $enclose = $attr['field_enclose'];
+                $encloseTag = explode( ' ', trim( $enclose ) );
+                $encloseTag = $encloseTag[0];
+                $html = "<$enclose>$html</$encloseTag>";
+            }
+            
             //Add lebel if required        
-            if ( isset($attr['label'] ) ) {
+            if ( isset( $attr['label'] ) ) {
                 $for   = isset( $attr['id'] ) ? "for=\"{$attr['id']}\"" : '';
                 $htmlLabel = "<label $label_id $label_class $for>{$attr['label']}</label>";
-                if ( $type == 'checkbox' && ! @$attr['combind'] )
-                    $html = $html . ' ' . $htmlLabel;
+                if ( $type == 'checkbox' && empty( $attr['combind'] ) )
+                    $html = "<label $label_id $label_class $for>$html {$attr['label']}</label>";
                 else
                     $html = $htmlLabel . ' ' . $html;
             }
                                                              
             //Enclose by other html element
-            if ( isset( $attr['enclose'] ) ) {
+            if ( ! empty( $attr['enclose'] ) ) {
                 $enclose = $attr['enclose'];
                 $encloseTag = explode( ' ', trim( $enclose ) );
                 $encloseTag = $encloseTag[0];

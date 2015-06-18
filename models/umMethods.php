@@ -69,7 +69,7 @@ class umMethods {
             }
         
         } elseif ( $actionType == 'registration' ) {
-            if ( $isLoggedIn AND ! $user->has_cap( 'add_users' ) )
+            if ( $isLoggedIn && ! $user->has_cap( 'add_users' ) )
                 return $userMeta->showMessage( sprintf( __( 'You have already registered. See your <a href="%s">profile</a>', $userMeta->name ), $userMeta->getProfileLink() ) , 'info' );
             elseif ( ! apply_filters( 'user_meta_allow_registration', true ) )
                 return $userMeta->showError( __( 'User registration is currently not allowed.', $userMeta->name ) );   
@@ -105,10 +105,21 @@ class umMethods {
                                  
         if ( empty( $formName ) )
             return $userMeta->showError( __( 'Please provide a form name.', $userMeta->name ) );
-                        
-        $form   = $userMeta->getFormData( $formName );
+        
+        $formBuilder = new umFormGenerate( $formName, $actionType, $userID );
+        
+        if ( ! $formBuilder->isFound() )
+            return $userMeta->ShowError( sprintf( __( 'Form "%s" is not found.', $userMeta->name ), $formName ) );
+        
+        //$savedValues = in_array( $actionType, array('profile','public') ) ? get_userdata( $userID ) : null;
+        
+        $form = $formBuilder->getForm();
+        
+       //$userMeta->dump($form);
+                    
+        /*$form   = $userMeta->getFormData( $formName ); 
         if ( is_wp_error( $form ) )
-            return $userMeta->ShowError( $form );
+            return $userMeta->ShowError( $form );*/
 
         $form['form_class'] = ! empty( $form['form_class'] ) ? $form['form_class'] : '';
         $form['form_class'] = 'um_user_form ' . $form['form_class'];
@@ -117,7 +128,7 @@ class umMethods {
 
         $output = $userMeta->render( 'generateForm', array( 
             'form'          => $form,     
-            'fieldValues'   => in_array( $actionType, array('profile','public') ) ? get_userdata( $userID ) : null,
+            //'fieldValues'   => in_array( $actionType, array('profile','public') ) ? get_userdata( $userID ) : null,
             'actionType'    => $actionType,
             'userID'        => $userID,
             'methodName'    => 'InsertUser',

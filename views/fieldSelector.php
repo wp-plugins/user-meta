@@ -30,10 +30,19 @@ foreach( $userMeta->getFields( 'field_group', 'formatting', 'title' ) as $fieldK
         $formattingFields .= "<div field_type='$fieldKey' disabled='disabled' class='button um_field_selecor' onclick='umGetProMessage(this)'>$fieldValue</div>";
 }
 
+$sharedFields = null;
+$fields = $userMeta->getData( 'fields' );
+if ( $fields && is_array( $fields ) ) {
+    foreach ( $fields as $id => $field ) {
+        $value = 'ID:' . $id . ' (' . $field['field_type'] . ') ' . $field['field_title'];
+        $sharedFields .= "<button type='button' style='background: #f7f7f7;' class='btn btn-default um_field_selecor col-xs-12' onclick='umNewField(this)'>$value</button>";
+    }
+}
+
+
 return array(
     'wp_default'    => $wpFields,
     'standard'      => $standardFields,
     'formatting'    => $formattingFields,
+    'shared'        => $sharedFields
 );
-
-?>

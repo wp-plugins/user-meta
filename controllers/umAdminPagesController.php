@@ -15,7 +15,7 @@ class umAdminPagesController {
         $parentSlug = 'usermeta';
         
         // Top Level Menu
-        add_utility_page( 'User Meta', 'User Meta', 'manage_options', $parentSlug, array( $this, 'fields_editor_init' ), $userMeta->assetsUrl . 'images/ump-icon.png' ); 
+        add_utility_page( 'User Meta', 'User Meta', 'manage_options', $parentSlug, array( $this, 'forms_init' ), $userMeta->assetsUrl . 'images/ump-icon.png' ); 
         
         $pages  = $userMeta->adminPages();
         $isPro  = $userMeta->isPro();
@@ -55,6 +55,64 @@ class umAdminPagesController {
     }
     
     
+    function forms_init() {
+        global $userMeta;     
+        
+         $userMeta->enqueueScripts( array(
+            'jquery-ui-sortable',
+            'font-awesome',
+            'user-meta',
+            'user-meta-admin',
+            'bootstrap',
+            'bootstrap-multiselect',
+        ) );                      
+        $userMeta->runLocalization();
+        
+        
+        if ( ! empty( $_REQUEST['action'] ) ) {
+            switch ( $_REQUEST['action'] ) {
+                case 'new' :
+                    $userMeta->render( 'editForm', array(
+                        'formName'  => '',
+                    ), 'forms' ); 
+                break;
+            
+                case 'edit' :
+                    $formName = ! empty( $_REQUEST['form'] ) ? $_REQUEST['form'] : null;
+                    $userMeta->render( 'editForm', array(
+                        'formName'  => $formName,
+                    ), 'forms' ); 
+                break;
+            
+                case 'delete' :
+                    $userMeta->render( 'formsEditorPage', array(), 'forms' ); 
+                break;
+            }
+
+        } else {
+            $userMeta->render( 'formsEditorPage', array(), 'forms' ); 
+        }
+        
+
+    }
+    
+    function fields_init() {
+        global $userMeta;
+    
+         $userMeta->enqueueScripts( array(
+            'jquery-ui-sortable',
+            'font-awesome',
+            'bootstrap',
+            'bootstrap-multiselect',
+            'user-meta',
+            'user-meta-admin'
+        ) );                      
+        $userMeta->runLocalization();
+         
+        $userMeta->render( 'fieldsEditorPage', array(), 'fields' );  
+    }
+    
+    
     function fields_editor_init() {
         global $userMeta;        
         
@@ -73,9 +131,9 @@ class umAdminPagesController {
         $userMeta->runLocalization();     
   
         $fields = $userMeta->getData( 'fields' );   
-        $userMeta->render( 'fieldsEditorPage', array(
+        $userMeta->render( 'fieldsEditorPage1', array(
             'fields'    => $fields
-        ) );       
+        ), 'fields' );       
     }
     
     
@@ -147,10 +205,14 @@ class umAdminPagesController {
             'jquery-ui-dialog',
             'jquery-ui-progressbar',
             
+            'bootstrap',
+            'bootstrap-multiselect',
+            
             'user-meta',  
             'user-meta-admin',
             'jquery-ui-all',
-            'fileuploader',            
+            'fileuploader',
+            'opentip',
         ) );                      
         $userMeta->runLocalization();
         

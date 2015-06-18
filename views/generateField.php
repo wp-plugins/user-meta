@@ -5,11 +5,10 @@ global $userMeta, $user_ID;
  * Expect by rander: $field, $form $actionType, $userID, $inPage, $inSection, $isNext, $isPrevious, $currentPage, $uniqueID
  */
 
-
 /***** Initialiaze default value *****/
 $fieldType      = "text";
-$class          = "um_field_{$field['field_id']} um_input ";
-$divClass       = "";
+$class          = "um_field_{$field['id']} um_input ";
+$divClass       = "um_field_container";
 $divStyle       = "";
 $inputStyle     = "";
 $fieldOptions   = "";
@@ -23,7 +22,7 @@ $fieldReadOnly  = "";
 $showInputField = true;
 $attr           = array();
    
-$inputID        = empty( $field['input_id'] ) ? "um_field_{$field['field_id']}_$uniqueID" : $field['input_id'];
+$inputID        = empty( $field['input_id'] ) ? "um_field_{$field['id']}_$uniqueID" : $field['input_id'];
 $labelID        = empty( $field['label_id'] ) ? $inputID . '_label' : $field['label_id'];
 $descriptionID  = empty( $field['description_id'] ) ? "id=\"{$inputID}_description\"" : "id=\"{$field['description_id']}\"";
    
@@ -31,10 +30,10 @@ $fieldBefore    = ! empty( $field['before'] ) ? $field['before'] : "";
 $fieldAfter     = ! empty( $field['after'] ) ? $field['after'] : "";
 
 if ( ! empty( $field['field_class'] ) )
-    $class .= $field['field_class'];
+    $class .= "{$field['field_class']} ";
 
 if ( ! empty( $field['label_class'] ) )
-    $label_class .= $field['label_class'];
+    $label_class .= "{$field['label_class']} ";
 
 if ( ! empty( $field['field_style'] ) )
     $inputStyle .= $field['field_style'];
@@ -60,8 +59,11 @@ endif;
 if ( ! empty( $field['read_only'] ) )
     $fieldReadOnly = 'readonly';   
     
-if ( ! empty( $field['required'] ) )
+if ( ! empty( $field['required'] ) ) {
+    $attr['required'] = 'required';
     $validation .= 'required,';
+}
+    
 
 if ( ! empty( $field['unique'] ) ) {
     //$validation .= "ajax[ajaxValidateUniqueField],";
@@ -83,7 +85,7 @@ if ( ! empty( $field['title_position'] ) ) {
         $label_class .= 'um_label_right';
     elseif ( $field['title_position'] == 'inline' ) {
         $label_class .= 'um_label_inline ';
-        $divClass .= ' um_inline ';
+        $divClass .= ' um_inline';
     } elseif ( $field['title_position'] == 'placeholder' ) {
         $field['placeholder'] =  isset( $field['placeholder'] ) ? $field['placeholder'] : $field['field_title'];
     }
@@ -103,7 +105,7 @@ if ( ! empty( $field['max_char'] ) ) {
 }
 
 if ( isset( $field['css_class'] ) ) {
-    $divClass .= "{$field['css_class']} ";
+    $divClass .= " {$field['css_class']} ";
 }
 
 if ( isset( $field['css_style'] ) ) {
@@ -120,7 +122,6 @@ if ( isset( $field['options'] ) ) {
     } else
         $fieldOptions = $field['options'];
 }
-
  
 /***** Fields Condition *****/    
 
@@ -132,14 +133,21 @@ switch ( $field['field_type'] ) {
         if ( $actionType == 'profile' ):
             $fieldReadOnly = 'readonly';
         endif;        
+        
+        $attr['required'] = 'required';
         //$validation .= "required,ajax[ajaxValidateUniqueField],";
         $validation .= "required";
     break;
 
     case 'user_email' :
-    case 'email' :    
-        if ( $field['field_type'] == 'user_email' )
+    case 'email' :  
+        $fieldType = 'email';
+        
+        if ( $field['field_type'] == 'user_email' ) {
+            $attr['required'] = 'required';
             $validation .= "required,";
+        }
+            
         $validation .= "custom[email],";
 
         //$validation .= "required,custom[email],ajax[ajaxValidateUniqueField],";
@@ -149,7 +157,8 @@ switch ( $field['field_type'] ) {
             $field2['class']        = $class . "validate[{$isRequired}equals[$inputID]]";
             $field2['fieldID']      = $inputID . "_retype";
             if ( ! empty( $fieldTitle ) ) {
-                $field2['fieldTitle'] = isset( $field['retype_field_title'] ) ? $field['retype_field_title'] : sprintf( __( 'Retype %s', $userMeta->name ), $fieldTitle );
+                $field2['fieldTitle'] = ! empty( $field['retype_label'] ) ? $field['retype_label'] : sprintf( __( 'Retype %s', $userMeta->name ), $fieldTitle );
+                $field2['fieldTitle'] = isset( $field['retype_field_title'] ) ? $field['retype_field_title'] : $field2['fieldTitle'];
             }
             $field2['placeholder']  = isset( $field['placeholder'] ) ? sprintf( __( 'Retype %s', $userMeta->name ), $field['field_title'] ) : '';
             $field2['placeholder']  = isset( $field['retype_placeholder'] ) ? $field['retype_placeholder'] : $field2['placeholder'];
@@ -157,13 +166,20 @@ switch ( $field['field_type'] ) {
     break;
 
     case 'user_pass' :
-    case 'password' :    
+    case 'password' :
         $fieldType = 'password';  
         $field['field_value'] = "";
 
-        if ( $actionType == 'registration' )
+        if ( $actionType == 'registration' ){
+            $attr['required'] = 'required';
             $validation .= 'required,';
+        }
 
+        if ( ! empty( $field['regex'] ) ) 
+            $attr['pattern'] = $field['regex'];
+        
+        if ( ! empty( $field['error_text'] ) )
+            $attr['oninvalid'] = "setCustomValidity('{$field['error_text']}')";
 
         if ( ! empty($field['password_strength']) ) { 
             $moreContent = "<script type=\"text/javascript\">jQuery(document).ready(function(){jQuery(\"#$inputID\").password_strength();});</script>";
@@ -176,7 +192,8 @@ switch ( $field['field_type'] ) {
             $field2['class']        = str_replace( "pass_strength", "", $class ) . "validate[{$isRequired}equals[$inputID]]";
             $field2['fieldID']      = $inputID . "_retype";
             if ( ! empty( $fieldTitle ) ) {
-                $field2['fieldTitle'] = isset( $field['retype_field_title'] ) ? $field['retype_field_title'] : sprintf( __( 'Retype %s', $userMeta->name ), $fieldTitle );
+                $field2['fieldTitle'] = ! empty( $field['retype_label'] ) ? $field['retype_label'] : sprintf( __( 'Retype %s', $userMeta->name ), $fieldTitle );
+                $field2['fieldTitle'] = isset( $field['retype_field_title'] ) ? $field['retype_field_title'] : $field2['fieldTitle'];
             }
             $field2['placeholder']  = isset( $field['placeholder'] ) ? sprintf( __( 'Retype %s', $userMeta->name ), $field['field_title'] ) : '';
             $field2['placeholder']  = isset( $field['retype_placeholder'] ) ? $field['retype_placeholder'] : $field2['placeholder'];
@@ -205,13 +222,13 @@ switch ( $field['field_type'] ) {
                         "label_class"   => $label_class ? $label_class : 'pf_label',
                         "placeholder"   => $currentPassPlaceholder,
                         "enclose"       => 'p',
-                    ) );
+            ) );
         endif;
     break;
 
     //case 'user_nicename' :
 
-    case 'user_url' :
+    case 'user_url' : 
         $validation .= "custom[url],";
     break;
 
@@ -258,7 +275,7 @@ switch ( $field['field_type'] ) {
         $combind        = true;
 
         $html .= $userMeta->createInput( 'role_field_id', 'hidden', array(
-            'value' =>  @$field['field_id'],    
+            'value' =>  @$field['id'],    
         ));
     break;
 
@@ -309,16 +326,29 @@ switch ( $field['field_type'] ) {
     case 'user_avatar' :
         $userAvatar = false;
         if ( $field['field_type'] == 'user_avatar' ) {
-            if ( @$field[ 'field_value' ] ){
+            if ( empty( $field[ 'field_value' ] ) ) {
+                if ( empty( $field['hide_default_avatar'] ) )
+                    $userAvatar = ( @$actionType == 'registration' ) ? get_avatar( 'nobody@noemail' ) : get_avatar( $userID );
+            }
+            
+            
+            /*if ( ! empty( $field[ 'field_value' ] ) ){
                 $size   = ! empty( $field['image_size'] ) ? $field['image_size'] : 96;
                 $userAvatar = get_avatar( $userID, $size );
             } else {
-                if ( ! @$field['hide_default_avatar'] )
+                if ( empty( $field['hide_default_avatar'] ) )
                     $userAvatar = ( @$actionType == 'registration' ) ? get_avatar( 'nobody@noemail' ) : get_avatar( $userID );
-            }
+            }*/
         }
-
-        $fieldResultContent = $userMeta->render( 'showFile', array(
+        
+        if ( $userAvatar ) {
+            $fieldResultContent = $userAvatar;
+        } else {
+            $umFile = new umFile( $field );
+            $fieldResultContent = $umFile->showFile();
+        }
+        
+        /*$fieldResultContent = $userMeta->render( 'showFile', array(
             'filepath'  => $field['field_value'],
             'field_name' => $field['field_name'],
             'avatar'    => $userAvatar,
@@ -326,7 +356,7 @@ switch ( $field['field_type'] ) {
             'height'    => @$field['image_height'],
             'crop'      => !empty( $field['crop_image'] ) ? true : false,
             'readonly'  => $fieldReadOnly,
-        ) );
+        ) );*/
 
         if ( @$field['title_position'] == 'left' ) {
             $fieldResultContent = "<div class=\"um_left_margin\">$fieldResultContent</div>";
@@ -336,7 +366,7 @@ switch ( $field['field_type'] ) {
 
         if ( @$field['disable_ajax'] ) {
             $fieldType  = 'file';
-            $validation = str_replace( 'required,', '', $validation );
+            //$validation = str_replace( 'required,', '', $validation );
         } else {
             $showInputField = false;
             $extension = null; $maxsize = null;
@@ -352,7 +382,7 @@ switch ( $field['field_type'] ) {
             ) );
             if ( ! $fieldReadOnly ):
                 $uploadButtonLeftClass = @$field['title_position'] == 'left' ? 'um_left_margin' : '';
-                $html .= "<div id=\"$inputID\" um_field_id=\"um_field_{$field['field_id']}\" name=\"{$field['field_name']}\" class=\"um_file_uploader_field $uploadButtonLeftClass\" extension=\"$extension\" maxsize=\"$maxsize\"></div>"; 
+                $html .= "<div id=\"$inputID\" um_field_id=\"um_field_{$field['id']}\" um_form_key=\"{$form['form_key']}\" name=\"{$field['field_name']}\" class=\"um_file_uploader_field $uploadButtonLeftClass\" extension=\"$extension\" maxsize=\"$maxsize\"></div>"; 
             endif;
         }
     break;
@@ -392,21 +422,43 @@ switch ( $field['field_type'] ) {
             $editorOutput = $fieldBefore . ob_get_clean() . $fieldAfter;
             $html .= ! empty( $field['field_size'] ) ? "<div style=\"width:{$field['field_size']}\">$editorOutput</div>" : $editorOutput;
         }
-
-
+    break;
 }
 
-
 $label_class    = $label_class ? $label_class : 'pf_label';
+
+if ( isset( $field['description'] ) ) {
+    $descriptionClass = ! empty( $field['description_class'] ) ? $field['description_class'] : 'um_description';
+    $descriptionStyle = ! empty( $field['description_style'] ) ? "style=\"{$field['description_style']}\"" : "";
+    if( @$field['title_position'] == 'left' )
+        $descriptionClass .= ' um_left_margin';
+}
 
 if ( $userMeta->isPro() )
     include( $userMeta->viewsPath . 'pro/generateProField.php' );
 
+if ( ! empty( $doReturn ) )
+    return $html;
 
-if ( $validation ) $class .= "validate[" . rtrim( $validation, ',') . "]";
+
+/**
+ * As we did not added support translation of html5 required validation message, so we move only to old style js validation.
+ */
+if ( $validation ) {
+    //$validation = str_replace( 'required,', '', $validation );
+    $class .= "validate[" . rtrim( $validation, ',') . "]";
+}
+unset( $attr['required'] );
+
+if ( ! empty( $field['is_parent'] ) )
+    $class .= ' um_parent';
 
 
 if ( empty( $noMore ) ) {
+    
+    if ( ! empty( $field['events'] ) && is_array( $field['events'] ) )
+        $attr = array_merge( $attr, $field['events'] );
+
     
     $attr = array_merge( array(
                     "value"         => isset( $field['field_value'] ) ? $field['field_value'] : "",
@@ -426,10 +478,11 @@ if ( empty( $noMore ) ) {
                     "before"        => $fieldBefore,
                     "after"         => $fieldAfter,
                     "placeholder"   => isset( $field['placeholder'] ) ? $field['placeholder'] : "",
+                    //"data-um-conditions" => ! empty( $field['conditions'] ) ? urlencode(json_encode( $field['conditions'] )) : "",
                     //"enclose"       => ! empty( $enclose ) ? $enclose : false,
                 ), $attr );
 
-    if ($showInputField) {    
+    if ( $showInputField ) {
         $html .= $userMeta->createInput( $field['field_name'], $fieldType, $attr, $fieldOptions );  
     }
 
@@ -450,19 +503,25 @@ if ( empty( $noMore ) ) {
                     "enclose"       => 'p',
                 ) );      
     }
-
+    
     if ( isset( $field['description'] ) ) {
-        $descriptionClass = ! empty( $field['description_class'] ) ? $field['description_class'] : 'um_description';
-        $descriptionStyle = ! empty( $field['description_style'] ) ? "style=\"{$field['description_style']}\"" : "";
-        if( @$field['title_position'] == 'left' )
-            $descriptionClass .= ' um_left_margin';
         $html .= "<p $descriptionID class=\"$descriptionClass\" $descriptionStyle>" . __($field['description'], $userMeta->name) . "</p>";
     }
 
-    $fieldResultContent = isset($fieldResultContent) ? $fieldResultContent : "";
-    $fieldResultDiv = isset($fieldResultDiv) ? "<div id=\"{$inputID}_result\" class=\"um_field_result\">$fieldResultContent</div>" : "";
-    $moreContent = isset($moreContent) ? $moreContent : "";
-
-    $divStyle = $divStyle ? "style=\"$divStyle\"" : "";
-    $html = "<div class=\"um_field_container $divClass\" $divStyle>$html $fieldResultDiv $moreContent</div>";
 }
+
+
+$fieldResultContent = isset( $fieldResultContent ) ? $fieldResultContent : "";
+$fieldResultDiv = isset( $fieldResultDiv ) ? "<div id=\"{$inputID}_result\" class=\"um_field_result\">$fieldResultContent</div>" : "";
+$moreContent = isset($moreContent) ? $moreContent : "";
+
+$divStyle = $divStyle ? "style=\"$divStyle\"" : "";
+
+if ( ! empty( $field['is_hide'] )  )
+    $divClass .= ' um_hidden';
+
+if ( ! empty( $field['condition'] ) )
+    $moreContent .= '<script type="text/json" class="um_condition">' . json_encode( $field['condition'] ) . '</script>';
+
+
+$html = "<div class=\"$divClass\" $divStyle>$html $fieldResultDiv $moreContent</div>";

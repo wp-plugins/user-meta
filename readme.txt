@@ -1,9 +1,9 @@
 === User Meta ===
 Contributors: khaledsaikat
 Tags: user, profile, registration, login, frontend, users, usermeta, import, csv, upload, AJAX, admin, plugin, page, image, images, photo, picture, file, email, shortcode, captcha, avatar, redirect, register, password, custom, csv, import, user import, widget
-Requires at least: 3.3.0
+Requires at least: 3.4.0
 Tested up to: 4.2.2
-Stable tag: 1.1.6
+Stable tag: 1.1.7
 Copyright: Khaled Hossain, user-meta.com
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -118,6 +118,28 @@ WordPress doesn't allow to register new user by default settings. To allow user 
 
 == Changelog ==
 
+= 1.1.7 =
+* Redesigned fields and forms editor.
+* Conditional logic.
+* Remove password & email field from standard fields set. Those fields can can be used via “custom fields”.
+* Username will remain same as email while registration without username.
+* Remove base64_decode.
+* Switch uploader code to admin-ajax.php.
+* Remove html5 required validation, add html5 regex to custom field.
+* Hide extra social fields from backend profile.
+* reCaptcha v2.
+* Added %generated_password% placeholder.
+* Strip @noreply.com.
+* Add retype_label to custom field.
+* Added Turkish and Czech translation.
+* Added yearRange to datetime field.
+* Profile update email for backend, track modified email.
+* Added filter: user_meta_countries_list filter to countries list.
+* Added regex to password field.
+* Separate email verification and admin approval processes.
+* Fix: Pagination bug.
+* Fix: required checkbox error.
+
 = 1.1.6 =
 * Support user registration for free version.
 * Pro: Added registration link with login form/widget.
@@ -226,6 +248,7 @@ WordPress doesn't allow to register new user by default settings. To allow user 
 * Pro: User email verification on registration.
 * Pro: User activation and deactivation.
 * pro: Role based user redirection on registration, login and logout.
+* Fix: Arbitrary File Upload Vulnerability
 
 = 1.1.1 =
 * Added Support while fail AJAX call

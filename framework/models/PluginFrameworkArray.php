@@ -308,15 +308,17 @@ class PluginFrameworkArray {
         "UZ" => __( "Uzbekistan", $pfInstance->name ),
         "VU" => __( "Vanuatu", $pfInstance->name ),
         "VE" => __( "Venezuela", $pfInstance->name ),
-        "VN" => __( "Viet Nam", $pfInstance->name ),
+        "VN" => __( "Vietnam", $pfInstance->name ),
         "VG" => __( "Virgin Islands, British", $pfInstance->name ),
-        "VI" => __( "Virgin Islands, U.s.", $pfInstance->name ),
+        "VI" => __( "Virgin Islands, U.S.", $pfInstance->name ),
         "WF" => __( "Wallis and Futuna", $pfInstance->name ),
         "EH" => __( "Western Sahara", $pfInstance->name ),
         "YE" => __( "Yemen", $pfInstance->name ),
         "ZM" => __( "Zambia", $pfInstance->name ),
         "ZW" => __( "Zimbabwe", $pfInstance->name )
         );      
+        
+        $countries = apply_filters( 'user_meta_countries_list', $countries );
         
         if ( $key ) {
             if ( isset( $countries[ $key ] ) ) return $countries[ $key ];

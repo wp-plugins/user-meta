@@ -7,18 +7,20 @@ class umInitPlugin {
         global $userMeta;
         
         $userMeta->checkPro();       
-        $userMeta->loadDirectory( $userMeta->modelsPath . 'classes/' );
+        $userMeta->loadDirectory( $userMeta->modelsPath . 'classes/', false, array(
+            'umFormsListTableClass.php'
+        ) );
         
-        if ( $userMeta->isPro ) {
+        if ( $userMeta->isPro )
             $userMeta->loadModels( $userMeta->modelsPath . 'pro/' );
-            $userMeta->loadModels( $userMeta->modelsPath . 'enc/', true );
-        }
-        
+
         $this->loadExtension();
         
         $userMeta->loadControllers( $userMeta->controllersPath );
-        $userMeta->loadDirectory( $userMeta->pluginPath . '/helper/' );
+        $userMeta->loadDirectory( $userMeta->pluginPath . '/helper/', false );
         $userMeta->loadDirectory( $userMeta->pluginPath . '/addons/' );
+        
+        $userMeta->loadDirectory( $userMeta->pluginPath . '/dev/', false );
         
         if ( ! empty( $userMeta->extensions ) ) {
             foreach ( $userMeta->extensions as $extName => $extPath ) {

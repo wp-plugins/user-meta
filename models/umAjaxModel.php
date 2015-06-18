@@ -4,17 +4,26 @@ if ( ! class_exists( 'umAjaxModel' ) ) :
 class umAjaxModel {
 
     function postInsertUser() {
-        global $userMeta, $user_ID;
+        global $userMeta; //$userMeta->dump($_REQUEST);die();
         $userMeta->verifyNonce();
+        
+        $umUserInsert = new umUserInsert();
+        return $umUserInsert->postInsertUserProcess();
+      
+        
         $errors = new WP_Error();
+
+        $user_ID = get_current_user_id();
         
         /// Determine $userID        
         $userID = $user_ID;
-        if ( isset( $_REQUEST['user_id']) ) {
+        if ( isset( $_REQUEST['user_id'] ) ) {
             $user   = new WP_User( $user_ID );
             if ( $user->has_cap( 'add_users' ) && $_REQUEST['user_id'] )
                 $userID =  esc_attr( $_REQUEST['user_id'] );
         }
+        
+        $user   = new WP_User( $userID );
         
         /// $_REQUEST Validation
         $actionType = @$_REQUEST['action_type'];
@@ -30,10 +39,18 @@ class umAjaxModel {
                 $actionType = 'profile';
             else
                 $actionType = 'registration';
-        }                                        
+        }    
+        
+        $formName = $_REQUEST['form_key'];
+        
+        $formBuilder = new umFormGenerate( $formName, $actionType, $userID );
+
+        if ( ! $formBuilder->isFound() )
+            $errors->add( 'not_found', sprintf( __( 'Form "%s" is not found.', $userMeta->name ), $formName ) );
         
         /// filter valid key for update
-        $validFields = $userMeta->formValidInputField( @$_REQUEST['form_key'] );
+        //$validFields = $userMeta->formValidInputField( @$_REQUEST['form_key'] );
+        $validFields = $formBuilder->validInputFields();
         if ( ! $validFields )
             $errors->add( 'empty_field', __( 'No field to update', $userMeta->name ) );
 
@@ -45,24 +62,20 @@ class umAjaxModel {
         //if( ( $actionType <> 'profile' ) && ! ( $userMeta->isPro ) ) 
             //return $userMeta->showError( sprintf( __( 'type="%s" is not supported in free version', $userMeta->name ), $actionType ) );  
         
-        /// Assign $fieldName,$fieldData to $userData. Also validating required and unique
-        foreach ( $validFields as $fieldName => $fieldData ) {
-
-            /// user_login is read-only for profile update, so remove it to being $userData
-            /*if( $fieldName == 'user_login' && $actionType == 'profile' )
-                continue;
-
-            if( $fieldName == 'user_pass' && $actionType == 'profile' ){
-                if( !$_REQUEST[$fieldName] )
-                    continue;
-            }*/
+        /// Assign $fieldName,$field to $userData. Also validating required and unique
+        foreach ( $validFields as $fieldName => $field ) {
             
-            $fieldData = apply_filters( 'user_meta_field_config', $fieldData, $fieldData['field_id'], @$_REQUEST['form_key'], $userID );
+            $field = apply_filters( 'user_meta_field_config', $field, $field['id'], $formName, $userID );
             
             if ( $actionType == 'profile' ) {
                 if ( $fieldName == 'user_login' || ( $fieldName == 'user_pass' && empty( $_REQUEST['user_pass'] ) ) )
                     continue;
-            }          
+            }
+            
+            if ( $field[ 'field_type' ] == 'custom' && isset( $field['input_type'] ) && $field['input_type'] == 'password' ) {
+                if ( empty( $_REQUEST[ $fieldName ] ) )
+                    continue;
+            }
                         
             /// Assigning data to $userData       
             $userData[ $fieldName ] = @$_REQUEST[ $fieldName ];
@@ -72,69 +85,52 @@ class umAjaxModel {
             
             
             /// Handle non-ajax file upload
-            if ( in_array( $fieldData[ 'field_type' ], array( 'user_avatar', 'file' ) ) ) {
+            if ( in_array( $field[ 'field_type' ], array( 'user_avatar', 'file' ) ) ) {
                 if ( isset( $_FILES[ $fieldName ] ) ) {
-                    $extensions = @$fieldData[ 'allowed_extension' ] ? $fieldData[ 'allowed_extension' ] : "jpg,png,gif";
-                    $maxSize    = @$fieldData[ 'max_file_size' ] ? $fieldData[ 'max_file_size' ] * 1024 : 1024 * 1024;
+                    $extensions = ! empty( $field[ 'allowed_extension' ] ) ? $field[ 'allowed_extension' ] : "jpg,png,gif";
+                    $maxSize    = ! empty( $field[ 'max_file_size' ] ) ? $field[ 'max_file_size' ] * 1024 : 1024 * 1024;
                     $file = $userMeta->fileUpload( $fieldName, $extensions, $maxSize );
                     if ( is_wp_error( $file ) ) {
                         if ( $file->get_error_code() <> 'no_file' )                       
                             $errors->add( $file->get_error_code(), $file->get_error_message() );
                     } else {
-                        if ( is_string( $file ) )
+                        if ( is_string( $file ) ) {
+                            $umFile = new umFile;
+                            $umFile->initFile( $field );
                             $userData[ $fieldName ] = $file;
+                        }   
                     }                       
                 }
                 
                 $userMeta->removeFromFileCache( $userData[ $fieldName ] );
             }
             
-            // For removing value for cache
-            //if( $fieldName == 'user_avatar' OR $fieldName == 'file' )
-                //$imageCache[] = $userData[$fieldName];
-            
-            /*if( $fieldName == 'user_login' || $fieldName == 'user_email' ){
-                $fieldData[ 'required' ] = true;
-                $fieldData[ 'unique' ]   = true;
-            }*/
-            
-            /*if( $fieldName == 'user_pass' && $actionType == 'registration' )
-                $fieldData[ 'required' ] = true;*/
-
-            /*if( $fieldData[ 'required' ] ){
-                if( !$userData[ $fieldName ] ){
-                    $errors->add( 'required', sprintf( __( '%s field is required', $userMeta->name ), $fieldData['field_title'] ) );
-                    continue;
-                }                        
-            }*/
-          
-            
             
             /*
              * Using umField Class
              */
-            if ( ! isset( $fieldData['field_value'] ) )
-                $fieldData['field_value'] = $userData[ $fieldName ];
+            if ( ! isset( $field['field_value'] ) )
+                $field['field_value'] = $userData[ $fieldName ];
             
-            $field = new umField( $fieldData['field_id'], $fieldData, array(
+            $umField = new umField( $field['id'], $field, array(
                 'user_id'       => $userID,
                 'insert_type'   => $actionType,
             ) );
             
             if ( $fieldName == 'user_pass' && $actionType == 'registration' )
-                $field->addRule( 'required' );
+                $umField->addRule( 'required' );
             
             if ( $fieldName == 'user_pass' && $actionType == 'profile'  ) {
-                if ( ! empty( $fieldData['required_current_password'] ) )
-                    $field->addRule( 'current_password' );
+                if ( ! empty( $field['required_current_password'] ) )
+                    $umField->addRule( 'current_password' );
             }
 
             
             if ( isset( $_REQUEST[ $fieldName . "_retype" ] ) )
-                $field->addRule( 'equals' );
+                $umField->addRule( 'equals' );
              
-            if ( ! $field->validate() ) {
-                foreach ( $field->getErrors() as $errKey => $errVal )
+            if ( ! $umField->validate() ) {
+                foreach ( $umField->getErrors() as $errKey => $errVal )
                     $errors->add( $errKey, $errVal );
             }
              
@@ -167,7 +163,7 @@ class umAjaxModel {
         // Showing error
         if ( $errors->get_error_code() )
             return $userMeta->ShowError( $errors ); 
-        
+       
         /// Run Captcha validation after completed all other validation     
         $captchaValidation = $userMeta->isInvalidateCaptcha();
         if ( $captchaValidation ) {
@@ -182,9 +178,10 @@ class umAjaxModel {
         if ( isset( $userData['role'] ) ) {
             $ignoreRole = true;
 
-            $fieldData = $userMeta->getFieldData( @$_REQUEST['role_field_id'] );
-            if ( is_array( @$fieldData['allowed_roles'] ) ){
-                if ( in_array( $userData['role'], $fieldData['allowed_roles'] ) )
+            //$fieldData = $userMeta->getFieldData( @$_REQUEST['role_field_id'] );
+            $field = $formBuilder->getField( @$_REQUEST['role_field_id'] );
+            if ( is_array( @$field['allowed_roles'] ) ){
+                if ( in_array( $userData['role'], $field['allowed_roles'] ) )
                         $ignoreRole = false;
             }
            
@@ -201,13 +198,36 @@ class umAjaxModel {
             if ( ! $user_ID )
                 return $userMeta->showError( __( 'User must be logged in to update profile', $userMeta->name ) );           
 
-            $userData = apply_filters( 'user_meta_pre_user_update', $userData, $userID );
+            $userData = apply_filters( 'user_meta_pre_user_update', $userData, $userID, $formName );
             if ( is_wp_error( $userData ) )
-                return $userMeta->showError( $userData );            
+                return $userMeta->showError( $userData );
+            
+            /**
+             * Profile Update modified data
+             */
+            $modifiedData = array();
+            foreach ( $userData as $key => $val ) {
+                if ( $user->$key != $val )
+                    $modifiedData[ $key ] = $user->$key;
+            }
             
             $response = $userMeta->insertUser( $userData, $userID );
             if ( is_wp_error( $response ) )
-                return $userMeta->showError( $response );  
+                return $userMeta->showError( $response );
+            
+            if ( ! empty( $modifiedData ) ) {
+                $storedData = get_transient( $userMeta->prefix . 'user_modified_data' );
+                if ( empty( $storedData ) )
+                    $storedData = array();
+                
+                $storedData[ $userID ] = $modifiedData;
+
+                set_transient( $userMeta->prefix . 'user_modified_data', $storedData, 30 );
+            }
+            /**
+             * End Profile Update modified data
+             */
+
             
             /// Allow to populate form data based on DB instead of $_REQUEST
             $userMeta->showDataFromDB = true;            
@@ -216,7 +236,7 @@ class umAjaxModel {
             //if( isset( $imageCache ) )
                 //$userMeta->removeCache( 'image_cache', $imageCache, false );  
                               
-            do_action( 'user_meta_after_user_update', (object) $response );
+            do_action( 'user_meta_after_user_update', (object) $response, $formName );
               
             $message    = $userMeta->getMsg( 'profile_updated' );
             $html = "<div action_type='$actionType'>" . $userMeta->showMessage( $message ) . "</div>";  
@@ -257,42 +277,59 @@ class umAjaxModel {
         die();
     }   
     
+    function ajaxFileUploader() {
+        global $userMeta;
+        $userMeta->verifyNonce();
+
+        // list of valid extensions, ex. array("jpeg", "xml", "bmp")
+        $allowedExtensions = array( 'jpg','jpeg','png','gif' );
+        // max file size in bytes
+        $sizeLimit = 1 * 1024 * 1024;
+        $replaceOldFile = FALSE;
+
+        $allowedExtensions  = apply_filters( 'pf_file_upload_allowed_extensions', $allowedExtensions );
+        $sizeLimit          = apply_filters( 'pf_file_upload_size_limit', $sizeLimit );
+        $replaceOldFile     = apply_filters( 'pf_file_upload_is_overwrite', $replaceOldFile );
+
+
+
+        $uploader = new qqFileUploader( $allowedExtensions, $sizeLimit );
+        $result = $uploader->handleUpload( $replaceOldFile );
+        // to pass data through iframe you will need to encode all html tags
+        echo htmlspecialchars( json_encode( $result ), ENT_NOQUOTES );
+        die();
+    }
+    
     function ajaxShowUploadedFile() {
-        global $userMeta;     
+        global $userMeta;
         $userMeta->verifyNonce();     
-        
+                
         if ( isset( $_REQUEST['showimage'] ) ) {
             if ( isset( $_REQUEST['imageurl'] ) )
                 echo "<img src='{$_REQUEST['imageurl']}' />";
             die();
         }
         
-        // Update Cache: Commented since 1.1.5rc3
-        /*if( isset( $_REQUEST['filepath'] ) ){
-            if( $_REQUEST['filepath'] ){
-                $cache   = $userMeta->getData( 'cache' );
-                if( isset( $cache['image_cache'] ) ){
-                    if( !in_array( $_REQUEST['filepath'], $cache['image_cache'] ) )
-                        $cache['image_cache'][] = $_REQUEST['filepath'];
-                }else
-                    $cache['image_cache'][] = $_REQUEST['filepath'];
-                $userMeta->updateData( 'cache', $cache );
-            }
-        }*/
+        $file = new umFile();
+        $file->ajaxUpload();
+        die();
         
+        /**
+         * Commented since 1.1.7beta1
+         * 
         // Showing Image
-    $fieldID    = trim( str_replace( 'um_field_', '', @$_REQUEST['field_id'] ) );
-    $fields     = $userMeta->getData( 'fields' );
-    $field      = @$fields[@$fieldID];          
-    if ( @$field['field_type'] == 'user_avatar' ) {
-        if ( ! empty( $field['image_size'] ) ) {
-            $field['image_width']   = $field['image_size'];
-            $field['image_height']  = $field['image_size'];
-        } else {
-            $field['image_width']   = 96;
-            $field['image_height']  = 96;
-        }          
-    }  
+        $fieldID    = trim( str_replace( 'um_field_', '', @$_REQUEST['field_id'] ) );
+        $fields     = $userMeta->getData( 'fields' );
+        $field      = @$fields[@$fieldID];          
+        if ( @$field['field_type'] == 'user_avatar' ) {
+            if ( ! empty( $field['image_size'] ) ) {
+                $field['image_width']   = $field['image_size'];
+                $field['image_height']  = $field['image_size'];
+            } else {
+                $field['image_width']   = 96;
+                $field['image_height']  = 96;
+            }          
+        }  
         
         if ( ! empty( $field ) ) {
             echo $userMeta->renderPro( 'showFile', array(
@@ -304,6 +341,7 @@ class umAjaxModel {
                 //'readonly'  => @$fieldReadOnly,   // implementation of read-only is not needed.
             ) );                 
         }
+         */
                 
         die();
     }    
@@ -337,6 +375,13 @@ class umAjaxModel {
         $userMeta->updateData( 'advanced', stripslashes_deep( $data ) );
         echo $userMeta->showMessage( __( 'Successfully saved.', $userMeta->name ) );
         
+        die();
+    }
+    
+    function ajaxTestMethod() {
+        global $userMeta;
+        echo 'Working...';
+        $userMeta->dump( $_REQUEST );
         die();
     }
       

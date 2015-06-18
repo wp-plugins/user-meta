@@ -86,6 +86,7 @@ if( !$userMeta->isPro && $userMeta->isLicenceValidated() )
 
 $html .= "</form>";
 
+$confirmMsg = '';
 if( is_multisite() ){
 	if( is_super_admin() )
 		$confirmMsg = __( 'This will withdraw license from all sites under the network. Are you sure you want to withdraw pro license from all sites?', $userMeta->name );

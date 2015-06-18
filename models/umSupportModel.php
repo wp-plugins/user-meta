@@ -203,7 +203,7 @@ class umSupportModel {
         return $userMeta->updateData( 'fields', $fields );                      
     }
     
-
+    // Sleep since 1.1.7rc1
     /**
      * Validate input field from a form
      * @param $form_key
@@ -235,99 +235,7 @@ class umSupportModel {
         return isset($validField) ? $validField : null;
     }
     
-    
-    function registerUser( $userData, $fileCache=null ) {
-        global $userMeta;
-        
-        /// $userData: array. 
-        $userData = apply_filters( 'user_meta_pre_user_register', $userData );
-        if ( is_wp_error( $userData ) )
-            return $userMeta->showError( $userData );      
-
-        if ( is_multisite() && wp_verify_nonce( @$_POST['um_newblog'], 'blogname' ) && ! empty( $_POST['blogname'] ) ) {
-            $blogData = wpmu_validate_blog_signup( $_POST['blogname'], $_POST['blog_title'] ); 
-            if ( $blogData['errors']->get_error_code() )
-                return $userMeta->showError( $blogData['errors'] );			
-        }    
-		
-        // If add_user_to_blog set true in UserMeta settings panel
-        $userID = null;
-        if ( is_multisite() ) {
-            $registrationSettings = $userMeta->getSettings( 'registration' );
-            if ( ! empty( $registrationSettings['add_user_to_blog'] ) ) {
-                global $blog_id;
-                $user_login = sanitize_user( $userData['user_login'], true );
-                $userID		= username_exists( $user_login );
-                if ( $userID ) {
-                    if ( ! is_user_member_of_blog( $userID ) )
-                        add_user_to_blog( $blog_id, $userID, get_option( 'default_role','subscriber' ) );
-                    else
-                        $userID	= null;
-                }				
-            }			
-        }
-                
-        $response = $userMeta->insertUser( $userData, $userID );  
-        if ( is_wp_error( $response ) )
-            return $userMeta->showError( $response );
-
-        if ( isset( $blogData ) ) {
-            $responseBlog = $userMeta->registerBlog( $blogData, $userData );  
-            if ( is_wp_error( $responseBlog ) )
-                return $userMeta->showError( $responseBlog );			
-        }
-        
-        /// Allow to populate form data based on DB instead of $_REQUEST
-        $userMeta->showDataFromDB = true;         
-            
-        $registrationSettings = $userMeta->getSettings( 'registration' );
-        $activation = $registrationSettings['user_activation'];
-        if ( $activation == 'auto_active' )
-            $msg    = $userMeta->getMsg( 'registration_completed' );
-        elseif ( $activation == 'email_verification' )
-            $msg    = $userMeta->getMsg( 'sent_verification_link' );
-        elseif ( $activation == 'admin_approval' )
-            $msg    = $userMeta->getMsg( 'wait_for_admin_approval' );
-        elseif ( $activation == 'both_email_admin' )
-            $msg    = $userMeta->getMsg( 'sent_link_wait_for_admin' );
-        
-        if ( ! $userMeta->isPro() )
-            wp_new_user_notification( $response['ID'], $response['user_pass'] );
-        
-        if ( $activation == 'auto_active' ) {
-            if ( ! empty( $registrationSettings['auto_login'] ) )
-                $userMeta->doLogin( $response );
-        }
-        
-        do_action( 'user_meta_after_user_register', (object) $response );                  
-        
-        $html = $userMeta->showMessage( $msg );
-
-        if ( isset($responseBlog) )
-                $html .= $userMeta->showMessage( $responseBlog );
-        
-        $role = $userMeta->getUserRole( $response['ID'] );
-        $redirect_to = $userMeta->getRedirectionUrl( null, 'registration', $role );
-        
-        if ( $userMeta->isHookEnable( 'registration_redirect' ) )
-            $redirect_to = apply_filters( 'registration_redirect', $redirect_to, $response[ 'ID' ] );
-        
-        if ( $redirect_to ) {
-            if ( empty( $_REQUEST['is_ajax'] ) ) {
-                wp_redirect( $redirect_to );
-                exit();
-            }
-            
-            $timeout = $activation == 'auto_active' ? 3 : 5;
-            $html .= $userMeta->jsRedirect( $redirect_to, $timeout );
-        }
-                   
-        
-        $html = "<div action_type=\"registration\">" . $html . "</div>";    
-        return $userMeta->printAjaxOutput( $html );                          
-    }
-    
-    
+ 
     function removeFromFileCache( $filePath ) {
         global $userMeta;
         
@@ -548,12 +456,12 @@ class umSupportModel {
     function adminPageUrl( $page, $html_link=true ) {
         global $userMeta;
         
-        if ( $page == 'fields_editor' ) :
+        if ( $page == 'forms' ) :
             $link   = 'usermeta';
-            $label  = __( 'Fields Editor', $userMeta->name );
-        elseif ( $page == 'forms_editor' ) :
-            $link   = 'user-meta-form-editor';
-            $label  = __( 'Forms Editor', $userMeta->name );
+            $label  = __( 'Forms', $userMeta->name );
+        elseif ( $page == 'fields' ) :
+            $link   = 'user-meta-fields';
+            $label  = __( 'Shared Fields', $userMeta->name );
         elseif ( $page == 'settings' ) :    
             $link = 'user-meta-settings';
             $label  = __( 'Settings', $userMeta->name );
@@ -584,36 +492,42 @@ class umSupportModel {
             $replacements = array();
             foreach ( $patterns as $key => $pattern ) {
                 $fieldName = strtolower( trim( $pattern, '%' ) );
+                $result = '';
                 if ( $fieldName == 'site_title' )
-                    $replacements[ $key ] = get_bloginfo( 'name' );
+                    $result = get_bloginfo( 'name' );
                 elseif ( $fieldName == 'site_url' )
-                    $replacements[ $key ] = site_url();
+                    $result = site_url();
                 elseif ( $fieldName == 'role' )
-                    $replacements[ $key ] = $userMeta->getUserRole( $user->ID );
+                    $result = $userMeta->getUserRole( $user->ID );
                 elseif ( $fieldName == 'avatar' )
-                    $replacements[ $key ] = get_avatar( $user->ID );
+                    $result = get_avatar( $user->ID );
                 elseif ( $fieldName == 'login_url' )
-                    $replacements[ $key ] = wp_login_url();                    
+                    $result = wp_login_url();                    
                 elseif ( $fieldName == 'logout_url' )
-                    $replacements[ $key ] = wp_logout_url();
+                    $result = wp_logout_url();
                 elseif ( $fieldName == 'lostpassword_url' )
-                    $replacements[ $key ] = wp_lostpassword_url();                                         
+                    $result = wp_lostpassword_url();                                         
                 elseif ( $fieldName == 'admin_url' )
-                    $replacements[ $key ] = admin_url();
+                    $result = admin_url();
                 elseif ( $fieldName == 'activation_url' )
-                    $replacements[ $key ] = $userMeta->userActivationUrl( 'activate', $user->ID, false );
+                    $result = $userMeta->userActivationUrl( 'admin_approval', $user->ID, false );
                 elseif ( $fieldName == 'email_verification_url' )
-                    $replacements[ $key ] = $userMeta->emailVerificationUrl( $user );
+                    $result = $userMeta->emailVerificationUrl( $user );
+                elseif ( $fieldName == 'user_modified_data' )
+                    $result = $userMeta->userModifiedData( $user, $extra );
+                elseif ( $fieldName == 'generated_password' )
+                    $result = $userMeta->generatePassword( $user );
                 elseif ( $fieldName == 'login_form' )
-                    $replacements[ $key ] = $userMeta->lgoinForm();
+                    $result = $userMeta->lgoinForm();
                 elseif ( $fieldName == 'lostpassword_form' )
-                    $replacements[ $key ] = $userMeta->lostPasswordForm();
+                    $result = $userMeta->lostPasswordForm();
                 elseif ( ! empty( $user->$fieldName ) )
-                    $replacements[ $key ] = is_array( $user->$fieldName ) ? implode( ',', $user->$fieldName ) : $user->$fieldName;
-                else
-                    $replacements[ $key ] = '';                                              
+                    $result = is_array( $user->$fieldName ) ? implode( ',', $user->$fieldName ) : $user->$fieldName;
+
+                $replacements[ $key ] = apply_filters( 'user_meta_placeholder_output', $result, $fieldName, $user, $extra );
             }
-            $data = str_replace($patterns, $replacements, $data);
+            
+            $data = str_replace( $patterns, $replacements, $data );
         }    
 
         return $data;     
@@ -688,7 +602,7 @@ class umSupportModel {
     
     function checkPro() {
         global $userMeta;
-        $isPro = file_exists( $userMeta->modelsPath . 'enc/umProSupportModelEncrypted.php' ) ? true : false;
+        $isPro = file_exists( $userMeta->modelsPath . 'pro/umProAuth.php' ) ? true : false;
         $userMeta->isPro = $isPro;
     }
     
@@ -764,29 +678,41 @@ class umSupportModel {
         return $file;
     }
     
-    
-    function showFile( $field ) {
+    function fieldListforDropdown( $fields = array() ) {
         global $userMeta;
-              
-        if ( $field['field_type'] == 'user_avatar' ) {
-            if ( ! empty( $field['image_size'] ) ) {
-                $field['image_width']   = $field['image_size'];
-                $field['image_height']  = $field['image_size'];
-            } else {
-                $field['image_width']   = 96;
-                $field['image_height']  = 96;
-            }          
-        }  
         
-        return $userMeta->renderPro( 'showFile', array(
-            'filepath'      => ! empty( $field['field_value'] )     ? $field['field_value'] : '',
-            'field_name'    => ! empty( $field['field_name'] )      ? $field['field_name'] : '',
-            //'avatar'        => '',
-            'width'         => ! empty( $field['image_width'] )     ? $field['image_width'] : null,
-            'height'        => ! empty( $field['image_height'] )    ? $field['image_height'] : null,
-            'crop'          => ! empty( $field['crop_image'] )      ? true : false,
-            'readonly'      => ! empty( $field['read_only'] )       ? true : false,
-        ) );  
+        if ( empty( $fields ) )
+            $fields = $userMeta->getData( 'fields' ); 
+
+        $dropdown = array();
+        if ( ! empty( $fields ) && is_array( $fields ) ) {
+            foreach( $fields as $id => $data ) {
+                if ( ! in_array( $data['field_type'], array( 'page_heading', 'section_heading', 'html', 'captcha' ) ) )
+                        $dropdown[ $id ] = $data['field_title'];
+            }
+        }
+        
+        return $dropdown;
+    }
+    
+    function removeAdditional( $data ) {
+        if ( ! is_array( $data ) ) return $data;
+        
+        $additional = array( 
+            'action',
+            'method_name', 
+            'init_max_id',
+            'max_id',
+            '_wpnonce', 
+            '_wp_http_referer' 
+        );
+        
+        foreach ( $additional as $input ) {
+            if ( isset( $data[ $input ] ) )
+                unset( $data[ $input ] );
+        }
+        
+        return $data;
     }
         
 }

@@ -4,7 +4,7 @@ if ( ! class_exists( 'umSettingsController' ) ) :
 class umSettingsController {
     
     function __construct() {
-        add_action( 'wp_ajax_um_update_settings',   array($this, 'ajaxUpdateSettings' ) );
+        add_action( 'wp_ajax_um_update_settings',   array( $this, 'ajaxUpdateSettings' ) );
     }
 
     

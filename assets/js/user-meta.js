@@ -1,18 +1,23 @@
 
 var umAjaxRequest;
 
-function pfAjaxCall(element, action, arg, handle) {
-    if (action) data = "action=" + action;
-    if (arg)    data = arg + "&action=" + action;
-    if (arg && !action) data = arg;
-    
-    var n = data.search("pf_nonce");
-    if (n<0) {
-        data = data + "&pf_nonce=" + pf_nonce;
+function pfAjaxCall(element, action, arg, handle) {    
+    if ( typeof arg == 'object' ) {
+        data = arg;
+        if (action) data.action = action;
+        //if (!data.pf_nonce) data.pf_nonce = pf_nonce;
+    } else if ( typeof arg == 'string' ) {
+        if (action) data = "action=" + action;
+        if (arg)    data = arg + "&action=" + action;
+        if (arg && !action) data = arg;
+
+        var n = data.search("pf_nonce");
+        if (n<0) {
+            data = data + "&pf_nonce=" + pf_nonce;
+        }
+        data = data + "&is_ajax=true";
     }
-        
-    //data = data + "&pf_nonce=" + pf_nonce + "&is_ajax=true";    
-    data = data + "&is_ajax=true";
+    
     //if( typeof(ajaxurl) == 'undefined' ) ajaxurl = front.ajaxurl;
 
     umAjaxRequest = jQuery.ajax({
@@ -82,7 +87,8 @@ function umLogout(element) {
 }
 
 function umPageNavi(pageID, isNext, element) {
-    var haveError = false;
+    var hasError = false;
+    var hasHtml5Error = false;
     
     if (typeof element == 'object')
         formID = "#" + jQuery(element).parents("form").attr("id");
@@ -94,10 +100,20 @@ function umPageNavi(pageID, isNext, element) {
         
         jQuery( formID + " #um_page_segment_" + checkingPage + " .um_input" ).each(function(){
             fieldID = jQuery(this).attr("id");  
+            
+            validateHtml5 = jQuery("#" + fieldID)[0].checkValidity();  
+            if( ! validateHtml5 ){
+                hasHtml5Error = true;
+                hasError = true;  
+            }
+            
             error = jQuery("#" + fieldID).validationEngine( "validate" );      
-            if( error )
-                haveError = true;           
+            if( error ) hasError = true;  
         });
+        
+        if ( hasHtml5Error ){
+            jQuery(formID).find(':submit').click();
+        }
 
         // Not in use
         // Checking every um_unique class for error. (validateField not working for ajax)
@@ -112,14 +128,14 @@ function umPageNavi(pageID, isNext, element) {
                 data: "action=um_validate_unique_field&customCheck=ok&fieldId="+id+"&fieldValue=" + value,
         		success: function( data ){
                     if( data == "error" )
-                        haveError = data;
+                        hasError = data;
         		}
         	});  
         });               
     } else
         jQuery(formID).validationEngine("hide");
     
-    if ( haveError ) return false;
+    if ( hasError ) return false;
     
     jQuery(formID).children(".um_page_segment").hide();
     jQuery(formID).children("#um_page_segment_" + pageID ).fadeIn('slow');    
@@ -130,6 +146,7 @@ function umFileUploader(uploadScript) {
 
         var divID = jQuery(this).attr("id");
         var fieldID = jQuery(this).attr("um_field_id");
+        var formKey = jQuery(this).attr("um_form_key");
         
         allowedExtensions = jQuery(this).attr("extension");
         allowedExtensions = allowedExtensions.replace(/\s+/g,"");
@@ -137,14 +154,16 @@ function umFileUploader(uploadScript) {
         if ( !allowedExtensions )
             allowedExtensions = "jpg,jpeg,png,gif";
         if ( !maxSize )
-            maxSize = 1 * 1024 * 1024;            
+            maxSize = 1 * 1024 * 1024;     
+        
+        var formKey = jQuery(this).attr("um_form_key");
 
         var uploader = new qq.FileUploader({
             // pass the dom node (ex. $(selector)[0] for jQuery users)
             element: document.getElementById(divID),
             // path to server-side upload script
-            action: uploadScript,
-            params: {"field_name":jQuery(this).attr("name"), field_id:fieldID, "pf_nonce":pf_nonce },
+            action: ajaxurl,//uploadScript,
+            params: {"action":"um_file_uploader", "field_name":jQuery(this).attr("name"), field_id:fieldID, form_key:formKey, "pf_nonce":pf_nonce },
             allowedExtensions: allowedExtensions.split(","),
             sizeLimit: maxSize,
             onComplete: function(id, fileName, responseJSON){
@@ -152,7 +171,7 @@ function umFileUploader(uploadScript) {
                 
                 // responseJSON comes from uploader.php return
                 handle = jQuery('#'+fieldID);
-                arg = 'field_name=' + responseJSON.field_name + '&filepath=' + responseJSON.filepath + '&field_id=' + fieldID;
+                arg = 'field_name=' + responseJSON.field_name + '&filepath=' + responseJSON.filepath + '&field_id=' + fieldID + '&form_key=' + formKey;
 
                 // Check if it is used by User Import Upload
                 if ( responseJSON.field_name == 'txt_upload_ump_import' ) {
@@ -170,10 +189,7 @@ function umFileUploader(uploadScript) {
                     pfAjaxCall( handle, 'um_show_uploaded_file', arg, function(data) {
                         jQuery('#'+divID+'_result').empty().append( data );       
                     });                    
-                }                
-                
-                
-
+                }
             }
         });         
     });
@@ -221,3 +237,92 @@ function umConditionalRequired(field, rules, i, options) {
     if (jQuery('#' + baseField).val().length > 0 && field.val().length == 0)
         rules.push('required'); 
 }
+
+
+
+(function($){
+    
+    var userMeta = userMeta || {};
+    
+    userMeta.common = {
+        
+        init: function() {
+            
+        }
+        
+    }
+    
+    userMeta.front = {
+        
+        init: function() {
+            $('.um_generated_form').each(function(){
+                userMeta.front.initForm( this );
+            });
+        },
+        
+        initForm: function( editor ) {
+            this.editor = $(editor);
+            this.events();
+        },
+        
+        load: function() {
+            $('.um_user_form').validationEngine();
+            $('.um_rich_text').wysiwyg({initialContent:' '});
+            $('input, textarea').placeholder();
+        },
+         
+        events: function() {
+            this.editor.on('change', '.um_parent', this.chekConditions);
+        },
+        
+        chekConditions: function() {
+            var editor = userMeta.front.editor;
+            
+            editor.find('script[type="text/json"].um_condition').each(function(){
+                try {
+                    var condition = JSON.parse($(this).text());
+                    
+                    var evals = [];
+                    
+                    $.each( condition.rules, function() {
+                        target =  editor.find('.um_field_' + this.field_id).val();
+                        switch ( this.condition ) {
+                            case 'is' :
+                                evals.push(target == this.value ? true : false);
+                            break;
+
+                            case 'is_not' :
+                                evals.push(target != this.value ? true : false);
+                            break;
+                        }
+                    })
+                    
+                    var result = evals[0];
+                    
+                    if ( evals.length > 1 ) {
+                        for ( var i = 1; i < evals.length; i++ ) {
+                            if ( 'and' == condition.relation ) {
+                                result = result && evals[ i ];
+                            } else {
+                                result = result || evals[ i ];
+                            }
+                        }
+                    }
+
+                    if ( ( ( 'show' == condition.visibility ) && ! result ) || ( ( 'hide' == condition.visibility ) && result ) ) {
+                        $(this).closest('.um_field_container').hide();
+                    } else {
+                        $(this).closest('.um_field_container').show();
+                    }
+                    
+                } catch (err) {} 
+            });
+        }
+    };
+    
+    $(function() {
+        userMeta.common.init();
+        userMeta.front.init();
+    });
+    
+})(jQuery);

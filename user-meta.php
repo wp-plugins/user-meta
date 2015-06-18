@@ -4,7 +4,7 @@ Plugin Name: User Meta
 Plugin URI: http://user-meta.com
 Description: User management plugin. Frontend user profile, user egistration with extra fields. Login widget, user import, user redirection, email verification, admin approval, frontend lost-reset passwod and many more.
 Author: Khaled Hossain
-Version: 1.1.6
+Version: 1.1.7
 Author URI: http://khaledsaikat.com
 */
 

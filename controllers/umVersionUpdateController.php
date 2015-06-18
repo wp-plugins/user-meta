@@ -129,7 +129,45 @@ class umVersionUpdateController {
             self::upgrade_to_1_1_5( $versionFrom );
         }
         
+		if ( version_compare( $versionFrom, '1.1.6rc2', '<' ) )
+            self::upgrade_to_1_1_6();
+        
+		if ( version_compare( $versionFrom, '1.1.6', '<=' ) )
+            self::upgrade_to_1_1_7();
+        
         $userMeta->notifyVersionUpdate();
+    }
+    
+    function upgrade_to_1_1_7() {
+        global $userMeta;
+        
+        $fields = $userMeta->getData( 'fields' );
+        if ( is_array( $fields ) ) {
+            foreach( $fields as $key => $field ) {
+                if ( ! isset( $field['field_type'] ) ) continue;
+                
+                if ( $field['field_type'] == 'password' ) {
+                    $fields[ $key ]['field_type'] = 'custom';
+                    $fields[ $key ]['input_type'] = 'password';
+                } elseif ( $field['field_type'] == 'email' ) {
+                    $fields[ $key ]['field_type'] = 'custom';
+                    $fields[ $key ]['input_type'] = 'email';
+                } elseif ( $field['field_type'] == 'user_avatar' || $field['field_type'] == 'file' ) {
+                    if ( ! empty( $field['crop_image'] ) )
+                        $fields[ $key ]['resize_image'] = '1';
+                }    
+            }
+            
+            $userMeta->updateData( 'fields', $fields );
+        }
+    }
+    
+    function upgrade_to_1_1_6() {
+        global $userMeta;
+        
+        $data = $userMeta->getData( 'settings' );
+        $data['login']['disable_registration_link'] = true;
+        $userMeta->updateData( 'settings', $data );
     }
         
     function upgrade_to_1_1_5( $versionFrom ) {

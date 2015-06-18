@@ -4,8 +4,8 @@ if ( ! class_exists( 'umFormsController' ) ) :
 class umFormsController {
     
     function __construct() {      
-        add_action( 'wp_ajax_um_add_form',      array( $this, 'ajaxAddForm' ) ); 
-        add_action( 'wp_ajax_um_update_forms',  array( $this, 'ajaxUpdateForms' ) );                
+        //add_action( 'wp_ajax_um_add_form',      array( $this, 'ajaxAddForm' ) ); 
+        //add_action( 'wp_ajax_um_update_forms',  array( $this, 'ajaxUpdateForms' ) );                
     }
     
     

@@ -5,6 +5,7 @@
  * This script will use independently. and proper nonce verification process were added to prevent unauthorized access.
  */
 
+exit();
 
 /**
  * Determine wp-load path and include with the script.

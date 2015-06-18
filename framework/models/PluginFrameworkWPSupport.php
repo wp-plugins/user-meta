@@ -31,7 +31,7 @@ class PluginFrameworkWPSupport {
         check_admin_referer( 'pf' . ucwords( str_replace( 'ajax', '', $methodName ) ) );
 
         if ( ! ( self::isAdmin() ) )
-            die( __( 'Security check: admin only', $pfInstance->name ) );
+            die( __( 'Security check: admin only' ) );
                     
         return true;     
     }
@@ -40,12 +40,27 @@ class PluginFrameworkWPSupport {
         global $pfInstance;
         
         $html = null;
-        $html .= "<input type=\"hidden\" name=\"method_name\" value=\"$methodName\">";
+        $html .= "<input type=\"hidden\" name=\"method_name\" value=\"$methodName\" />";
         if ( $combind ) {
             $html .= $pfInstance->wp_nonce_field( 'pf' . ucwords( $methodName ), '_wpnonce', true , false );
         }
   
         return $html;
+    }
+    
+    // Verify methodName
+    function verifyAdminNonce( $methodName ) {
+        if ( empty( $_REQUEST['_wpnonce'] ) ) die( 'Security check: empty nonce' );
+        
+        $nonce      = $_REQUEST['_wpnonce'];
+        $nonceText  = 'pf' . ucwords( str_replace( 'ajax', '', $methodName ) );
+                
+        if ( ! wp_verify_nonce( $nonce, $nonceText ) ) die( 'Security check: nonce missmatch' );     
+        
+        if ( ! ( self::isAdmin() ) )
+            die( __( 'Security check: admin only' ) );
+                    
+        return true;      
     }
     
    /**
@@ -203,15 +218,18 @@ class PluginFrameworkWPSupport {
             $userdata['user_login'] = sanitize_user( $userdata['user_login'], true );    
          
         // Case of registration
-        if ( ! $userID ) {     
+        if ( ! $userID ) {
             if ( ! empty( $userdata['user_email'] ) && empty( $userdata['user_login'] ) ) {
-                $user_login = explode( '@', $userdata['user_email'] );
-                $user_login = $user_login[0];
-                if ( username_exists( $user_login ) )
-                    $user_login = $user_login . rand( 1, 999 );                
+                $user_login = $userdata['user_email'];
+                if ( apply_filters( 'user_meta_username_without_domain', true ) ) {
+                    $user_login = explode( '@', $userdata['user_email'] );
+                    $user_login = $user_login[0];
+                    if ( username_exists( $user_login ) )
+                        $user_login = $user_login . rand( 1, 999 ); 
+                }
                 $userdata['user_login'] = sanitize_user( $user_login, true );
             } elseif ( ! empty( $userdata['user_login'] ) && empty( $userdata['user_email'] ) ) {
-                $userdata['user_email'] = $userdata['user_login'] .'@noreply.com'; 
+                $userdata['user_email'] = is_email( $userdata['user_login'] ) ? $userdata['user_login'] : ''; 
             } elseif ( empty( $userdata['user_login'] ) && empty( $userdata['user_email'] ) ) { 
                 $errors->add( 'empty_login_email', __( 'Cannot create a user with an empty login name and empty email', $pfInstance->name ) );  
             }
@@ -453,6 +471,13 @@ class PluginFrameworkWPSupport {
         if ( empty( $data['email'] ) )     return;
         if ( empty( $data['subject'] ) )   return;
         
+        $data['body'] = isset( $data['body'] ) ? $data['body'] : '';
+        
+        if ( function_exists( 'htmlspecialchars_decode' ) ) {
+            $data['subject']    = htmlspecialchars_decode( $data['subject'] );
+            $data['body']       = htmlspecialchars_decode( $data['body'] );
+        }
+        
         if ( ! empty( $data['from_email'] ) ) {
             global $fromEmail;
             $fromEmail = $data['from_email'];
@@ -474,11 +499,11 @@ class PluginFrameworkWPSupport {
         //if( @$data[ 'format' ] == 'text/html'  )
             //add_filter( 'wp_mail_content_type', create_function( '', 'return "text/html";' ), 40 );
         
-        $isSent = wp_mail( $data['email'], $data['subject'], @$data['body'] );
+        $isSent = wp_mail( $data['email'], $data['subject'], $data['body'] );
         
         if ( ! $isSent && is_array( $data['email'] ) ) {
             foreach ( $data['email'] as $email ) {
-                $isSent = wp_mail( $email, $data['subject'], @$data['body'] ) ? true : $isSent;
+                $isSent = wp_mail( $email, $data['subject'], $data['body'] ) ? true : $isSent;
             }
         }
         
@@ -540,6 +565,8 @@ class PluginFrameworkWPSupport {
     }
     
     function isImage( $url ) {
+        if ( empty( $url ) ) return false;
+        
         if ( ini_get( 'allow_url_fopen' ) )
             return getimagesize( $url ) ? true : false;
         

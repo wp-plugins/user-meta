@@ -7,9 +7,8 @@ class umSupportHtml {
         global $userMeta;
         
         $html = null;
-        $html .= sprintf( __( '<p><strong>Step 1.</strong> Create Field from User Meta %s page.</p>', $userMeta->name ), $userMeta->adminPageUrl('fields_editor') );
-        $html .= sprintf( __( '<p><strong>Step 2.</strong> Go to User Meta %s page. Choose a Form Name, drag and drop fields from right to left and save the form.</p>', $userMeta->name ), $userMeta->adminPageUrl('forms_editor') );
-        $html .= sprintf( __( '<p><strong>Step 3.</strong> Write shortcode to your page or post. Shortcode (e.g.): %s</p>', $userMeta->name ), '[user-meta-profile form="Form_Name"]'  );
+        $html .= sprintf( '<p><strong>Step 1.</strong> Create a form and populate it with fields by %s page.</p>', $userMeta->adminPageUrl('forms') );
+        $html .= sprintf( '<p><strong>Step 2.</strong> Write shortcode to your page or post. Shortcode (e.g.): %s</p>', '[user-meta-profile form="Form_Name"]'  );
         $html .= "<div><center><a class=\"button-primary\" href=\"" . $userMeta->website .  "\">". __( 'Visit Plugin Site', $userMeta->name ) ."</a></center></div>";
         return $html;
     }
@@ -83,6 +82,58 @@ class umSupportHtml {
             $html .= "<img src=\"https://s3.amazonaws.com/user-meta/public/plugin/images/{$img}?ver={$userMeta->version}\" width=\"100%\" onclick=\"umGetProMessage(this)\" />";
             
         return $html;
+    }
+    
+    function showInfo( $data, $title = '', $icon = true ) {
+        $iconHtml = "<span style=\"display: inline-block;\" class=\"ui-icon ui-icon-info\"></span>";
+        
+        if ( $icon )
+            $title .= $iconHtml;
+        
+        $title = $title ? $title : $iconHtml;
+
+        return "<p data-ot='$data' class='my-element' >$title</p>";
+    }
+    
+    function buildPanel( $title, $body ) {
+        ?>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <?php echo $title; ?> <i class="fa fa-caret-down"></i>
+                </h3> 
+            </div>
+            <div class="panel-collapse collapse">
+                <div class="panel-body"><?php echo $body; ?>
+                </div>
+            </div>
+        </div>
+        <?php
+    }
+    
+    function buildTabs( $name = null, $tabs = array() ) { 
+        
+        $li = null;
+        $tabContent = null;
+        $active = 'active';
+        
+        foreach( $tabs as $title => $content ) {
+            $id = str_replace( ' ', '_', strtolower( $title ) );
+            if ( ! empty( $name ) )
+                $id = "{$name}_{$id}";
+
+            $li .= "<li class=\"nav $active\"><a href=\"#{$id}\" data-toggle=\"tab\">$title</a></li>";
+            
+            if ( $active ) $active = 'in active';
+            $tabContent .= "<div class=\"tab-pane fade $active\" id=\"$id\">$content</div>";
+            
+            if ( $active ) $active = null;
+        }
+        
+        $html = '<ul class="nav nav-tabs">' . $li . '</ul>';
+        $html .= '<div class="tab-content">' . $tabContent . '</div>';   
+
+        return $html; 
     }
 }
 endif;

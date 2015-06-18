@@ -6,46 +6,55 @@ class umPreloadsController {
     function __construct() {   
         global $userMeta;
         
-        add_action( 'plugins_loaded', array( $this, 'loadTextDomain' ) ); 
+        add_action( 'plugins_loaded',                   array( $this, 'loadTextDomain' ) ); 
         
         $userMeta->addScript( 'jquery',    'front' );              
         
-        add_filter( 'get_avatar', array( $this, 'getAvatar' ), 10, 5 );
+        add_filter( 'get_avatar',                       array( $this, 'getAvatar' ), 10, 5 );
         
-        add_filter( 'user_row_actions', array( $this, 'userProfileLink' ), 10, 2 );
+        add_filter( 'user_row_actions',                 array( $this, 'userProfileLink' ), 10, 2 );
         
-        add_filter( 'wp_mail_from',                 array( $this, 'mailFromEmail' ) );
-        add_filter( 'wp_mail_from_name',            array( $this, 'mailFromName' ) );
-        add_filter( 'wp_mail_content_type',         array( $this, 'mailContentType' ) );
+        add_filter( 'wp_mail_from',                     array( $this, 'mailFromEmail' ) );
+        add_filter( 'wp_mail_from_name',                array( $this, 'mailFromName' ) );
+        add_filter( 'wp_mail_content_type',             array( $this, 'mailContentType' ) );
                        
-        add_action( 'wp_ajax_um_common_request',    array($userMeta, 'ajaxUmCommonRequest' ) );
+        add_action( 'wp_ajax_um_common_request',        array( $userMeta, 'ajaxUmCommonRequest' ) );
                    
-        add_action( 'user_meta_admin_notices',      array( $this, 'adminNotices' ) );  
-        add_action( 'admin_notices',                array( $userMeta, 'activateLicenseNotice' ) ); 
+        add_action( 'user_meta_admin_notices',          array( $this, 'adminNotices' ) );  
+        add_action( 'admin_notices',                    array( $userMeta, 'activateLicenseNotice' ) ); 
             
         add_filter( 'pf_file_upload_allowed_extensions', array( $this, 'fileUploadExtensions' ) );
-        add_filter( 'pf_file_upload_size_limit',    array( $this, 'fileUploadMaxSize' ) );
-        add_filter( 'pf_file_upload_is_overwrite',  array( $this, 'fileUploadOverwrite' ) );
+        add_filter( 'pf_file_upload_size_limit',        array( $this, 'fileUploadMaxSize' ) );
+        add_filter( 'pf_file_upload_is_overwrite',      array( $this, 'fileUploadOverwrite' ) );
         
-        add_action( 'pf_file_upload_after_uploaded',array( $this, 'updateFileCache' ), 10, 2 );
+        add_action( 'pf_file_upload_after_uploaded',    array( $this, 'updateFileCache' ), 10, 2 );
         
-        register_activation_hook( $userMeta->file,  array( $this, 'userMetaActivation' ) );
-        register_deactivation_hook( $userMeta->file,  array( $this, 'userMetaDeactivation' ) );
+        register_activation_hook( $userMeta->file,      array( $this, 'userMetaActivation' ) );
+        register_deactivation_hook( $userMeta->file,    array( $this, 'userMetaDeactivation' ) );
         
-        add_action( 'user_meta_schedule_event',     array( $userMeta, 'cleanupFileCache' ) );
+        add_action( 'user_meta_schedule_event',         array( $userMeta, 'cleanupFileCache' ) );
         
-        add_filter( 'xmlrpc_methods', array( $this, 'newXmlRpcMethods' ) );
+        add_filter( 'xmlrpc_methods',                   array( $this, 'newXmlRpcMethods' ) );
         
-        add_action( 'init', array( $this, 'processPostRequest' ) );
+        add_action( 'init',                             array( $this, 'processPostRequest' ) );
         
-        add_action( 'wp_ajax_um_show_uploaded_file',            array( &$userMeta, 'ajaxShowUploadedFile' ) );
-        add_action( 'wp_ajax_nopriv_um_show_uploaded_file',     array( &$userMeta, 'ajaxShowUploadedFile' ) );
+        add_action( 'wp_ajax_um_debug',                 array( $this, 'debug' ) );
+        
+        add_action( 'wp_ajax_um_file_uploader',                 array( $userMeta, 'ajaxFileUploader' ) );
+        add_action( 'wp_ajax_nopriv_um_file_uploader',          array( $userMeta, 'ajaxFileUploader' ) );
+        
+        add_action( 'wp_ajax_um_show_uploaded_file',            array( $userMeta, 'ajaxShowUploadedFile' ) );
+        add_action( 'wp_ajax_nopriv_um_show_uploaded_file',     array( $userMeta, 'ajaxShowUploadedFile' ) );
           
-        add_action( 'wp_ajax_um_validate_unique_field',         array( &$userMeta, 'ajaxValidateUniqueField' ) );
-        add_action( 'wp_ajax_nopriv_um_validate_unique_field',  array( &$userMeta, 'ajaxValidateUniqueField' ) );
+        add_action( 'wp_ajax_um_validate_unique_field',         array( $userMeta, 'ajaxValidateUniqueField' ) );
+        add_action( 'wp_ajax_nopriv_um_validate_unique_field',  array( $userMeta, 'ajaxValidateUniqueField' ) );
         
-        if ( $userMeta->isPro )
+        
+        
+        if ( $userMeta->isPro ) {
             add_action( 'wp', array( $userMeta, 'validateUMPKey' ) );
+            add_action( 'wp_ajax_ump_license_validation',       array( $userMeta, 'validateUMPKey' ) );
+        }
     }
     
   
@@ -82,13 +91,10 @@ class umPreloadsController {
             
         if ( ! isset( $user_id ) ) return $avatar;
             
-        //$uploads    = wp_upload_dir();
         $umAvatar   = get_user_meta( $user_id, 'user_avatar', true );   
         
         $file    = $userMeta->determinFileDir( $umAvatar );
-        if ( ! empty( $file ) ) {
-            //$path = $uploads['basedir'] . $umAvatar;                                         
-            //$avatarUrl = str_replace( $uploads['basedir'], $uploads['baseurl'], $path );    
+        if ( ! empty( $file ) ) { 
             $avatar = "<img alt='{$safe_alt}' src='{$file['url']}' class='avatar avatar-{$size} photo' height='{$size}' width='{$size}' />";
         }
                         
@@ -166,12 +172,29 @@ class umPreloadsController {
             } elseif ( $_REQUEST['field_id'] == 'txt_upload_ump_import' ) {
                 $allowedExtensions = array("txt");
             } elseif ( strpos( $_REQUEST['field_id'], 'um_field_' ) !== false ) {
-               $fieldID = str_replace( "um_field_", "", $_REQUEST['field_id'] );
+                
+                if ( empty( $_REQUEST['form_key'] ) ) return $allowedExtensions;
+
+                $formName = esc_attr( $_REQUEST['form_key'] );
+
+                if ( ! empty( $formName ) ) {
+                    $form = new umFormGenerate( $formName, null, null );
+                    $validFields = $form->validInputFields();
+
+                    if ( ! empty( $validFields[ $_REQUEST['field_name'] ] ) ) {
+                        $field = $validFields[ $_REQUEST['field_name'] ];
+                        if ( ! empty( $field['allowed_extension'] ) ) {
+                            $allowedExtensions = str_replace( ' ', '', $field['allowed_extension'] );
+                            $allowedExtensions = explode( ",", $allowedExtensions );      
+                        }
+                    }
+                } 
+               /*$fieldID = str_replace( "um_field_", "", $_REQUEST['field_id'] );
                $fields = $userMeta->getData( 'fields' );
                if ( isset( $fields[$fieldID]['allowed_extension'] ) ) {
                    $allowedExtensions = str_replace( ' ', '', $fields[$fieldID]['allowed_extension'] );
                    $allowedExtensions = explode( ",", $allowedExtensions );      
-               }
+               }*/
             }
         }     
         
@@ -267,6 +290,17 @@ class umPreloadsController {
             $userMeta->um_post_method_status = $um_post_method_status;
         } else
             $userMeta->um_post_method_status->$methodName = $response;
+    }
+    
+    function debug() {
+        global $userMeta;
+        
+        if ( $userMeta->isAdmin() ) {
+            phpinfo();
+        }
+        
+        
+        die();
     }
            
 }

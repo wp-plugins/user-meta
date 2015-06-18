@@ -22,7 +22,21 @@ class umSupportArray {
         global $userMeta;
 
         $pages = array(
-            'fields_editor' => array(
+            'forms'  => array(
+                'menu_title'    => __( 'Forms', $userMeta->name ),
+                'page_title'    => __( 'User Meta Forms Editor', $userMeta->name ),
+                'menu_slug'     => 'usermeta',
+                'position'      => 0,
+                'is_free'       => true,
+            ),
+            'fields' => array(
+                'menu_title'    => __( 'Shared Fields', $userMeta->name ),
+                'page_title'    => __( 'User Meta Fields Editor', $userMeta->name ),
+                'menu_slug'     => 'user-meta-fields',
+                'position'      => 1,
+                'is_free'       => true,
+            ),
+            /*'fields_editor' => array(
                 'menu_title'    => __( 'Fields Editor', $userMeta->name ),
                 'page_title'    => __( 'User Meta Fields Editor', $userMeta->name ),
                 'menu_slug'     => 'usermeta',
@@ -35,7 +49,7 @@ class umSupportArray {
                 'menu_slug'     => 'user-meta-form-editor',
                 'position'      => 1,
                 'is_free'       => true,
-            ),
+            ),*/
             'email_notification' => array(
                 'menu_title'    => __( 'Email Notification', $userMeta->name ),
                 'page_title'    => __( 'Email Notification', $userMeta->name ),
@@ -166,7 +180,7 @@ class umSupportArray {
                 'user-meta-admin.js' => ''
             ),   
             'jquery-ui-all' => array(
-                'jquery.ui.all.css' => 'jqueryui/',
+                'jquery-ui.min.css' => 'jqueryui/',
             ),
             'fileuploader' => array(
                 'fileuploader.js'   => 'jquery/',
@@ -180,7 +194,7 @@ class umSupportArray {
                 'jquery.wysiwyg.css'=> 'jquery/',
             ),
             'timepicker' => array(
-                'jquery-ui-timepicker-addon.js' => 'jqueryui/',
+                'jquery-ui-timepicker-addon.js' => 'jquery/',
             ),
             'validationEngine' => array(
                 'jquery.validationEngine-en.js' => 'jquery/',
@@ -191,11 +205,26 @@ class umSupportArray {
                 'jquery.password_strength.js'   => 'jquery/',
             ),
             'placeholder' => array(
-                'jquery.placeholder.js'   => 'jquery/',
+                'jquery.placeholder.js'         => 'jquery/',
             ),
             'multiple-select' => array(
-                'jquery.multiple.select.js'  => 'jquery/',
-                'multiple-select.css' => 'jquery/',
+                'jquery.multiple.select.js'     => 'jquery/',
+                'multiple-select.css'           => 'jquery/',
+            ),
+            'opentip' => array(
+                'opentip-jquery.min.js'         => 'jquery/',
+                'opentip.css'                   => 'jquery/',
+            ),
+            'bootstrap' => array(
+                'bootstrap.css'                 => 'bootstrap/',
+                'bootstrap.min.js'              => ''
+            ),
+            'font-awesome' => array(
+                'font-awesome.min.css'          => 'font-awesome/css/',
+            ),
+            'bootstrap-multiselect' => array(
+                'bootstrap-multiselect.css'     => 'jquery/',
+                'bootstrap-multiselect.js'      => 'jquery/',
             ),
         );
         
@@ -220,7 +249,7 @@ class umSupportArray {
     }    
     
     
-    function umFields() {
+    function umFields( $name = '' ) {
         global $userMeta;
         
         $fieldsList = array(
@@ -358,7 +387,7 @@ class umSupportArray {
                 'field_group'   => 'standard',
                 'is_free'       => false,
             ),                      
-            'password' => array(
+            /*'password' => array(
                 'title'         => __( 'Password', $userMeta->name ),
                 'field_group'   => 'standard', 
                 'is_free'       => false,
@@ -367,7 +396,7 @@ class umSupportArray {
                 'title'         => __( 'Email', $userMeta->name ),
                 'field_group'   => 'standard',
                 'is_free'       => false,
-            ),             
+            ),*/
             'file' => array(
                 'title'         => __( 'File Upload', $userMeta->name ),
                 'field_group'   => 'standard',
@@ -427,7 +456,12 @@ class umSupportArray {
                 'is_free'       => false,
             ),                                                         
         );        
-        return $fieldsList;                    
+        
+        if ( ! empty( $name ) ) {
+            return isset( $fieldsList[ $name ] ) ? $fieldsList[ $name ] : array();
+        }
+        
+        return $fieldsList;
     }    
     
     /**
@@ -506,8 +540,8 @@ class umSupportArray {
         
             'registration'  => array(
                 'user_email'    => array(
-                    'subject'   => '[%site_title%] Your username and password',
-                    'body'      => "Username: %user_login% \r\nE-mail: %user_email% \r\nPassword: %password% \r\n\r\nLogin Url: %login_url%",
+                    'subject'   => '[%site_title%] Your account details',
+                    'body'      => "Username: %user_login% \r\nE-mail: %user_email% \r\n\r\nLogin Url: %login_url%",
 
                 ),
                 'admin_email'    => array(
@@ -526,20 +560,27 @@ class umSupportArray {
             'deactivation'  => array(
                 'user_email'    => array(
                     'subject'   => '[%site_title%] User Deactivated',
-                    'body'      => "Your account is deactivated by administrator. You can not login anymore to [%site_title%].",
+                    'body'      => "Your account is deactivated by administrator. You can not login anymore to [%site_url%].",
                 ),               
             ),
             
             'email_verification'  => array(
                 'user_email'    => array(
                     'subject'   => '[%site_title%] Email verified',
-                    'body'      => "Your email [%user_email%] is successfully verified on [%site_title%].",
+                    'body'      => "Your email %user_email% is successfully verified on [%site_url%].",
                 ),  
                 'admin_email'    => array(
                     'subject'   => '[%site_title%] Email verified',
-                    'body'      => "User email [%user_email%] is successfully verified on [%site_title%].",
+                    'body'      => "Email %user_email% for user %user_login% is successfully verified on [%site_url%].",
                 ),                                                
-            ),                                    
+            ),   
+            
+            'admin_approval'  => array(
+                'user_email'    => array(
+                    'subject'   => '[%site_title%] Account Approves',
+                    'body'      => "Your account has been approved on [%site_url%].",
+                ),               
+            ),
             
             'lostpassword'  => array(
                 'user_email'    => array(
@@ -726,6 +767,7 @@ class umSupportArray {
             'user_already_activated'    => __( 'User already activated', $userMeta->name ),
             'account_inactive'          => __( '<strong>ERROR:</strong> your account is inactive', $userMeta->name ),
             'account_pending'           => __( '<strong>ERROR:</strong> your account is not yet activated.', $userMeta->name ),
+            'verify_email'              => __( 'Please verify your email address.', $userMeta->name ),
             'check_email_for_link'      => __( 'Check your e-mail for the confirmation link.', $userMeta->name ),
             'email_not_found'           => __( 'Email not found', $userMeta->name ),
             'incorrect_captcha'         => __( 'Incorrect captcha code', $userMeta->name ),

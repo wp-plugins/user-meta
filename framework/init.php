@@ -62,7 +62,9 @@ class pluginFramework {
         if ( $methodName ) {                        
             $methodName = 'ajax' . ucwords( $methodName );
             $this->$methodName();
-        }
+        }else
+            echo 'not found!';
+        
         die();          
     }   
     
@@ -192,14 +194,21 @@ class pluginFramework {
      * Include all file from directory
      * Create instence of each class and add return all instance as an array
      */  
-    function loadDirectory( $dir ) {
+    function loadDirectory( $dir, $createInstance = true, $exclude = array() ) {
         if ( ! file_exists( $dir ) ) return false;
+        
         foreach ( scandir( $dir ) as $item) {
             if ( preg_match( "/.php$/i" , $item ) ) {
+                if ( in_array( $item, $exclude ) ) continue;
+                
                 require_once( $dir . $item );
-                $className = str_replace( ".php", "", $item );
-                if ( class_exists( $className ) )
-                    $classes[] = new $className;
+                
+                if ( $createInstance ) {
+                    $className = str_replace( ".php", "", $item );
+                    if ( class_exists( $className ) )
+                        $classes[] = new $className;
+                }
+
             }      
         }
         return isset( $classes ) ? $classes : false;
@@ -209,10 +218,27 @@ class pluginFramework {
      * Render view file
      * @param string $viewName: name of view file without extension
      */
-    function render( $viewName, $parameter = array() ) {
-        if ( $parameter ) extract( $parameter );            
-        include( $this->viewsPath . $viewName . '.php' );
-        if ( isset( $html ) ) return $html;
+    function render( $viewName, $parameter = array(), $subdir=null, $ob = false ) {                
+        $path = $this->viewsPath;
+        if ( $subdir )
+            $path .= $subdir . '/';
+        $path .= $viewName . '.php';
+        
+        if ( $parameter ) extract($parameter);    
+        
+        if ( $ob ) ob_start();   
+        $pageReturn = include $path;
+        
+        if ( $ob ) {
+            $html = ob_get_contents();
+            ob_end_clean();
+            return $html;
+        }
+         
+        if ( $pageReturn AND $pageReturn <> 1 )
+            return $pageReturn;
+        
+        if ( isset($html ) ) return $html;     
     }        
          
     /**
